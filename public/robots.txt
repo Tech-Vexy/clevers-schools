@@ -1,0 +1,11 @@
+//robots.txt
+
+User-agent: *
+Disallow: /profile
+Disallow: /subscribe
+Disallow: /api
+
+
+# Allow all crawlers
+User-agent: *
+Allow: /
