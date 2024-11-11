@@ -1,145 +1,115 @@
 'use client';
 
-import { useState, type FormEvent } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import Link from 'next/link';
 
-interface RegisterError {
-    message: string;
-}
-
-export default function Register() {
+export default function RegisterPage() {
     const router = useRouter();
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [error, setError] = useState('');
+    const [error, setError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
 
-    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setError('');
         setIsLoading(true);
+        setError(null);
 
-        if (password !== confirmPassword) {
-            setError('Passwords do not match');
-            setIsLoading(false);
-            return;
-        }
+        const formData = new FormData(e.currentTarget);
+        const name = formData.get('name') as string;
+        const email = formData.get('email') as string;
+        const password = formData.get('password') as string;
 
         try {
-            const res = await fetch('/api/auth/register', {
+            const response = await fetch('/api/auth/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
+                    name,
                     email,
                     password,
                 }),
             });
 
-            const data = await res.json();
+            const data = await response.json();
 
-            if (!res.ok) {
-                throw new Error(data.message || 'Something went wrong');
+            if (!response.ok) {
+                throw new Error(data.error || 'Something went wrong');
             }
 
-            // Redirect to sign in page after successful registration
-            router.push('/auth/signin?registered=true');
-        } catch (err) {
-            const error = err as RegisterError;
-            setError(error.message || 'An unexpected error occurred');
+            // Automatically sign in after successful registration
+            router.push('/auth/signin');
+        } catch (error) {
+            setError(error instanceof Error ? error.message : 'An error occurred');
         } finally {
             setIsLoading(false);
         }
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50">
-            <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-lg shadow">
-                <div>
-                    <h2 className="text-center text-3xl font-extrabold text-gray-900">
-                        Create your account
-                    </h2>
-                </div>
-                <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-                    {error && (
-                        <div className="text-red-500 text-center text-sm">
-                            {error}
+        <div className="min-h-screen flex items-center justify-center px-4 bg-[url('/bg1.jpg')] text-headertext">
+            <Card className="w-full max-w-md bg-gray-100">
+                <CardHeader>
+                    <CardTitle className="text-2xl text-center">Register</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                        <div className="space-y-2">
+                            <Label htmlFor="name">Name</Label>
+                            <Input
+                                id="name"
+                                name="name"
+                                type="text"
+                                required
+                                placeholder="Enter your name"
+                            />
                         </div>
-                    )}
-                    <div className="rounded-md shadow-sm space-y-4">
-                        <div>
-                            <label htmlFor="email" className="sr-only">
-                                Email address
-                            </label>
-                            <input
+                        <div className="space-y-2">
+                            <Label htmlFor="email">Email</Label>
+                            <Input
                                 id="email"
                                 name="email"
                                 type="email"
-                                autoComplete="email"
                                 required
-                                className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                                placeholder="Email address"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
+                                placeholder="Enter your email"
                             />
                         </div>
-                        <div>
-                            <label htmlFor="password" className="sr-only">
-                                Password
-                            </label>
-                            <input
+                        <div className="space-y-2">
+                            <Label htmlFor="password">Password</Label>
+                            <Input
                                 id="password"
                                 name="password"
                                 type="password"
-                                autoComplete="new-password"
                                 required
-                                className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                                placeholder="Password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
+                                placeholder="Enter your password"
                             />
                         </div>
-                        <div>
-                            <label htmlFor="confirm-password" className="sr-only">
-                                Confirm Password
-                            </label>
-                            <input
-                                id="confirm-password"
-                                name="confirm-password"
-                                type="password"
-                                autoComplete="new-password"
-                                required
-                                className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                                placeholder="Confirm Password"
-                                value={confirmPassword}
-                                onChange={(e) => setConfirmPassword(e.target.value)}
-                            />
-                        </div>
-                    </div>
-
-                    <div>
-                        <button
+                        {error && (
+                            <div className="p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+                                {error}
+                            </div>
+                        )}
+                        <Button
                             type="submit"
+                            className="w-full bg-green-400"
                             disabled={isLoading}
-                            className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-400"
                         >
-                            {isLoading ? 'Creating account...' : 'Create account'}
-                        </button>
-                    </div>
-
-                    <div className="text-sm text-center">
-                        <Link
-                            href="/auth/signin"
-                            className="font-medium text-indigo-600 hover:text-indigo-500"
-                        >
-                            Already have an account? Sign in
+                            {isLoading ? 'Loading...' : 'Register'}
+                        </Button>
+                    </form>
+                    <div className="mt-4 text-center text-sm text-gray-600">
+                        Already have an account?{' '}
+                        <Link href="/auth/signin" className="text-green-600 hover:underline">
+                            Login
                         </Link>
                     </div>
-                </form>
-            </div>
+                </CardContent>
+            </Card>
         </div>
     );
 }
