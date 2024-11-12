@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { Menu, X, Bell } from 'lucide-react';
-import Image from 'next/image';
+//import Image from 'next/image';
 import Link from 'next/link';
 import Navbar from './Navbar';
 import NavProfile from '@/app/profile/page';
