@@ -79,7 +79,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
             <div
                 className={`
           bg-gradient-to-r from-purple-600 to-pink-600 text-white text-center py-2
-          transform transition-all duration-1000 ease-in-out
+          transform transition-all duration-800 ease-in-out
           ${isWelcomeVisible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}
         `}
             >
