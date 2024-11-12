@@ -139,6 +139,7 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <head>
+        <link rel="icon" href="/favicon.ico"/>
           <MetaTags />
           <script
                         type="application/ld+json"
