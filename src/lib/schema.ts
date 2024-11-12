@@ -54,15 +54,9 @@ export const websiteSchema = {
 export const courseSchema = {
   "@context": "https://schema.org",
   "@type": "Course",
-  name: "IGCSE Study Resources",
+  name: "IGCSE",
   description: "Comprehensive study materials and past papers for IGCSE students",
   provider: {
     "@id": `${SITE_URL}/#organization`
   },
-  educationalLevel: "Secondary",
-  educationalCredentialAwarded: "IGCSE Certificate",
-  hasCourseInstance: {
-    "@type": "CourseInstance",
-    courseMode: "online"
-  }
 };
