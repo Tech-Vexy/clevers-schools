@@ -1,11 +1,4 @@
-//robots.txt
-
-User-agent: *
-Disallow: /profile
-Disallow: /subscribe
-Disallow: /api
-
-
-# Allow all crawlers
 User-agent: *
 Allow: /
+
+Sitemap: https://schoolresources.clevers.co.ke/sitemap.xml
