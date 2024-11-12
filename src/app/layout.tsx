@@ -7,9 +7,6 @@ import StructuredData from './components/StructuredData';
 import AppLayout from "./components/AppLayout";
 import Footer from "./components/Footer";
 import AuthProvider from "@/providers";
-import { DefaultSeo } from 'next-seo';
-import { defaultSEOConfig } from '@/lib/seo-config';
-
 import "./globals.css";
 
 export { metadata };
@@ -159,7 +156,6 @@ export default function RootLayout({
         <body 
           className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-full`}
         >
-          <DefaultSeo {...defaultSEOConfig} />
           <AppLayout>{children}</AppLayout>
           <Analytics />
           <Footer />
