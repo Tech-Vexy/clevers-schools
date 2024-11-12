@@ -7,6 +7,8 @@ import Link from 'next/link';
 import Navbar from './Navbar';
 import NavProfile from '@/app/profile/page';
 import AIChatInterface from './AIchatInterface';
+import { Logo } from '@/app/components/Logo';
+import { NextSeo } from 'next-seo';
 
 interface AppLayoutProps {
     children: React.ReactNode;
@@ -73,12 +75,27 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
     }, []);
 
     return (
+        <>
+        <NextSeo
+        title="Home Page"
+        description="Welcome to our website"
+        openGraph={{
+          images: [
+            {
+              url: 'https://schoolresources.clevers.co.ke/image.png',
+              width: 1200,
+              height: 630,
+              alt: 'Clevers Schools Logo',
+            },
+          ],
+        }}
+      />
         <div className="min-h-screen flex flex-col">
             {/* Animated Welcome Banner */}
             <div
                 className={`
           bg-gradient-to-r from-purple-600 to-pink-600 text-white text-center py-2
-          transform transition-all duration-500 ease-in-out
+          transform transition-all duration-1000 ease-in-out
           ${isWelcomeVisible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}
         `}
             >
@@ -104,15 +121,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
                             )}
                         </button>
                         <Link href="/" className="flex items-center space-x-4 group">
-                            <Image
-                                src="/image.png"
-                                alt="Clevers School Logo"
-                                width={48}
-                                height={48}
-                                priority
-
-                                className="object-contain transform group-hover:scale-105 transition-transform duration-300"
-                            />
+                            <Logo/>
                             <h1 className="text-2xl font-bold uppercase bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent transition-all duration-300 group-hover:scale-105">
                                 Clevers Schools Academic Resources
                             </h1>
@@ -170,6 +179,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
                 </main>
             </div>
         </div>
+        </>
     );
 };
 
