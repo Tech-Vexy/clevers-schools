@@ -8,8 +8,6 @@ import Navbar from './Navbar';
 import NavProfile from '@/app/profile/page';
 import AIChatInterface from './AIchatInterface';
 import { Logo } from '@/app/components/Logo';
-import { NextSeo } from 'next-seo';
-
 interface AppLayoutProps {
     children: React.ReactNode;
 }
@@ -75,21 +73,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
     }, []);
 
     return (
-        <>
-        <NextSeo
-        title="Home Page"
-        description="Welcome to our website"
-        openGraph={{
-          images: [
-            {
-              url: 'https://schoolresources.clevers.co.ke/image.png',
-              width: 1200,
-              height: 630,
-              alt: 'Clevers Schools Logo',
-            },
-          ],
-        }}
-      />
+        
         <div className="min-h-screen flex flex-col">
             {/* Animated Welcome Banner */}
             <div
@@ -179,7 +163,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
                 </main>
             </div>
         </div>
-        </>
+       
     );
 };
 
