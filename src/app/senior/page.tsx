@@ -64,23 +64,6 @@ const seniorSecondaryData: Grade[] = [
       { name: 'Geography', path: '/senior/grade-11/Geography' },
       { name: 'History', path: '/senior/grade-11/History' }
     ]
-  },
-  {
-    name: 'GRADE 12',
-    subjects: [
-      { name: 'Maths', path: '/senior/grade-12/mathematics' },
-      { name: 'Agriculture', path: '/senior/grade-12/Agriculture' },
-      { name: 'Biology', path: '/senior/grade-12/Biology' },
-      { name: 'Physics', path: '/senior/grade-12/Physics' },
-      { name: 'CRE', path: '/senior/grade-12/CRE' },
-      { name: 'Chemistry', path: '/senior/grade-12/Chemistry' },
-      { name: 'Business Studies', path: '/senior/grade-12/BusinessStudies' },
-      { name: 'Computer Studies', path: '/senior/grade-12/ComputerStudies' },
-      { name: 'English', path: '/senior/grade-12/English' },
-      { name: 'Kiswahili', path: '/senior/grade-12/Kiswahili' },
-      { name: 'Geography', path: '/senior/grade-12/Geography' },
-      { name: 'History', path: '/senior/grade-12/History' }
-    ]
   }
 ];
 
@@ -134,6 +117,14 @@ export default function SeniorSecondaryContent() {
             <GradeSection key={index} grade={grade} />
           ))}
         </div>
+        <Link
+            
+            href="/senior/grade-12"
+            className="p-3 text-gray-950 font-semibold bg-slate-100 hover:bg-purple-500 rounded-md shadow-sm hover:shadow-md transition-shadow border border-gray-200 flex items-center gap-2"
+          >
+              <BookOpen size={16} className="text-blue-500" />
+            GRADE 12
+          </Link>
       </div>
     </div>
   );
