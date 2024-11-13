@@ -8,5 +8,9 @@ const nextConfig: NextConfig = {
   },
 
 };
+// Add to next.config.js
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true'
+})
 
-export default nextConfig;
+module.exports = withBundleAnalyzer(nextConfig)
