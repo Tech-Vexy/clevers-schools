@@ -8,9 +8,12 @@ import { Button } from '@/components/ui/button';
 import { Loader2, Download, Lock } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 
+// Updated type to match Google Drive file structure
 interface FileItem {
+    id: string;
     name: string;
-    url: string;
+    webViewLink: string;
+    mimeType: string;
 }
 
 interface UserSubscription {
@@ -20,7 +23,6 @@ interface UserSubscription {
 
 interface SessionUser {
     id: string;
-    // Add other user properties as needed
 }
 
 const DocumentPage = () => {
@@ -69,10 +71,13 @@ const DocumentPage = () => {
             try {
                 const fileDataParam = searchParams.get('fileData');
                 if (fileDataParam) {
-                    const parsedData = JSON.parse(fileDataParam) as FileItem;
-                    if (!parsedData.name || !parsedData.url) {
+                    const parsedData: FileItem = JSON.parse(decodeURIComponent(fileDataParam));
+
+                    // Validate file data
+                    if (!parsedData.id || !parsedData.name) {
                         throw new Error('Invalid file data format');
                     }
+
                     setFileData(parsedData);
                 }
 
@@ -92,7 +97,7 @@ const DocumentPage = () => {
         };
 
         initializePage();
-    }, [searchParams, session, isMounted]); // Added proper dependencies
+    }, [searchParams, session, isMounted]);
 
     const handleDownload = async () => {
         if (!session) {
@@ -106,7 +111,7 @@ const DocumentPage = () => {
             return;
         }
 
-        if (!fileData?.url) {
+        if (!fileData?.webViewLink) {
             toast({
                 title: 'Error',
                 description: 'Document URL not found.',
@@ -127,6 +132,7 @@ const DocumentPage = () => {
                 },
                 body: JSON.stringify({
                     userId: user.id,
+                    fileId: fileData.id,
                     fileName: fileData.name,
                     downloadDate: new Date().toISOString(),
                 }),
@@ -136,8 +142,8 @@ const DocumentPage = () => {
                 throw new Error('Failed to log download');
             }
 
-            // Using window.open for better security
-            window.open(fileData.url, '_blank', 'noopener,noreferrer');
+            // Open Google Drive file view/download link
+            window.open(fileData.webViewLink, '_blank', 'noopener,noreferrer');
 
         } catch (error) {
             toast({
@@ -158,53 +164,59 @@ const DocumentPage = () => {
 
     if (isLoading || status === 'loading') {
         return (
-            <div className="min-h-screen flex items-center justify-center">
-                <Loader2 className="h-8 w-8 animate-spin text-green-600" />
+            <div className="min-h-screen flex items-center justify-center bg-amber-300">
+                <div className="bg-gray-800/80 p-6 rounded-full shadow-xl">
+                    <Loader2 className="h-8 w-8 animate-spin text-emerald-500" />
+                </div>
             </div>
         );
     }
 
     return (
-        <div className="container mx-auto px-4 py-6 min-h-screen">
-            <Card className="w-full max-w-2xl mx-auto shadow-lg">
-                <CardHeader className="space-y-2">
-                    <CardTitle className="text-xl md:text-2xl text-green-600">
-                        {fileData?.name || 'Document Not Found'}
-                    </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                    {!session ? (
-                        <Button
-                            onClick={() => router.push('/auth/signin')}
-                            className="w-full"
-                            variant="outline"
-                        >
-                            Sign in to Download
-                        </Button>
-                    ) : (
-                        <Button
-                            onClick={handleDownload}
-                            className="w-full"
-                            variant={subscription?.isSubscribed ? "default" : "outline"}
-                            disabled={isProcessing}
-                        >
-                            {isProcessing ? (
-                                <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                            ) : subscription?.isSubscribed ? (
-                                <Download className="mr-2 h-4 w-4" />
-                            ) : (
-                                <Lock className="mr-2 h-4 w-4" />
-                            )}
-                            {isProcessing
-                                ? 'Processing...'
-                                : subscription?.isSubscribed
-                                    ? 'Download Document'
-                                    : 'GET ACCESS'}
-                        </Button>
-                    )}
+        <div className="container mx-auto px-4 py-6 min-h-screen bg-amber-200">
+            <div className="relative max-w-2xl mx-auto">
+                <div className="absolute inset-0 bg-grid-pattern opacity-10 pointer-events-none"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-gray-900/90 to-transparent pointer-events-none"></div>
 
-                </CardContent>
-            </Card>
+                <Card className="shadow-2xl backdrop-blur-sm border border-gray-700 rounded-xl relative">
+                    <CardHeader className="space-y-2">
+                        <CardTitle className="text-xl md:text-2xl text-emerald-400 text-center font-bold">
+                            {fileData?.name || 'Document Not Found'}
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                        {!session ? (
+                            <Button
+                                onClick={() => router.push('/auth')}
+                                className="w-full"
+                                variant="outline"
+                            >
+                                Sign in to Download
+                            </Button>
+                        ) : (
+                            <Button
+                                onClick={handleDownload}
+                                className="w-full"
+                                variant={subscription?.isSubscribed ? "default" : "outline"}
+                                disabled={isProcessing}
+                            >
+                                {isProcessing ? (
+                                    <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                                ) : subscription?.isSubscribed ? (
+                                    <Download className="mr-2 h-4 w-4" />
+                                ) : (
+                                    <Lock className="mr-2 h-4 w-4" />
+                                )}
+                                {isProcessing
+                                    ? 'Processing...'
+                                    : subscription?.isSubscribed
+                                        ? 'Download Document'
+                                        : 'GET ACCESS'}
+                            </Button>
+                        )}
+                    </CardContent>
+                </Card>
+            </div>
         </div>
     );
 };

@@ -7,7 +7,7 @@ import CollegeSection from './college/page';
 import UniversityResources from './university/page';
 import KCSESection from './kcse/page';
 import ScrollButtons from './components/ScrollButtons';
-import BooksAndNovels from './books/page';
+
 import ThesisResearchSection from './research/page';
 import WeeklyQuizzesNavigation from './quizes/page';
 import PrePrimarySection from './pre-primary/page';
@@ -65,12 +65,7 @@ export default function SecondarySchoolPage() {
                     </h1>
                     <UniversityResources/>
                 </div>
-                <div className='container mx-auto px-4 py-8 border-2 bg-homeback'>
-                    <h1 className='text-3xl font-bold text-center text-gray-950'>
-                        BOOKS AND NOVELS
-                    </h1>
-                    <BooksAndNovels/>
-                </div>
+
                 <div className='container mx-auto px-4 py-8 border-2 bg-stone-700'>
                     <h1 className='text-3xl font-bold text-center text-gray-950'>
                         THESIS AND RESEARCH

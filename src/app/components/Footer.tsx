@@ -4,30 +4,30 @@ import Link from 'next/link';
 
 const Footer = () => {
     return (
-        <footer className="bg-gray-900 text-headertext lg:ml-64 md:ml-60 sm:ml-0 transition-all duration-300">
-            {/* Main footer container with responsive margin */}
-            <div className="max-w-screen-xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        <footer className="bg-gray-900 text-headertext mt-auto  w-full">
+            {/* Main footer container */}
+            <div className="max-w-screen-xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
                 {/* Grid container with responsive columns */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
                     {/* Contact Information */}
-                    <div className="space-y-4">
-                        <h2 className="text-lg font-semibold">Contact Us</h2>
-                        <ul className="space-y-3">
+                    <div className="space-y-6">
+                        <h2 className="text-xl font-semibold text-white">Contact Us</h2>
+                        <ul className="space-y-4">
                             <li>
                                 <a
                                     href="mailto:info@clevers.co.ke"
-                                    className="flex items-center space-x-2 hover:opacity-80 transition-colors duration-200 text-sm lg:text-base"
+                                    className="flex items-center space-x-3 hover:text-white transition-colors duration-200 text-sm lg:text-base group"
                                 >
-                                    <Mail className="h-4 w-4 lg:h-5 lg:w-5 flex-shrink-0" />
+                                    <Mail className="h-5 w-5 lg:h-6 lg:w-6 flex-shrink-0 group-hover:text-blue-400" />
                                     <span>info@clevers.co.ke</span>
                                 </a>
                             </li>
                             <li>
                                 <a
                                     href="tel:+254725449122"
-                                    className="flex items-center space-x-2 hover:opacity-80 transition-colors duration-200 text-sm lg:text-base"
+                                    className="flex items-center space-x-3 hover:text-white transition-colors duration-200 text-sm lg:text-base group"
                                 >
-                                    <PhoneCall className="h-4 w-4 lg:h-5 lg:w-5 flex-shrink-0" />
+                                    <PhoneCall className="h-5 w-5 lg:h-6 lg:w-6 flex-shrink-0 group-hover:text-green-400" />
                                     <span>+254725449122</span>
                                 </a>
                             </li>
@@ -36,9 +36,9 @@ const Footer = () => {
                                     href="https://maps.app.goo.gl/rtoW3cY5wWmvAA5e7"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="flex items-start space-x-2 hover:opacity-80 transition-colors duration-200 text-sm lg:text-base"
+                                    className="flex items-start space-x-3 hover:text-white transition-colors duration-200 text-sm lg:text-base group"
                                 >
-                                    <MapPin className="h-4 w-4 lg:h-5 lg:w-5 flex-shrink-0 mt-1" />
+                                    <MapPin className="h-5 w-5 lg:h-6 lg:w-6 flex-shrink-0 mt-1 group-hover:text-red-400" />
                                     <span className="flex-1">Mitihani house 3rd floor, along Mfangano Street opposite KNUT HOUSE</span>
                                 </a>
                             </li>
@@ -46,45 +46,46 @@ const Footer = () => {
                     </div>
 
                     {/* Quick Links */}
-                    <div className="space-y-4">
-                        <h2 className="text-lg font-semibold">Quick Links</h2>
-                        <ul className="space-y-2">
+                    <div className="space-y-6">
+                        <h2 className="text-xl font-semibold text-white">Quick Links</h2>
+                        <ul className="space-y-4">
                             <li>
                                 <Link
                                     href="https://clevers.co.ke/founder"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="hover:opacity-80 transition-colors duration-200 text-sm lg:text-base"
+                                    className="hover:text-white transition-colors duration-200 text-sm lg:text-base flex items-center space-x-2"
                                 >
-                                    About Us
+                                    <span>About Us</span>
                                 </Link>
                             </li>
-                            <li className='flex'>
+                            <li>
                                 <Link
                                     href="https://clevers.co.ke/"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="hover:opacity-80 transition-colors duration-200 text-sm lg:text-base"
+                                    className="hover:text-white transition-colors duration-200 text-sm lg:text-base flex items-center space-x-2"
                                 >
-                                    <Globe />
+                                    <Globe className="h-5 w-5 lg:h-6 lg:w-6" />
+                                    <span>Visit Our Website</span>
                                 </Link>
                             </li>
                         </ul>
                     </div>
 
                     {/* Social Media */}
-                    <div className="space-y-4">
-                        <h2 className="text-lg font-semibold">Follow Us</h2>
-                        <ul className="flex space-x-4">
+                    <div className="space-y-6">
+                        <h2 className="text-xl font-semibold text-white">Follow Us</h2>
+                        <ul className="flex space-x-6">
                             <li>
                                 <Link
                                     href="https://www.facebook.com/cleverskenya.org"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="hover:opacity-80 transition-colors duration-200"
+                                    className="hover:text-blue-400 transition-colors duration-200"
                                     aria-label="Facebook"
                                 >
-                                    <Facebook className="h-5 w-5 lg:h-6 lg:w-6" />
+                                    <Facebook className="h-6 w-6 lg:h-8 lg:w-8" />
                                 </Link>
                             </li>
                             <li>
@@ -92,10 +93,10 @@ const Footer = () => {
                                     href="https://www.youtube.com/@cleversschool8832"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="hover:opacity-80 transition-colors duration-200"
+                                    className="hover:text-red-500 transition-colors duration-200"
                                     aria-label="YouTube"
                                 >
-                                    <Youtube className="h-5 w-5 lg:h-6 lg:w-6" />
+                                    <Youtube className="h-6 w-6 lg:h-8 lg:w-8" />
                                 </Link>
                             </li>
                         </ul>
@@ -103,8 +104,8 @@ const Footer = () => {
                 </div>
 
                 {/* Copyright */}
-                <div className="mt-8 pt-4 border-t border-gray-600 text-center">
-                    <p className="text-sm lg:text-base">&copy; {new Date().getFullYear()} Clevers Schools. All rights reserved.</p>
+                <div className="mt-12 pt-6 border-t border-gray-700">
+                    <p className="text-sm lg:text-base text-center text-gray-400">&copy; {new Date().getFullYear()} Clevers Schools. All rights reserved.</p>
                 </div>
             </div>
         </footer>

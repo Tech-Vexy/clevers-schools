@@ -12,12 +12,12 @@ export default {
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
-			headers: '#48065F',
-			headertext: '#DD1D90',
-			navbar: '#3E0AA7',
-			homeback: '#6d5275',
-			navbartext: '#3E0AA7',
-			footer: '#010a1c',
+  			headers: '#48065F',
+  			headertext: '#DD1D90',
+  			navbar: '#3E0AA7',
+  			homeback: '#6d5275',
+  			navbartext: '#3E0AA7',
+  			footer: '#010a1c',
   			card: {
   				DEFAULT: 'hsl(var(--card))',
   				foreground: 'hsl(var(--card-foreground))'
@@ -61,6 +61,28 @@ export default {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
+  		},
+  		keyframes: {
+  			'accordion-down': {
+  				from: {
+  					height: '0'
+  				},
+  				to: {
+  					height: 'var(--radix-accordion-content-height)'
+  				}
+  			},
+  			'accordion-up': {
+  				from: {
+  					height: 'var(--radix-accordion-content-height)'
+  				},
+  				to: {
+  					height: '0'
+  				}
+  			}
+  		},
+  		animation: {
+  			'accordion-down': 'accordion-down 0.2s ease-out',
+  			'accordion-up': 'accordion-up 0.2s ease-out'
   		}
   	}
   },
