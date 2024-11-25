@@ -52,7 +52,7 @@ const NavBar = () => {
     { title: 'Home', href: '/' },
     { title: 'FORM 1234 Notes', href: '/notes' },
     { title: 'KCSE Past Papers', href: '/kcse' },
-    { title: '2008-2024 County Mocks', href: '/mocks' },
+    { title: 'KCSE REVISION Mocks', href: '/mocks/2024' },
     { title: '2024 Form 1234 Termly Exams', href: '/termly-exams' },
     { title: 'Lesson Plans', href: '/lesson-plans', dropdown: true, items: lessonPlanDropdown },
   ];

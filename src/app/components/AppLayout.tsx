@@ -98,24 +98,28 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
 
     return (
         <div className="min-h-screen flex flex-col bg-gray-100">
-            {/* Header - Reduced height */}
-            <header className="fixed top-0 left-0 right-0 bg-headers text-headertext h-14 shadow-md z-50">
-                <div className="flex items-center justify-between h-full px-6">
-                    <div className="flex items-center space-x-4">
-                        <Link
-                            href="/"
-                            className="flex items-center space-x-4 group"
-                            aria-label="Go to homepage"
-                        >
-                            <Logo/>
-                            <h1 className="text-xl font-bold uppercase bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent transition-all duration-300 group-hover:scale-105">
-                                Clevers Schools Academic Resources
-                            </h1>
-                        </Link>
-                    </div>
-                    <div className="flex items-center space-x-6">
-                        <NotificationBell/>
-                        <NavProfile/>
+            {/* Header - Modified to contain background color within max-width */}
+            <header className="fixed top-0 left-0 right-0 z-50">
+                <div className=" h-14 ">
+                    <div className="max-w-screen-xl mx-auto h-full border-x-2 border-solid bg-headers shadow-md">
+                        <div className="flex items-center justify-between h-full px-6">
+                            <div className="flex items-center space-x-4">
+                                <Link
+                                    href="/"
+                                    className="flex items-center space-x-4 group"
+                                    aria-label="Go to homepage"
+                                >
+                                    <Logo/>
+                                    <h1 className="text-xl font-bold uppercase bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent transition-all duration-300 group-hover:scale-105">
+                                        Clevers Schools Academic Resources
+                                    </h1>
+                                </Link>
+                            </div>
+                            <div className="flex items-center space-x-6">
+                                <NotificationBell/>
+                                <NavProfile/>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </header>
@@ -128,21 +132,28 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
                 />
             )}
 
-            {/* Main Layout - Adjusted for full window coverage */}
-            <main className="flex flex-col flex-1 pt-14 bg-gray-300">
+            {/* Main Layout - Adjusted to match header width */}
+            <main className="flex flex-col flex-1 pt-14 bg-gray-300 max-w-screen-xl mx-auto border-x-2 border-solid">
                 {/* Navigation Container - Slim design */}
                 <div className="w-full bg-white shadow-sm">
-                    <div className="w-full px-6 bg-gray-300">
+                    <div className="w-full px-0 bg-gray-300">
                         <NavBar/>
                     </div>
                 </div>
 
+                {/* Empty Box */}
+                <div className="w-full h-24 bg-orange-50 shadow-sm mt-0 mb-0 mx-auto">
+                    <div className="h-16 mx-4 my-4 bg-gray-100 rounded-none shadow-inner">
+                        {/* Content for the inner box can go here */}
+                    </div>
+                </div>
+
                 {/* Content Container - Three column layout */}
-                <div className="flex-1 w-full px-6">
+                <div className="flex-1 w-full px-0 mt-0 bg-homeback ">
                     <div className="h-full">
                         <div className="flex h-full gap-4">
                             {/* Left Sidebar */}
-                            <div className="w-64 bg-white rounded-lg shadow-sm p-4">
+                            <div className="w-64 bg-white rounded-none shadow-sm p-8 mt-4 ml-4 mb-4">
                                 {/*<LeftSidebar/>*/}
                             </div>
 
@@ -150,7 +161,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
                             <div className="flex-1">
                                 <div className="flex flex-col h-full">
                                     {/* Main Content Area - Maximized space */}
-                                    <div className="flex-1 overflow-hidden bg-white rounded-lg shadow-sm px-6 py-4">
+                                    <div className="flex-1 overflow-hidden mt-4 bg-white rounded-none shadow-sm px-6 py-4 h-full">
                                         {children}
                                     </div>
                                     {/* Chat Interface - Fixed height */}
@@ -161,7 +172,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
                             </div>
 
                             {/* Right Sidebar */}
-                            <div className="w-64 bg-white rounded-lg shadow-sm p-4">
+                            <div className="w-64 bg-white rounded-none shadow-sm mt-4 mr-4 p-4 mb-4">
                                 {/*<RightSidebar/>*/}
                                 <Login/>
                             </div>

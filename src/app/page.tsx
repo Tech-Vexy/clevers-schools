@@ -4,7 +4,6 @@ import JuniorSecondarySubjects from '@/app/junior/page';
 import SeniorSecondarySubjects from '@/app/senior/page';
 import IGCSESection from './igcse/page';
 import CollegeSection from './college/page';
-import UniversityResources from './university/page';
 import KCSESection from './kcse/page';
 import ScrollButtons from './components/ScrollButtons';
 
@@ -20,7 +19,7 @@ export default function SecondarySchoolPage() {
                     <h1 className='text-3xl font-bold text-center text-gray-950'>IGCSE CURRICULUM RESOURCES</h1>
                     <IGCSESection />
                 </div>
-                <div className='container mx-auto px-4 py-8 border-2 bg-fuchsia-400'>
+                <div className='container mx-auto px-4 py-8 border-2 bg-orange-200'>
                     <h1 className='text-3xl font-bold text-center text-gray-950'>
                         KCSE PAST PAPERS FROM 2018 TO 2023
                     </h1>
@@ -59,13 +58,7 @@ export default function SecondarySchoolPage() {
                     </h1>
                     <CollegeSection/>
                 </div>
-                <div className='container mx-auto px-4 py-8 border-2 bg-pink-300'>
-                    <h1 className='text-3xl font-bold text-center text-gray-950'>
-                        UNIVERSITY RESOURCES
-                    </h1>
-                    <UniversityResources/>
-                </div>
-
+               
                 <div className='container mx-auto px-4 py-8 border-2 bg-stone-700'>
                     <h1 className='text-3xl font-bold text-center text-gray-950'>
                         THESIS AND RESEARCH

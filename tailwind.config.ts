@@ -15,7 +15,7 @@ export default {
   			headers: '#48065F',
   			headertext: '#DD1D90',
   			navbar: '#3E0AA7',
-  			homeback: '#6d5275',
+  			homeback: '#d9b496',
   			navbartext: '#3E0AA7',
   			footer: '#010a1c',
   			card: {

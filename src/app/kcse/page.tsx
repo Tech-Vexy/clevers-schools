@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useRef } from 'react';
+import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BookOpen, Calendar } from 'lucide-react';
 import KCSE2008 from "@/app/kcse/2008/page";
@@ -21,38 +21,27 @@ import KCSE2023 from "@/app/kcse/2023/page";
 
 const KCSEPastPapers = () => {
     const years = [
-        { year: "2023", component: KCSE2023 },
-        { year: "2022", component: KCSE2022 },
-        { year: "2021", component: KCSE2021 },
-        { year: "2020", component: KCSE2020 },
-        { year: "2019", component: KCSE2019 },
-        { year: "2018", component: KCSE2018 },
-        { year: "2017", component: KCSE2017 },
-        { year: "2016", component: KCSE2016 },
-        { year: "2015", component: KCSE2015 },
-        { year: "2014", component: KCSE2014 },
-        { year: "2013", component: KCSE2013 },
-        { year: "2012", component: KCSE2012 },
-        { year: "2011", component: KCSE2011 },
-        { year: "2010", component: KCSE2010 },
-        { year: "2009", component: KCSE2009 },
-        { year: "2008", component: KCSE2008 },
+        { year: "2023", path: "/kcse/2023", component: KCSE2023 },
+        { year: "2022", path: "/kcse/2022", component: KCSE2022 },
+        { year: "2021", path: "/kcse/2021", component: KCSE2021 },
+        { year: "2020", path: "/kcse/2020", component: KCSE2020 },
+        { year: "2019", path: "/kcse/2019", component: KCSE2019 },
+        { year: "2018", path: "/kcse/2018", component: KCSE2018 },
+        { year: "2017", path: "/kcse/2017", component: KCSE2017 },
+        { year: "2016", path: "/kcse/2016", component: KCSE2016 },
+        { year: "2015", path: "/kcse/2015", component: KCSE2015 },
+        { year: "2014", path: "/kcse/2014", component: KCSE2014 },
+        { year: "2013", path: "/kcse/2013", component: KCSE2013 },
+        { year: "2012", path: "/kcse/2012", component: KCSE2012 },
+        { year: "2011", path: "/kcse/2011", component: KCSE2011 },
+        { year: "2010", path: "/kcse/2010", component: KCSE2010 },
+        { year: "2009", path: "/kcse/2009", component: KCSE2009 },
+        { year: "2008", path: "/kcse/2008", component: KCSE2008 },
     ];
 
-    const [activeYear, setActiveYear] = useState(null);
-    const contentRefs = useRef({});
-
-    const scrollToYear = (year) => {
-        contentRefs.current[year]?.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-        });
-        setActiveYear(year);
-    };
-
     return (
-        <div className="w-full p-6 bg-navbar min-h-screen">
-            <Card className="w-full shadow-lg">
+        <div className="w-full p-6  min-h-screen">
+            <Card className="w-full shadow-lg bg-orange-200">
                 <CardHeader className="sticky top-0 z-50 ">
                     <div className="flex items-center justify-center gap-2 mb-2">
                         <BookOpen className="w-6 h-6 text-primary" />
@@ -66,25 +55,20 @@ const KCSEPastPapers = () => {
                 </CardHeader>
 
                 <CardContent className="p-6">
-                    <div className="space-y-8">
-                        {years.map(({ year, component: Component }) => (
-                            <div
+                    <div className="flex flex-col gap-4">
+                        {years.map(({ year, path }) => (
+                            <a
                                 key={year}
-                                ref={el => contentRefs.current[year] = el}
-                                className="scroll-mt-48"
+                                href={path}
+                                className="block rounded-xl bg-white p-6 shadow-sm border hover:shadow-md transition-shadow"
                             >
-                                <div className="space-y-4">
-                                    <div className="flex items-center gap-2 mb-4">
-                                        <Calendar className="w-5 h-5 text-primary" />
-                                        <h2 className="text-xl font-semibold text-primary">
-                                            KCSE {year} Past Paper
-                                        </h2>
-                                    </div>
-                                    <div className="rounded-xl bg-white p-6 shadow-sm border">
-                                        <Component />
-                                    </div>
+                                <div className="flex items-center gap-2">
+                                    <Calendar className="w-5 h-5 text-primary" />
+                                    <h2 className="text-xl font-semibold text-primary">
+                                        KCSE {year}
+                                    </h2>
                                 </div>
-                            </div>
+                            </a>
                         ))}
                     </div>
                 </CardContent>
