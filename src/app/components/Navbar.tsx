@@ -16,10 +16,10 @@ const NavBar = () => {
     { title: 'All Lesson Plans', href: '/lesson-plans' },
     { title: 'PP1', href: '/lesson-plans/pp1' },
     { title: 'PP2', href: '/lesson-plans/pp2' },
-    { title: 'Form 1', href: '/lesson-plans/form1' },
-    { title: 'Form 2', href: '/lesson-plans/form2' },
-    { title: 'Form 3', href: '/lesson-plans/form3' },
-    { title: 'Form 4', href: '/lesson-plans/form4' },
+    { title: 'Form 1', href: '/lesson-plans/form-1' },
+    { title: 'Form 2', href: '/lesson-plans/form-2' },
+    { title: 'Form 3', href: '/lesson-plans/form-3' },
+    { title: 'Form 4', href: '/lesson-plans/form-4' },
     { title: 'Grade 1', href: '/lesson-plans/grade-1' },
     { title: 'Grade 2', href: '/lesson-plans/grade-2' },
     { title: 'Grade 3', href: '/lesson-plans/grade-3' },
@@ -50,7 +50,7 @@ const NavBar = () => {
 
   const row1Links = [
     { title: 'Home', href: '/' },
-    { title: 'FORM 1234 Notes', href: '/notes' },
+    { title: 'FORM 1234 Notes', href: '/form1234-notes' },
     { title: 'KCSE Past Papers', href: '/kcse' },
     { title: 'KCSE REVISION Mocks', href: '/mocks/2024' },
     { title: '2024 Form 1234 Termly Exams', href: '/termly-exams' },
@@ -133,14 +133,14 @@ const NavBar = () => {
             <Tooltip delayDuration={300}>
               <TooltipTrigger asChild>
                 <div
-                    className="px-2 py-1 hover:bg-green-700 cursor-pointer border border-green-600 rounded w-full transition-colors duration-200"
+                    className="px-2 py-1 hover:bg-green-700  bg-gray-800 cursor-pointer border border-green-600 rounded w-full transition-colors duration-200"
                     onClick={() => item.dropdown ? setIsOpen(!isOpen) : null}
                 >
                   <div className="flex items-center justify-between">
                     {item.dropdown ? (
                         <span className="text-white text-sm">{item.title}</span>
                     ) : (
-                        <Link href={item.href} className="text-white text-sm w-full">
+                        <Link href={item.href} className="text-white text-sm w-64">
                           {item.title}
                         </Link>
                     )}
@@ -186,25 +186,25 @@ const NavBar = () => {
   };
 
   return (
-      <nav className="bg-green-800 px-4 py-2 w-full">
+      <nav className="bg-green-800 px-4 py-2 w-full border-x-2 border-solid">
         {/* Mobile Menu Button */}
-        <div className="md:hidden flex justify-end mb-1">
+        <div className="md:hidden flex justify-center  mb-1">
           <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="text-white p-1 hover:bg-green-700 rounded transition-colors duration-200"
+              className="text-white p-1 hover:bg-green-700 rounded  transition-colors duration-200"
           >
             {isMobileMenuOpen ? (
-                <X className="w-4 h-4" />
+                <X className="w-8 h-8 " />
             ) : (
-                <Menu className="w-4 h-4" />
+                <Menu className="w-8 h-8" />
             )}
           </button>
         </div>
 
         {/* Mobile Menu */}
         <div
-            className={`md:hidden space-y-1 transition-all duration-300 ease-in-out ${
-                isMobileMenuOpen ? 'block opacity-100' : 'hidden opacity-0'
+            className={`md:hidden  justify-center space-y-1  transition-all duration-300 ease-in-out ${
+                isMobileMenuOpen ? 'block opacity-100 w-64' : 'hidden opacity-0'
             }`}
         >
           {[...row1Links, ...row2Links, ...row3Links].map((link, idx) => (

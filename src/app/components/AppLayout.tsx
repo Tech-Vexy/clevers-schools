@@ -1,17 +1,13 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { Bell, X } from 'lucide-react';
+import { X } from 'lucide-react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { Logo } from '@/app/components/Logo';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import Login from "@/app/components/Login";
-
-// Dynamic imports for better performance
-const NavProfile = dynamic(() => import('@/app/profile/page'), {
-    loading: () => <div className="w-8 h-8 rounded-full bg-gray-200 animate-pulse" />
-});
+import { useSession } from 'next-auth/react';
 
 const NavBar = dynamic(() => import('./Navbar'), {
     loading: () => <div className="h-12 bg-gray-100 animate-pulse" />
@@ -21,7 +17,13 @@ const AIChatInterface = dynamic(() => import('./AIchatInterface'), {
     loading: () => <div className="w-full h-32 bg-gray-100 animate-pulse" />
 });
 
-// Types
+const Profile = dynamic(() => import('@/app/profile/page'), {
+    loading: () => <div className="animate-pulse bg-gray-200 rounded-lg p-4">Loading profile...</div>
+});
+
+const LeftSideBar = dynamic( () => import('./LeftSideBar'), {
+    loading: () => <div className='w-full h-32 bg-gray-100 animate-pulse'/>
+})
 interface AppLayoutProps {
     children: React.ReactNode;
 }
@@ -31,10 +33,8 @@ interface WelcomePopupProps {
     onClose: () => void;
 }
 
-// Constants
 const WELCOME_TIMEOUT = 5000;
 
-// Components
 const WelcomePopup: React.FC<WelcomePopupProps> = ({ greeting, onClose }) => (
     <Alert className="fixed top-16 right-4 z-50 animate-fade-in-down max-w-md bg-gradient-to-r from-purple-600 to-pink-600 text-white">
         <AlertDescription className="flex justify-between items-center">
@@ -52,23 +52,8 @@ const WelcomePopup: React.FC<WelcomePopupProps> = ({ greeting, onClose }) => (
     </Alert>
 );
 
-const NotificationBell: React.FC = () => (
-    <button
-        type="button"
-        className="hover:text-opacity-80 transition-colors relative group"
-        aria-label="Notifications"
-    >
-        <Bell className="h-6 w-6" />
-        <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center animate-pulse">
-            3
-        </span>
-        <span className="absolute -bottom-8 right-0 bg-gray-800 text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-            Notifications
-        </span>
-    </button>
-);
-
 const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
+    const { data: session, status } = useSession();
     const [greeting, setGreeting] = useState('');
     const [isWelcomeVisible, setIsWelcomeVisible] = useState(true);
 
@@ -83,7 +68,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
         setGreeting(getGreeting());
         const interval = setInterval(() => {
             setGreeting(getGreeting());
-        }, 60000); // Update every minute
+        }, 60000);
 
         return () => clearInterval(interval);
     }, [getGreeting]);
@@ -97,11 +82,11 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
     }, []);
 
     return (
-        <div className="min-h-screen flex flex-col bg-gray-100">
-            {/* Header - Modified to contain background color within max-width */}
+        <div className="min-h-screen flex flex-col bg-pink-100 border-x-2 border-solid ">
+            {/* Header */}
             <header className="fixed top-0 left-0 right-0 z-50">
-                <div className=" h-14 ">
-                    <div className="max-w-screen-xl mx-auto h-full border-x-2 border-solid bg-headers shadow-md">
+                <div className="h-14">
+                    <div className="max-w-screen-xl mx-auto h-full border-x-2 border-solid border-headers bg-headers shadow-md">
                         <div className="flex items-center justify-between h-full px-6">
                             <div className="flex items-center space-x-4">
                                 <Link
@@ -114,10 +99,6 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
                                         Clevers Schools Academic Resources
                                     </h1>
                                 </Link>
-                            </div>
-                            <div className="flex items-center space-x-6">
-                                <NotificationBell/>
-                                <NavProfile/>
                             </div>
                         </div>
                     </div>
@@ -132,11 +113,11 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
                 />
             )}
 
-            {/* Main Layout - Adjusted to match header width */}
-            <main className="flex flex-col flex-1 pt-14 bg-gray-300 max-w-screen-xl mx-auto border-x-2 border-solid">
-                {/* Navigation Container - Slim design */}
+            {/* Main Layout */}
+            <main className="flex flex-col flex-1 pt-14 bg-pink-100 max-w-screen-xl mx-auto border-x-2 border-solid border-gray-400">
+                {/* Navigation Container */}
                 <div className="w-full bg-white shadow-sm">
-                    <div className="w-full px-0 bg-gray-300">
+                    <div className="w-full px-0">
                         <NavBar/>
                     </div>
                 </div>
@@ -144,37 +125,43 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
                 {/* Empty Box */}
                 <div className="w-full h-24 bg-orange-50 shadow-sm mt-0 mb-0 mx-auto">
                     <div className="h-16 mx-4 my-4 bg-gray-100 rounded-none shadow-inner">
-                        {/* Content for the inner box can go here */}
                     </div>
                 </div>
 
-                {/* Content Container - Three column layout */}
-                <div className="flex-1 w-full px-0 mt-0 bg-homeback ">
+                {/* Content Container with Responsive Layout */}
+                <div className="flex-1 w-full px-0 mt-0 ">
                     <div className="h-full">
                         <div className="flex h-full gap-4">
-                            {/* Left Sidebar */}
-                            <div className="w-64 bg-white rounded-none shadow-sm p-8 mt-4 ml-4 mb-4">
-                                {/*<LeftSidebar/>*/}
+                            {/* Left Sidebar - Hidden on mobile */}
+                            <div className="hidden md:block w-64 bg-white rounded-none shadow-sm p-8 mt-4 ml-4 mb-4">
+                                <LeftSideBar/>
                             </div>
 
-                            {/* Center Content Area */}
-                            <div className="flex-1">
+                            {/* Center Content Area - Full width on mobile */}
+                            <div className="flex-1 md:w-[800px] bg-gray-100 rounded-none W-800px shadow-sm mt-4 mb-4 mx-4 md:mx-0">
                                 <div className="flex flex-col h-full">
-                                    {/* Main Content Area - Maximized space */}
-                                    <div className="flex-1 overflow-hidden mt-4 bg-white rounded-none shadow-sm px-6 py-4 h-full">
+                                    {/* Main Content Area */}
+                                    <div className="flex-1 overflow-y-auto px-6 py-4 overflow-x-hidden bg-">
                                         {children}
                                     </div>
-                                    {/* Chat Interface - Fixed height */}
-                                    <div className="h-32 mt-4">
+                                    {/* Chat Interface */}
+                                    <div className="h-32 mt-auto">
                                         <AIChatInterface/>
                                     </div>
                                 </div>
                             </div>
 
-                            {/* Right Sidebar */}
-                            <div className="w-64 bg-white rounded-none shadow-sm mt-4 mr-4 p-4 mb-4">
-                                {/*<RightSidebar/>*/}
-                                <Login/>
+                            {/* Right Sidebar - Hidden on mobile */}
+                            <div className="hidden md:block w-64 bg-white rounded-none shadow-sm mt-4 mr-4 p-4 mb-4">
+                                {status === 'loading' ? (
+                                    <div className="animate-pulse bg-gray-200 rounded-lg p-4">
+                                        Loading...
+                                    </div>
+                                ) : session?.user ? (
+                                    <Profile />
+                                ) : (
+                                    <Login />
+                                )}
                             </div>
                         </div>
                     </div>

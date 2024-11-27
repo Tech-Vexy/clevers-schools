@@ -36,14 +36,14 @@ const fetchGoogleDriveFiles = async (folderId: string): Promise<FileItem[]> => {
     }
 };
 
-export default function Form3() {
+export default function Revision2011() {
     const [material, setMaterial] = useState<FileItem[]>([]);
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
     const router = useRouter();
 
     // Replace this with your Google Drive folder ID
-    const folderId = '1NpLqc8pEl1fcEnfuoa4K6Bq4gDrIvyHO';
+    const folderId = '1WD_Awhav3oI2b8JfAW3FoOgWWwN-h07p';
 
     useEffect(() => {
         const fetchFiles = async () => {
@@ -108,6 +108,8 @@ export default function Form3() {
                                 />
                                 {searchQuery && (
                                     <button
+                                        type="button"
+                                        title="Clear search"
                                         onClick={handleSearchClear}
                                         className="absolute inset-y-0 right-0 pr-3 flex items-center"
                                     >
@@ -121,7 +123,7 @@ export default function Form3() {
                                 {filteredMaterial.map((file) => (
                                     <div
                                         key={file.id}
-                                        className="group flex items-center p-3 md:p-4 rounded-lg border border-gray-700
+                                        className="group flex items-center p-3 md:p-4 rounded-lg
                                                  hover:bg-gray-700/50 hover:border-emerald-600/50 transition-all duration-200
                                                  cursor-pointer shadow-sm hover:shadow-md bg-white backdrop-blur-sm"
                                         onClick={() => handleDocumentClick(file)}
@@ -129,7 +131,7 @@ export default function Form3() {
                                         <FileText className="h-5 w-5 md:h-6 md:w-6 text-gray-500 group-hover:text-emerald-400
                                                            transition-colors mr-3 flex-shrink-0" />
                                         <div className="flex-1 min-w-0">
-                                            <h3 className="text-sm md:text-base font-medium text-black group-hover:text-emerald-300 truncate">
+                                            <h3 className="text-sm md:text-base font-medium text-blue-600 group-hover:text-blue-400 truncate">
                                                 {file.name}
                                             </h3>
                                         </div>

@@ -35,13 +35,13 @@ const fetchGoogleDriveFiles = async (folderId: string): Promise<FileItem[]> => {
     }
 };
 
-export default function Form3() {
+export default function Others() {
     const [material, setMaterial] = useState<FileItem[]>([]);
     const [loading, setLoading] = useState(true);
     const router = useRouter();
 
     // Replace this with your Google Drive folder ID
-    const folderId = '1NpLqc8pEl1fcEnfuoa4K6Bq4gDrIvyHO';
+    const folderId = '1n6gVGwne6Xrz3Ld71WzXF7vCIjT20XiV';
 
     useEffect(() => {
         const fetchFiles = async () => {
@@ -86,15 +86,15 @@ export default function Form3() {
                                 {material.map((file) => (
                                     <div
                                         key={file.id}
-                                        className="group flex items-center p-3 md:p-4 rounded-lg border border-gray-700
-                                                 hover:bg-gray-700/50 hover:border-emerald-600/50 transition-all duration-200
+                                        className="group flex items-center p-3 md:p-4 rounded-lg
+                                                 hover:bg-gray-700/50 transition-all duration-200
                                                  cursor-pointer shadow-sm hover:shadow-md bg-white backdrop-blur-sm"
                                         onClick={() => handleDocumentClick(file)}
                                     >
                                         <FileText className="h-5 w-5 md:h-6 md:w-6 text-gray-500 group-hover:text-emerald-400
                                                            transition-colors mr-3 flex-shrink-0" />
                                         <div className="flex-1 min-w-0">
-                                            <h3 className="text-sm md:text-base font-medium text-black group-hover:text-emerald-300 truncate">
+                                            <h3 className="text-sm md:text-base font-medium text-blue-600 group-hover:text-emerald-300 truncate">
                                                 {file.name}
                                             </h3>
                                         </div>

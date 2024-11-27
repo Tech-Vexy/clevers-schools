@@ -49,30 +49,46 @@ const fetchGoogleDriveFiles = async (folderIds: string[]): Promise<FileItem[]> =
     }
 };
 
-export default function Form3Plan() {
+export default function Form4Notes() {
     const [material, setMaterial] = useState<FileItem[]>([]);
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
     const router = useRouter();
 
-    // Updated with 6 folder IDs
+    // Updated folder IDs for Form 4 Notes
     const folderIds = [
-        '1jhwmjnWg_x4A2zvcGtiX0WgQb_-UbPDi', // First folder
-        '1ciUHtosWHNHJPvqZnwFh8hQFcFpKTiyv', // Second folder
-        '1K6aYyySMAKfyzn4NUA6pcQYSItZbvfYV', // Third folder
-        '1KmFF2x5BM233FD5tHw_ikHC7q51xuir6', // Fourth folder
-        '18tpmoQjWAN1TC4UQJWpquXwBlIykHIMQ', // Fifth folder
-        '13tn3J0wdt7eGlvZSyfhFjgbPOLeytMlB'  // Sixth folder
+        '1fxaKAEaNYy55IJBcRss9GyGsklzfdR07',
+        '15g6N6rI8FNeWbSTvYQuMqzXsIU574kmv',
+        '1HrkZY5zH3i7wkXykytBDd8PZR4MCe-AG',
+        '1o-XxmAXZr30GTTYyO9wdIPpJxb3pLF71',
+        '1xdH_-XMcSbo7pVBMBjRlOJaish5t2XF1',
+        '18BOBrslFtyAb5O0KUuU2Hk4QPEqj3m83',
+        '1OyXvLF7-aifc4ZM_u3uXzCW7bSxPtATR',
+        '1d2VggoBJLN1ngJaqGQZKHvYDSdBmbpAG',
+        '1iRLDY6ZaOFWOLdw3fCYWjne6s2LoWH1m',
+        '1CjAo_0YpZJpYmf1UmSNDWbqu6vcZIWRZ',
+        '1aTLAeEtWJOSM-xmtoMopazROEEMJ9lp_',
+        '1fO1QBiAMPbEIvMbVV3F9XXieJRJnjauG',
+        '1EITJgGe6ZEcYE0oD4Vjtod4_NFYbcd0B',
+        '12P6c_Mkvw6PvyXFa2qyAjh-GoI8B_0XM'
     ];
 
-    // Updated folder names mapping
+    // Updated folder names mapping for Form 4 Notes
     const folderNames: { [key: string]: string } = {
-        '1jhwmjnWg_x4A2zvcGtiX0WgQb_-UbPDi': 'All Subjects Lesson Plans',
-        '1ciUHtosWHNHJPvqZnwFh8hQFcFpKTiyv': 'Physics Lesson Plans',
-        '1K6aYyySMAKfyzn4NUA6pcQYSItZbvfYV': 'Mathematics Lesson Plans',
-        '1KmFF2x5BM233FD5tHw_ikHC7q51xuir6': 'Form 1,2,3 Lesson Plans',
-        '18tpmoQjWAN1TC4UQJWpquXwBlIykHIMQ': 'Chemistry Lesson Plans',
-        '13tn3J0wdt7eGlvZSyfhFjgbPOLeytMlB': 'Biology Lesson plans'
+        '1fxaKAEaNYy55IJBcRss9GyGsklzfdR07': 'Physics',
+        '15g6N6rI8FNeWbSTvYQuMqzXsIU574kmv': 'Maths',
+        '1HrkZY5zH3i7wkXykytBDd8PZR4MCe-AG': 'Kiswahili',
+        '1o-XxmAXZr30GTTYyO9wdIPpJxb3pLF71': 'IRE',
+        '1xdH_-XMcSbo7pVBMBjRlOJaish5t2XF1': 'Home Science',
+        '18BOBrslFtyAb5O0KUuU2Hk4QPEqj3m83': 'History',
+        '1OyXvLF7-aifc4ZM_u3uXzCW7bSxPtATR': 'Geography',
+        '1d2VggoBJLN1ngJaqGQZKHvYDSdBmbpAG': 'English',
+        '1iRLDY6ZaOFWOLdw3fCYWjne6s2LoWH1m': 'Computer Science',
+        '1CjAo_0YpZJpYmf1UmSNDWbqu6vcZIWRZ': 'Chemistry',
+        '1aTLAeEtWJOSM-xmtoMopazROEEMJ9lp_': 'CRE',
+        '1fO1QBiAMPbEIvMbVV3F9XXieJRJnjauG': 'Business',
+        '1EITJgGe6ZEcYE0oD4Vjtod4_NFYbcd0B': 'Biology',
+        '12P6c_Mkvw6PvyXFa2qyAjh-GoI8B_0XM': 'Agriculture'
     };
 
     useEffect(() => {
@@ -93,6 +109,7 @@ export default function Form3Plan() {
             file.name.toLowerCase().includes(lowercaseQuery)
         );
     }, [material, searchQuery]);
+
     // Group files by folder
     const groupedFiles = useMemo(() => {
         return filteredMaterial.reduce((acc, file) => {
@@ -133,7 +150,7 @@ export default function Form3Plan() {
                     <Card className="shadow-2xl backdrop-blur-sm border border-gray-700 rounded-xl relative">
                         <CardHeader className="space-y-2 md:space-y-0 md:flex md:flex-row md:items-center md:justify-between p-4 md:p-6 border-b border-gray-700">
                             <CardTitle className="text-xl md:text-2xl text-emerald-400 text-center md:text-left font-bold">
-                                FORM 3 LESSON PLANS
+                                FORM 4 NOTES
                             </CardTitle>
                             <div className="relative mt-2 md:mt-0">
                                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">

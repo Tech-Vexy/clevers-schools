@@ -1,15 +1,15 @@
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { KeyRound, ArrowRight } from "lucide-react";
+import {  ArrowRight } from "lucide-react";
 
 export default function Login() {
     return (
-        <div className="h-8 bg-white p-auto top-auto">
+        <div className="h-4 bg-white p-auto top-auto">
             <Card className="w-full max-w-md shadow-lg hover:shadow-xl transition-shadow duration-300">
                 <CardHeader className="bg-green-400 border-b border-gray-200 py-4">
-                    <CardTitle className="text-2xl text-center font-bold text-gray-800 flex items-center justify-center gap-2">
-                        <KeyRound className="w-6 h-6 text-primary" />
+                    <CardTitle className="text-2xl text-center font-normal text-white flex items-center justify-center ">
+                       
                         LOGIN AREA
                     </CardTitle>
                 </CardHeader>

@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { FileText, Loader2 } from "lucide-react";
+import { Loader2, Film, Image, Music, File } from "lucide-react";
 
 // Types
 type FileItem = {
@@ -12,6 +12,20 @@ type FileItem = {
     webViewLink: string;
     mimeType: string;
 }
+
+// Add back the getFileIcon helper function
+const getFileIcon = (mimeType: string) => {
+    switch (true) {
+        case mimeType.includes('video'):
+            return <Film className="h-5 w-5 md:h-6 md:w-6 text-purple-500" />;
+        case mimeType.includes('image'):
+            return <Image className="h-5 w-5 md:h-6 md:w-6 text-green-500" />;
+        case mimeType.includes('audio'):
+            return <Music className="h-5 w-5 md:h-6 md:w-6 text-yellow-500" />;
+        default:
+            return <File className="h-5 w-5 md:h-6 md:w-6 text-gray-500" />;
+    }
+};
 
 // Google Drive API helper function
 const fetchGoogleDriveFiles = async (folderId: string): Promise<FileItem[]> => {
@@ -82,19 +96,18 @@ export default function EnglishSetbookGuides() {
 
                         </CardHeader>
                         <CardContent className="p-4 md:p-6">
-                            <div className="grid gap-3 md:gap-4">
+                            <div className="space-y-2">
                                 {material.map((file) => (
                                     <div
                                         key={file.id}
-                                        className="group flex items-center p-3 md:p-4 rounded-lg border border-gray-700
-                                                 hover:bg-gray-700/50 hover:border-emerald-600/50 transition-all duration-200
-                                                 cursor-pointer shadow-sm hover:shadow-md bg-white backdrop-blur-sm"
+                                        className="group flex items-center p-2 hover:bg-gray-700/20 
+                                                 rounded-lg cursor-pointer transition-all duration-200"
                                         onClick={() => handleDocumentClick(file)}
                                     >
-                                        <FileText className="h-5 w-5 md:h-6 md:w-6 text-gray-500 group-hover:text-emerald-400
-                                                           transition-colors mr-3 flex-shrink-0" />
-                                        <div className="flex-1 min-w-0">
-                                            <h3 className="text-sm md:text-base font-medium text-black group-hover:text-emerald-300 truncate">
+                                        {getFileIcon(file.mimeType)}
+                                        <div className="flex-1 min-w-0 ml-3">
+                                            <h3 className="text-sm md:text-base font-medium text-blue-600 
+                                                         dark:text-blue-400 group-hover:text-blue-500 truncate">
                                                 {file.name}
                                             </h3>
                                         </div>

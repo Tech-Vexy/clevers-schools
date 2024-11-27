@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { FileText, Loader2, Search, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 // Types
 type FileItem = {
@@ -49,30 +50,46 @@ const fetchGoogleDriveFiles = async (folderIds: string[]): Promise<FileItem[]> =
     }
 };
 
-export default function Form3Plan() {
+export default function Form1Notes() {
     const [material, setMaterial] = useState<FileItem[]>([]);
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
     const router = useRouter();
 
-    // Updated with 6 folder IDs
+    // Updated folder IDs for Form 3 Notes
     const folderIds = [
-        '1jhwmjnWg_x4A2zvcGtiX0WgQb_-UbPDi', // First folder
-        '1ciUHtosWHNHJPvqZnwFh8hQFcFpKTiyv', // Second folder
-        '1K6aYyySMAKfyzn4NUA6pcQYSItZbvfYV', // Third folder
-        '1KmFF2x5BM233FD5tHw_ikHC7q51xuir6', // Fourth folder
-        '18tpmoQjWAN1TC4UQJWpquXwBlIykHIMQ', // Fifth folder
-        '13tn3J0wdt7eGlvZSyfhFjgbPOLeytMlB'  // Sixth folder
+        '1F7H96FRxDZ_4DavvKthGAPAtO8f2drdK',
+        '1brQK0kdto2B0BMUOk1PuFchVsQIce9nM',
+        '1izW0AS9vd9OP-aZTLeLFRsXa0ZMqy0DX',
+        '1UpNQ13_kctq5HBO73tKwDVhyvS2YsBbR',
+        '1xdH_-XMcSbo7pVBMBjRlOJaish5t2XF1',
+        '1cYHQazWtIDQax1DEehpx1WcgKdirv8a5',
+        '1X6XzHtXgq6KgHb4boiCC_kQivzjSqW0V',
+        '1c5JtiZLjouoCn7s4kr4g40W-PYQXqwKJ',
+        '1n2l3XP6FsIrYi-k33kKKtk1tvTYoEJDK',
+        '1eFEKWWzjpbCdnmYivDw_gYVSYuJTM5xz',
+        '1Vhor3ZGpLzKkUYMwSnlhCIlKPUiVitnX',
+        '1IGidrkaIWLRWbrLXauYnC3dbCx0eqVIK',
+        '1LJGHLcdxEn28EXJcGCXZzr-Bsd2BTMlC',
+        '1693n4QSOqP_64RVGm4m2feMa7Hu0aFBn'
     ];
 
-    // Updated folder names mapping
+    // Updated folder names mapping for Form 3 Notes
     const folderNames: { [key: string]: string } = {
-        '1jhwmjnWg_x4A2zvcGtiX0WgQb_-UbPDi': 'All Subjects Lesson Plans',
-        '1ciUHtosWHNHJPvqZnwFh8hQFcFpKTiyv': 'Physics Lesson Plans',
-        '1K6aYyySMAKfyzn4NUA6pcQYSItZbvfYV': 'Mathematics Lesson Plans',
-        '1KmFF2x5BM233FD5tHw_ikHC7q51xuir6': 'Form 1,2,3 Lesson Plans',
-        '18tpmoQjWAN1TC4UQJWpquXwBlIykHIMQ': 'Chemistry Lesson Plans',
-        '13tn3J0wdt7eGlvZSyfhFjgbPOLeytMlB': 'Biology Lesson plans'
+        '1F7H96FRxDZ_4DavvKthGAPAtO8f2drdK': 'Physics',
+        '1brQK0kdto2B0BMUOk1PuFchVsQIce9nM': 'Maths',
+        '1izW0AS9vd9OP-aZTLeLFRsXa0ZMqy0DX': 'Kiswahili',
+        '1UpNQ13_kctq5HBO73tKwDVhyvS2YsBbR': 'IRE',
+        '1xdH_-XMcSbo7pVBMBjRlOJaish5t2XF1': 'Home Science',
+        '1cYHQazWtIDQax1DEehpx1WcgKdirv8a5': 'History',
+        '1X6XzHtXgq6KgHb4boiCC_kQivzjSqW0V': 'Geography',
+        '1c5JtiZLjouoCn7s4kr4g40W-PYQXqwKJ': 'English',
+        '1n2l3XP6FsIrYi-k33kKKtk1tvTYoEJDK': 'Computer Science',
+        '1eFEKWWzjpbCdnmYivDw_gYVSYuJTM5xz': 'Chemistry',
+        '1Vhor3ZGpLzKkUYMwSnlhCIlKPUiVitnX': 'CRE',
+        '1IGidrkaIWLRWbrLXauYnC3dbCx0eqVIK': 'Business',
+        '1LJGHLcdxEn28EXJcGCXZzr-Bsd2BTMlC': 'Biology',
+        '1693n4QSOqP_64RVGm4m2feMa7Hu0aFBn': 'Agriculture'
     };
 
     useEffect(() => {
@@ -93,6 +110,7 @@ export default function Form3Plan() {
             file.name.toLowerCase().includes(lowercaseQuery)
         );
     }, [material, searchQuery]);
+
     // Group files by folder
     const groupedFiles = useMemo(() => {
         return filteredMaterial.reduce((acc, file) => {
@@ -133,7 +151,7 @@ export default function Form3Plan() {
                     <Card className="shadow-2xl backdrop-blur-sm border border-gray-700 rounded-xl relative">
                         <CardHeader className="space-y-2 md:space-y-0 md:flex md:flex-row md:items-center md:justify-between p-4 md:p-6 border-b border-gray-700">
                             <CardTitle className="text-xl md:text-2xl text-emerald-400 text-center md:text-left font-bold">
-                                FORM 3 LESSON PLANS
+                                FORM 1 NOTES
                             </CardTitle>
                             <div className="relative mt-2 md:mt-0">
                                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -147,12 +165,12 @@ export default function Form3Plan() {
                                     className="pl-10 pr-10 w-full md:w-64 bg-white text-black border-gray-300 focus:ring-emerald-500 focus:border-emerald-500"
                                 />
                                 {searchQuery && (
-                                    <button
+                                    <Button
                                         onClick={handleSearchClear}
                                         className="absolute inset-y-0 right-0 pr-3 flex items-center"
                                     >
                                         <X className="h-5 w-5 text-gray-400 hover:text-gray-600" />
-                                    </button>
+                                    </Button>
                                 )}
                             </div>
                         </CardHeader>

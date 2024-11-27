@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { FileText, Loader2 } from "lucide-react";
+import { FileText, Loader2, FileImage, FileVideo, FileAudio } from "lucide-react";
 
 // Types
 type FileItem = {
@@ -33,6 +33,14 @@ const fetchGoogleDriveFiles = async (folderId: string): Promise<FileItem[]> => {
         console.error('Error fetching files:', error);
         return [];
     }
+};
+
+// Add a helper function to determine icon based on mimeType
+const getFileIcon = (mimeType: string) => {
+  if (mimeType.includes('image')) return FileImage;
+  if (mimeType.includes('video')) return FileVideo;
+  if (mimeType.includes('audio')) return FileAudio;
+  return FileText;
 };
 
 export default function KiswahiliSetbookGuides() {
@@ -83,23 +91,26 @@ export default function KiswahiliSetbookGuides() {
                         </CardHeader>
                         <CardContent className="p-4 md:p-6">
                             <div className="grid gap-3 md:gap-4">
-                                {material.map((file) => (
-                                    <div
-                                        key={file.id}
-                                        className="group flex items-center p-3 md:p-4 rounded-lg border border-gray-700
-                                                 hover:bg-gray-700/50 hover:border-emerald-600/50 transition-all duration-200
-                                                 cursor-pointer shadow-sm hover:shadow-md bg-white backdrop-blur-sm"
-                                        onClick={() => handleDocumentClick(file)}
-                                    >
-                                        <FileText className="h-5 w-5 md:h-6 md:w-6 text-gray-500 group-hover:text-emerald-400
-                                                           transition-colors mr-3 flex-shrink-0" />
-                                        <div className="flex-1 min-w-0">
-                                            <h3 className="text-sm md:text-base font-medium text-black group-hover:text-emerald-300 truncate">
-                                                {file.name}
-                                            </h3>
+                                {material.map((file) => {
+                                    const FileIcon = getFileIcon(file.mimeType);
+                                    return (
+                                        <div
+                                            key={file.id}
+                                            className="group flex items-center p-3 md:p-4 rounded-lg
+                                                     hover:bg-gray-700/50 transition-all duration-200
+                                                     cursor-pointer shadow-sm hover:shadow-md bg-white backdrop-blur-sm"
+                                            onClick={() => handleDocumentClick(file)}
+                                        >
+                                            <FileIcon className="h-5 w-5 md:h-6 md:w-6 text-gray-500 group-hover:text-emerald-400
+                                                     transition-colors mr-3 flex-shrink-0" />
+                                            <div className="flex-1 min-w-0">
+                                                <h3 className="text-sm md:text-base font-medium text-blue-600 group-hover:text-emerald-300 truncate">
+                                                    {file.name}
+                                                </h3>
+                                            </div>
                                         </div>
-                                    </div>
-                                ))}
+                                    );
+                                })}
                             </div>
 
                             {material.length === 0 && (

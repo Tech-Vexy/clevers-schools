@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { FileText, Loader2, Search, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 // Types
 type FileItem = {
@@ -49,31 +50,43 @@ const fetchGoogleDriveFiles = async (folderIds: string[]): Promise<FileItem[]> =
     }
 };
 
-export default function Form3Plan() {
+export default function Assignments() {
     const [material, setMaterial] = useState<FileItem[]>([]);
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
     const router = useRouter();
 
-    // Updated with 6 folder IDs
-    const folderIds = [
-        '1jhwmjnWg_x4A2zvcGtiX0WgQb_-UbPDi', // First folder
-        '1ciUHtosWHNHJPvqZnwFh8hQFcFpKTiyv', // Second folder
-        '1K6aYyySMAKfyzn4NUA6pcQYSItZbvfYV', // Third folder
-        '1KmFF2x5BM233FD5tHw_ikHC7q51xuir6', // Fourth folder
-        '18tpmoQjWAN1TC4UQJWpquXwBlIykHIMQ', // Fifth folder
-        '13tn3J0wdt7eGlvZSyfhFjgbPOLeytMlB'  // Sixth folder
-    ];
-
-    // Updated folder names mapping
+    // Assignment folder IDs and names
     const folderNames: { [key: string]: string } = {
-        '1jhwmjnWg_x4A2zvcGtiX0WgQb_-UbPDi': 'All Subjects Lesson Plans',
-        '1ciUHtosWHNHJPvqZnwFh8hQFcFpKTiyv': 'Physics Lesson Plans',
-        '1K6aYyySMAKfyzn4NUA6pcQYSItZbvfYV': 'Mathematics Lesson Plans',
-        '1KmFF2x5BM233FD5tHw_ikHC7q51xuir6': 'Form 1,2,3 Lesson Plans',
-        '18tpmoQjWAN1TC4UQJWpquXwBlIykHIMQ': 'Chemistry Lesson Plans',
-        '13tn3J0wdt7eGlvZSyfhFjgbPOLeytMlB': 'Biology Lesson plans'
+        '1OWeBIo-kKSuLtWeWxkIFru6RMSVXKuQT': 'Top National Schools',
+        '1Pcw-OiB9Zc2E7VPLIjiozNJGtQnVPQSo': 'Term 2 Holiday Assignment Set 1',
+        '1rRWFN9qxCWRxWdl1phjHiCatxyapVHd9': 'Term 2 Holiday Assignment Set 2',
+        '1H8nTPiL4oRQ_Y4loPDlBi4TukunaLwEE': 'Steph Joy Schools Set 1',
+        '1wbVp8rndkEbx43FJWlKUnA0nhkcSK3SR': 'Steph Joy Schools Set 2',
+        '1L5Zf0DUuYVs8Y6dzUCZM9PymNHFEc-e6': 'Steph Joy Schools Set 3',
+        '1eEOhwMIgHv1smAzbX9oPbHfxvWgeNKrW': 'Starehe Girls Center',
+        '1lPYQSV0Mtl7sj_kE_6gxT-o2nFkc2HsM': 'St.Georges High School',
+        '15apZcSoCxAQZKDVM1ble9pOEzE11kHDm': 'Ribe Girls',
+        '1uQxE7T9V7ug4fXKvNvXhf8QPc-ce3mf-': 'Riara Springs',
+        '1rbqhzafizRtscqOkTrRTwlL-8cDz3AZ4': 'Parklands',
+        '1HVh-Kq-FiIgvmwdBSDtUQhC1W5qIr7LJ': 'Nakuru High School',
+        '1EgBQ9iEfJEBYkwffCj4cDmHqq4iqhyOB': 'Chinga Boys',
+        '1cUuFO_PfHUrKVVSEYhTskj6VnITDQ6T3': 'Njumbi High School',
+        '1Y2H8hFGFHc744mpzSXgixm91Js3x_fvk': 'Nairobi high',
+        '1lbT_HDhtAa4kOUKQ7aMvzG6qyBNKf0og': 'Muranga High',
+        '1eot01Be1yz9k6QnsVd43CxXdrfSogPn9': 'Mukumu Girls',
+        '1G7DjQHcBnNiNKqFzA4isD-3udWqeibL2': 'Makueni Girls',
+        '1W_DjGFBLj58poOuOzb6hzrNtG72jcMw5': 'Laverna High School',
+        '1wRA22Sb5eBT9vRoWnLBXMoU2XwfRpoKo': 'Langata High School',
+        '1CcqlqkVtNUNLMmTDPZ6OLlsAOZeMjrRs': 'Kipsigis Girls',
+        '1Iwmr2C-pkLjWgHSqF5PoLQ_7B_OtHklh': 'ingotse',
+        '1uU2aowni_wr_unTjZWg6RdeSLLxoYdPS': 'Chavakali high School',
+        '1v0NUVQ4urHjCycbFlAtrDfpeai8_x9SI': 'Brookshine Schools',
+        '1wfP7dHivBUNLiPDK0W1sm7NDEB9rbG7T': 'Baricho High School',
+        '1fI0Ff4yKW3N4xRPcxMpNfjyCQQeU75C5': 'Anestar School'
     };
+
+    const folderIds = Object.keys(folderNames);
 
     useEffect(() => {
         const fetchFiles = async () => {
@@ -90,9 +103,11 @@ export default function Form3Plan() {
 
         const lowercaseQuery = searchQuery.toLowerCase().trim();
         return material.filter(file =>
-            file.name.toLowerCase().includes(lowercaseQuery)
+            file.name.toLowerCase().includes(lowercaseQuery) ||
+            folderNames[file.folderId].toLowerCase().includes(lowercaseQuery)
         );
     }, [material, searchQuery]);
+
     // Group files by folder
     const groupedFiles = useMemo(() => {
         return filteredMaterial.reduce((acc, file) => {
@@ -133,7 +148,7 @@ export default function Form3Plan() {
                     <Card className="shadow-2xl backdrop-blur-sm border border-gray-700 rounded-xl relative">
                         <CardHeader className="space-y-2 md:space-y-0 md:flex md:flex-row md:items-center md:justify-between p-4 md:p-6 border-b border-gray-700">
                             <CardTitle className="text-xl md:text-2xl text-emerald-400 text-center md:text-left font-bold">
-                                FORM 3 LESSON PLANS
+                                ASSIGNMENTS
                             </CardTitle>
                             <div className="relative mt-2 md:mt-0">
                                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -141,18 +156,18 @@ export default function Form3Plan() {
                                 </div>
                                 <Input
                                     type="text"
-                                    placeholder="Search documents..."
+                                    placeholder="Search assignments..."
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
                                     className="pl-10 pr-10 w-full md:w-64 bg-white text-black border-gray-300 focus:ring-emerald-500 focus:border-emerald-500"
                                 />
                                 {searchQuery && (
-                                    <button
+                                    <Button
                                         onClick={handleSearchClear}
                                         className="absolute inset-y-0 right-0 pr-3 flex items-center"
                                     >
                                         <X className="h-5 w-5 text-gray-400 hover:text-gray-600" />
-                                    </button>
+                                    </Button>
                                 )}
                             </div>
                         </CardHeader>
@@ -187,8 +202,8 @@ export default function Form3Plan() {
                             {filteredMaterial.length === 0 && (
                                 <div className="text-center py-8 text-gray-400 bg-gray-800/50 rounded-lg border border-gray-700">
                                     {searchQuery
-                                        ? `No documents found matching "${searchQuery}"`
-                                        : "No documents available at the moment"
+                                        ? `No assignments found matching "${searchQuery}"`
+                                        : "No assignments available at the moment"
                                     }
                                 </div>
                             )}

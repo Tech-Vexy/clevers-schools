@@ -154,11 +154,14 @@ export default function RootLayout({
           <StructuredData />
         </head>
         <body 
-          className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-full`}
+          className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-full bg-pink-100`}
         >
           <AppLayout>{children}</AppLayout>
           <Analytics />
+          <div className="max-w-screen-xl mx-auto">
           <Footer />
+          </div>
+          
         </body>
       </html>
     </AuthProvider>

@@ -12,24 +12,37 @@ type FileItem = {
     name: string;
     webViewLink: string;
     mimeType: string;
+    folderId: string; // Added to track which folder the file came from
 }
 
 // Google Drive API helper function
-const fetchGoogleDriveFiles = async (folderId: string): Promise<FileItem[]> => {
+const fetchGoogleDriveFiles = async (folderIds: string[]): Promise<FileItem[]> => {
     try {
-        const response = await fetch(`/api/drive/files?folderId=${folderId}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+        // Fetch files from all folders in parallel
+        const filesPromises = folderIds.map(async (folderId) => {
+            const response = await fetch(`/api/drive/files?folderId=${folderId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error(`Failed to fetch files from folder ${folderId}`);
+            }
+
+            const data = await response.json();
+            // Add folderId to each file object
+            return data.files.map((file: FileItem) => ({
+                ...file,
+                folderId
+            }));
         });
 
-        if (!response.ok) {
-            throw new Error('Failed to fetch files');
-        }
-
-        const data = await response.json();
-        return data.files;
+        // Wait for all requests to complete
+        const filesArrays = await Promise.all(filesPromises);
+        // Flatten the arrays of files into a single array
+        return filesArrays.flat();
     } catch (error) {
         console.error('Error fetching files:', error);
         return [];
@@ -42,17 +55,26 @@ export default function Grade5Plan() {
     const [searchQuery, setSearchQuery] = useState('');
     const router = useRouter();
 
-    // Replace this with your Google Drive folder ID
-    const folderId = '1P7VVz25vuEhducBzPIburrwj--p69oAS';
+    // Replace these with your Google Drive folder IDs
+    const folderIds = [
+        '11ckst4ZLCaYkc_ssdxFjyxih7NXspGUP', // First folder
+        '1BE0yOZWP86T4_eRI7ddnaf2PAN5ERBnT'          // Second folder
+    ];
+
+    // Add folder names mapping
+    const folderNames: { [key: string]: string } = {
+        '11ckst4ZLCaYkc_ssdxFjyxih7NXspGUP': 'Grade 5 Lesson Plans',
+        '1BE0yOZWP86T4_eRI7ddnaf2PAN5ERBnT': 'Additional Lesson Plans'
+    };
 
     useEffect(() => {
         const fetchFiles = async () => {
-            const filesList = await fetchGoogleDriveFiles(folderId);
+            const filesList = await fetchGoogleDriveFiles(folderIds);
             setMaterial(filesList);
             setLoading(false);
         };
         fetchFiles();
-    }, [folderId]);
+    }, []);
 
     // Memoized filtered files based on search query
     const filteredMaterial = useMemo(() => {
@@ -64,8 +86,19 @@ export default function Grade5Plan() {
         );
     }, [material, searchQuery]);
 
+    // Group files by folder
+    const groupedFiles = useMemo(() => {
+        return filteredMaterial.reduce((acc, file) => {
+            const folderId = file.folderId;
+            if (!acc[folderId]) {
+                acc[folderId] = [];
+            }
+            acc[folderId].push(file);
+            return acc;
+        }, {} as { [key: string]: FileItem[] });
+    }, [filteredMaterial]);
+
     const handleDocumentClick = (file: FileItem) => {
-        // Navigate to document details page
         router.push(`/document/${encodeURIComponent(file.id)}?fileData=${encodeURIComponent(JSON.stringify(file))}`);
     };
 
@@ -117,25 +150,32 @@ export default function Grade5Plan() {
                             </div>
                         </CardHeader>
                         <CardContent className="p-4 md:p-6">
-                            <div className="grid gap-3 md:gap-4">
-                                {filteredMaterial.map((file) => (
-                                    <div
-                                        key={file.id}
-                                        className="group flex items-center p-3 md:p-4 rounded-lg border border-gray-700
-                                                 hover:bg-gray-700/50 hover:border-emerald-600/50 transition-all duration-200
-                                                 cursor-pointer shadow-sm hover:shadow-md bg-white backdrop-blur-sm"
-                                        onClick={() => handleDocumentClick(file)}
-                                    >
-                                        <FileText className="h-5 w-5 md:h-6 md:w-6 text-gray-500 group-hover:text-emerald-400
-                                                           transition-colors mr-3 flex-shrink-0" />
-                                        <div className="flex-1 min-w-0">
-                                            <h3 className="text-sm md:text-base font-medium text-black group-hover:text-emerald-300 truncate">
-                                                {file.name}
-                                            </h3>
-                                        </div>
+                            {Object.entries(groupedFiles).map(([folderId, files]) => (
+                                <div key={folderId} className="mb-6 last:mb-0">
+                                    <h2 className="text-lg font-semibold text-emerald-400 mb-3">
+                                        {folderNames[folderId]}
+                                    </h2>
+                                    <div className="grid gap-3 md:gap-4">
+                                        {files.map((file) => (
+                                            <div
+                                                key={file.id}
+                                                className="group flex items-center p-3 md:p-4 rounded-lg border  border-gray-700
+                                                         hover:bg-gray-700/50 hover:border-emerald-600/50 transition-all duration-200
+                                                         cursor-pointer shadow-sm hover:shadow-md bg-white backdrop-blur-sm"
+                                                onClick={() => handleDocumentClick(file)}
+                                            >
+                                                <FileText className="h-5 w-5 md:h-6 md:w-6 text-blue-800 group-hover:text-emerald-400
+                                                                   transition-colors mr-3 flex-shrink-0" />
+                                                <div className="flex-1 min-w-0">
+                                                    <h3 className="text-sm md:text-base font-medium text-blue-800 group-hover:text-emerald-300 truncate">
+                                                        {file.name}
+                                                    </h3>
+                                                </div>
+                                            </div>
+                                        ))}
                                     </div>
-                                ))}
-                            </div>
+                                </div>
+                            ))}
 
                             {filteredMaterial.length === 0 && (
                                 <div className="text-center py-8 text-gray-400 bg-gray-800/50 rounded-lg border border-gray-700">
