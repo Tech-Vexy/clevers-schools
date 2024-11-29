@@ -22,6 +22,14 @@ export default function RegisterPage() {
         const name = formData.get('name') as string;
         const email = formData.get('email') as string;
         const password = formData.get('password') as string;
+        const confirmPassword = formData.get('confirmPassword') as string;
+
+        // Check if passwords match
+        if (password !== confirmPassword) {
+            setError('Passwords do not match');
+            setIsLoading(false);
+            return;
+        }
 
         try {
             const response = await fetch('/api/auth/register', {
@@ -87,6 +95,16 @@ export default function RegisterPage() {
                                 type="password"
                                 required
                                 placeholder="Enter your password"
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <Label htmlFor="confirmPassword">Confirm Password</Label>
+                            <Input
+                                id="confirmPassword"
+                                name="confirmPassword"
+                                type="password"
+                                required
+                                placeholder="Confirm your password"
                             />
                         </div>
                         {error && (

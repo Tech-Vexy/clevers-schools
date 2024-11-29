@@ -58,7 +58,12 @@ export default function Assignments() {
 
     // Assignment folder IDs and names
     const folderNames: { [key: string]: string } = {
+        '16HImwQkImhK4VzQtL8BEAvLMeRegX6P3': 'All Assignments',
         '1OWeBIo-kKSuLtWeWxkIFru6RMSVXKuQT': 'Top National Schools',
+        '1PEEVNEFK43iX6QW0y920nxKsmfAjZA6_': '2020 Holiday Assignments',
+        '1bc0J8JgIeCnqVu0UPGL2LEVD4mQL_zq_': 'Meru School',
+        '1GrELGE7wQ3A8jj1ikN-YR97Kgi9jt7nv': '2018 Holiday Assignments',
+        '1sBo71UQeX5p_d-edQiiiaRhED4tfTh57': '2019 holiday Assignments',
         '1Pcw-OiB9Zc2E7VPLIjiozNJGtQnVPQSo': 'Term 2 Holiday Assignment Set 1',
         '1rRWFN9qxCWRxWdl1phjHiCatxyapVHd9': 'Term 2 Holiday Assignment Set 2',
         '1H8nTPiL4oRQ_Y4loPDlBi4TukunaLwEE': 'Steph Joy Schools Set 1',

@@ -56,11 +56,6 @@ export default function Grade6Plan() {
     const router = useRouter();
 
     // Replace these with your Google Drive folder IDs
-    const folderIds = [
-        '1swJLleVaNYTd1fowDVK0FVFufTfSSzGH', // First folder
-        '1BE0yOZWP86T4_eRI7ddnaf2PAN5ERBnT'          // Second folder
-    ];
-
     // Add folder names mapping
     const folderNames: { [key: string]: string } = {
         '1swJLleVaNYTd1fowDVK0FVFufTfSSzGH': 'Grade 6 Lesson Plans',
@@ -73,6 +68,11 @@ export default function Grade6Plan() {
             setMaterial(filesList);
             setLoading(false);
         };
+        const folderIds = [
+            '1swJLleVaNYTd1fowDVK0FVFufTfSSzGH', // First folder
+            '1BE0yOZWP86T4_eRI7ddnaf2PAN5ERBnT'          // Second folder
+        ];
+
         fetchFiles();
     }, []);
 

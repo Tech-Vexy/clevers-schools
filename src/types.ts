@@ -17,6 +17,13 @@ export interface Subscription {
     lastUpdated: Date;
 }
 
+export interface SessionDocument {
+    userId: string;
+    sessionToken: string;
+    expires: Date;
+    createdAt: Date;
+  }
+  
 export interface SubscriptionPlan {
     id: string;
     name: string;

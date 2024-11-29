@@ -56,10 +56,10 @@ export default function PP2Plan() {
     const router = useRouter();
 
     // Replace these with your Google Drive folder IDs
-    const folderIds = [
+    const folderIds = useMemo(() => [
         '11glF3PpdUCvK9T2Q3FwBvohItbnphY68', // First folder
         '1cSaM6E2_GmmXnmHGK9sevp5WWr3Ex7sR'          // Second folder
-    ];
+    ], []);
 
     // Add folder names mapping
     const folderNames: { [key: string]: string } = {
@@ -74,7 +74,7 @@ export default function PP2Plan() {
             setLoading(false);
         };
         fetchFiles();
-    }, []);
+    }, [folderIds]);
 
     // Memoized filtered files based on search query
     const filteredMaterial = useMemo(() => {

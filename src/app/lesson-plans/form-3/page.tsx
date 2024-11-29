@@ -56,14 +56,6 @@ export default function Form3Plan() {
     const router = useRouter();
 
     // Updated with 6 folder IDs
-    const folderIds = [
-        '1jhwmjnWg_x4A2zvcGtiX0WgQb_-UbPDi', // First folder
-        '1ciUHtosWHNHJPvqZnwFh8hQFcFpKTiyv', // Second folder
-        '1K6aYyySMAKfyzn4NUA6pcQYSItZbvfYV', // Third folder
-        '1KmFF2x5BM233FD5tHw_ikHC7q51xuir6', // Fourth folder
-        '18tpmoQjWAN1TC4UQJWpquXwBlIykHIMQ', // Fifth folder
-        '13tn3J0wdt7eGlvZSyfhFjgbPOLeytMlB'  // Sixth folder
-    ];
 
     // Updated folder names mapping
     const folderNames: { [key: string]: string } = {
@@ -76,6 +68,15 @@ export default function Form3Plan() {
     };
 
     useEffect(() => {
+        const folderIds = [
+            '1jhwmjnWg_x4A2zvcGtiX0WgQb_-UbPDi', // First folder
+            '1ciUHtosWHNHJPvqZnwFh8hQFcFpKTiyv', // Second folder
+            '1K6aYyySMAKfyzn4NUA6pcQYSItZbvfYV', // Third folder
+            '1KmFF2x5BM233FD5tHw_ikHC7q51xuir6', // Fourth folder
+            '18tpmoQjWAN1TC4UQJWpquXwBlIykHIMQ', // Fifth folder
+            '13tn3J0wdt7eGlvZSyfhFjgbPOLeytMlB'  // Sixth folder
+        ];
+
         const fetchFiles = async () => {
             const filesList = await fetchGoogleDriveFiles(folderIds);
             setMaterial(filesList);
@@ -84,7 +85,6 @@ export default function Form3Plan() {
         fetchFiles();
     }, []);
 
-    // Memoized filtered files based on search query
     const filteredMaterial = useMemo(() => {
         if (!searchQuery) return material;
 

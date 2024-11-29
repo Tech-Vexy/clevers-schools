@@ -55,16 +55,6 @@ export default function Form2Plan() {
     const [searchQuery, setSearchQuery] = useState('');
     const router = useRouter();
 
-    // Updated with 6 folder IDs
-    const folderIds = [
-        '1SQUItVcQlic0SL4cvsyru8mrzu0PxGvF', // First folder
-        '1XtQFL1Y1Y6NkyAucYWJ0bk-fHrEnf3YW', // Second folder
-        '1fdNeTYnsB2yseF-l94hVaSXhqg09bLms', // Third folder
-        '15Bg1BHMKxYNLHBC3G3Mkanshe3B-kvyv', // Fourth folder
-        '1EDEzouVENcMKEWS1Pnokgq9YWVwUwAPy', // Fifth folder
-        '19Faqy6kjKt8vAwHHjxAJKc9IB8ycAmWY'  // Sixth folder
-    ];
-
     // Updated folder names mapping
     const folderNames: { [key: string]: string } = {
         '1SQUItVcQlic0SL4cvsyru8mrzu0PxGvF': 'All Subjects Lesson Plans',
@@ -76,6 +66,15 @@ export default function Form2Plan() {
     };
 
     useEffect(() => {
+        const folderIds = [
+            '1SQUItVcQlic0SL4cvsyru8mrzu0PxGvF', // First folder
+            '1XtQFL1Y1Y6NkyAucYWJ0bk-fHrEnf3YW', // Second folder
+            '1fdNeTYnsB2yseF-l94hVaSXhqg09bLms', // Third folder
+            '15Bg1BHMKxYNLHBC3G3Mkanshe3B-kvyv', // Fourth folder
+            '1EDEzouVENcMKEWS1Pnokgq9YWVwUwAPy', // Fifth folder
+            '19Faqy6kjKt8vAwHHjxAJKc9IB8ycAmWY'  // Sixth folder
+        ];
+
         const fetchFiles = async () => {
             const filesList = await fetchGoogleDriveFiles(folderIds);
             setMaterial(filesList);
@@ -86,11 +85,8 @@ export default function Form2Plan() {
 
     // Memoized filtered files based on search query
     const filteredMaterial = useMemo(() => {
-        if (!searchQuery) return material;
-
-        const lowercaseQuery = searchQuery.toLowerCase().trim();
-        return material.filter(file =>
-            file.name.toLowerCase().includes(lowercaseQuery)
+        return material.filter(file => 
+            file.name.toLowerCase().includes(searchQuery.toLowerCase())
         );
     }, [material, searchQuery]);
     // Group files by folder

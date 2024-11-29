@@ -56,10 +56,10 @@ export default function Grade1Plan() {
     const router = useRouter();
 
     // Replace these with your Google Drive folder IDs
-    const folderIds = [
+    const folderIds = useMemo(() => [
         '1U3HEdj3shI1uAW47NfArqqpBsqKne_fj', // First folder
-        '1vV4BSBuqPsegyQEUdFGu3junwGUr7pbc'          // Second folder
-    ];
+        '1vV4BSBuqPsegyQEUdFGu3junwGUr7pbc'  // Second folder
+    ], []);
 
     // Add folder names mapping
     const folderNames: { [key: string]: string } = {
@@ -74,7 +74,7 @@ export default function Grade1Plan() {
             setLoading(false);
         };
         fetchFiles();
-    }, []);
+    }, [folderIds]);
 
     // Memoized filtered files based on search query
     const filteredMaterial = useMemo(() => {

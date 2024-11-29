@@ -1,7 +1,8 @@
+
 'use client';
 import React, { useEffect, useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { User, LogOut, Crown } from 'lucide-react';
+import {  LogOut, Crown } from 'lucide-react';
 import { signOut, useSession } from 'next-auth/react';
 
 interface SubscriptionData {
@@ -63,7 +64,7 @@ const NavProfile = () => {
                     <p className="text-sm font-medium leading-none">
                         {session.user?.email}
                     </p>
-                
+
                 </div>
             </div>
 
