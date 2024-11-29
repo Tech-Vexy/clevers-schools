@@ -56,10 +56,10 @@ export default function PP1Plan() {
     const router = useRouter();
 
     // Replace these with your Google Drive folder IDs
-    const folderIds = [
+    const folderIds = useMemo(() => [
         '1swJLleVaNYTd1fowDVK0FVFufTfSSzGH', // First folder
         '1ev2n_kcoaKxQvgZpYBxboHC_AtXeUEfG'          // Second folder
-    ];
+    ], []);
 
     // Add folder names mapping
     const folderNames: { [key: string]: string } = {

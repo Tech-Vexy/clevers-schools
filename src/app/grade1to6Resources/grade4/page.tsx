@@ -156,7 +156,7 @@ export default function Grade4Resources() {
                             {Object.entries(groupedFiles).map(([folderId, files]) => (
                                 <div key={folderId} className="mb-6 last:mb-0">
                                     <h2 className="text-lg font-semibold text-emerald-400 mb-3">
-                                        {folderNames[folderId]}
+                                        {folderNames[folderId as keyof typeof folderNames]}
                                     </h2>
                                     <div className="grid gap-3 md:gap-4">
                                         {files.map((file) => (

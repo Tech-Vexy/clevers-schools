@@ -75,7 +75,7 @@ export default function Grade1To6RevisionNotes() {
             setLoading(false);
         };
         fetchFiles();
-    }, []);
+    }, [folderIds]);
 
     // Memoized filtered files based on search query
     const filteredMaterial = useMemo(() => {

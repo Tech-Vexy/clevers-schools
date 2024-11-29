@@ -74,7 +74,7 @@ export default function Grade1Resources() {
             setLoading(false);
         };
         fetchFiles();
-    }, []);
+    }, [folderIds]);
 
     // Memoized filtered files based on search query
     const filteredMaterial = useMemo(() => {

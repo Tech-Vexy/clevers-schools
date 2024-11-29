@@ -84,21 +84,6 @@ export default function Form4Plan() {
 
     // Memoized filtered files based on search query
     const filteredMaterial = useMemo(() => {
-        const fetchFiles = async () => {
-            const folderIds = [
-                '1iprzBTi1DUaCJgyVOvOTIR33U9nYYFP1', // First folder
-                '1yPHdlrhwwS1vRe8uXk2L7oayQTkoQMKj', // Second folder
-                '1Cb3bQeV367TqqWXVVf7qyuHuZdNsqHlw', // Third folder
-                '1gpBein0tGV3iEgiLAjBIbllDGX-Hr7MW', // Fourth folder
-                '1VmjRkK2NFPePGwD0cBJQssH4G2fHjIct', // Fifth folder
-                '1GmRmuWjpG489gUgnj2Mf3ndKh825SzNA'  // Sixth folder
-            ];
-            const filesList = await fetchGoogleDriveFiles(folderIds);
-        const lowercaseQuery = searchQuery.toLowerCase().trim();
-        return material.filter(file =>
-            file.name.toLowerCase().includes(lowercaseQuery)
-        );
-        };
         const lowercaseQuery = searchQuery.toLowerCase().trim();
         return material.filter(file =>
             file.name.toLowerCase().includes(lowercaseQuery)

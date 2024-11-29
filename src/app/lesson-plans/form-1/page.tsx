@@ -89,10 +89,7 @@ export default function Form1Plan() {
         return material.filter(file =>
             file.name.toLowerCase().includes(lowercaseQuery)
         );
-        const lowercaseQuery = searchQuery.toLowerCase().trim();
-        return material.filter(file =>
-            file.name.toLowerCase().includes(lowercaseQuery)
-        );
+      
     }, [material, searchQuery]);
     // Group files by folder
     const groupedFiles = useMemo(() => {
