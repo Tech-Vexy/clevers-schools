@@ -1,7 +1,7 @@
 import { type NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { connectToDatabase } from "@/lib/mongodb";
-import { deleteSession,createSession, getActiveSessions } from "@/lib/session";
+import { deleteSession, createSession, getActiveSessions } from "@/lib/session";
 import bcrypt from "bcryptjs";
 import { headers } from "next/headers";
 
@@ -77,7 +77,7 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     async session({ session, token }) {
-      if (session.user) {
+      if (token && session.user) {
         session.user.id = token.id;
         session.sessionToken = token.sessionToken;
       }
@@ -85,7 +85,7 @@ export const authOptions: NextAuthOptions = {
     },
     async signIn() {
       try {
-        return true; // We handle session creation in the jwt callback
+        return true;
       } catch (error) {
         console.error('Error in signIn callback:', error);
         return false;
@@ -95,11 +95,15 @@ export const authOptions: NextAuthOptions = {
   events: {
     async signOut({ token }) {
       try {
-        if (token.sessionToken) {
+        // Delete the session from database
+        if (token?.sessionToken) {
           await deleteSession(token.sessionToken);
         }
+        
+        // Instead of trying to set session to undefined, we'll let NextAuth
+        // handle the session cleanup automatically after the signOut event
       } catch (error) {
-        console.error('Error deleting session:', error);
+        console.error('Error in signOut event:', error);
       }
     },
   },

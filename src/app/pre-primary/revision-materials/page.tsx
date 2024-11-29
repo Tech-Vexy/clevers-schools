@@ -50,7 +50,7 @@ const fetchGoogleDriveFiles = async (folderIds: string[]): Promise<FileItem[]> =
     }
 };
 
-export default function Grade1To6RevisionNotes() {
+export default function PrePrimaryResources() {
     const [material, setMaterial] = useState<FileItem[]>([]);
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
@@ -58,8 +58,15 @@ export default function Grade1To6RevisionNotes() {
 
     // Assignment folder IDs and names
     const folderNames: { [key: string]: string } = useMemo(() => ({
-        '13cvkDMqzdU2RLzxQwObkeOumz4a8KhbH': 'Grade 7',
-       
+        '1B8YWGKBCgYK8JRjGvC0iRaQ0BXWv-c4h': 'Lesson Plans',
+        '1FaFRl0wwNlu9i9SjTjwkS0AFCNLgaQrI': 'PP1 & PP2 Holiday Assignments',
+        '1aX8WMl8q4EQRqp9ZD4XXflmQRDljIkyh': 'PP2 Schemes of Work',
+        '1swBIIh3xG9llLmaPyIfJzK9SfIs8gNQA': 'PP1 Lesson Plans',
+        '1ZlrE5dMW-mbuOJoNEhNJN3xzAzmDendJ': 'PP1 EXAMS',
+        '10Zkg6RdIUPE8AEJoFu7LJQIoKp_902w5': 'PP2 EXAMS',
+        '1Y8fHpiJMTIH_2OWHh7AVimpAT_TcgYSz': 'Play Group Resources',
+        '1UEqdUME-4ZxcVyCrX5puGLqn_7BCcrTO': 'Play Group  Holiday Assignments',
+        '1_-ZyfqlVU-xZk_Y2XHXy3kCpCiPWadso': 'PP1 Schemes of Work',
     }), []);
 
     const folderIds = Object.keys(folderNames);
@@ -124,7 +131,7 @@ export default function Grade1To6RevisionNotes() {
                     <Card className="shadow-2xl backdrop-blur-sm border border-gray-700 rounded-xl relative">
                         <CardHeader className="space-y-2 md:space-y-0 md:flex md:flex-row md:items-center md:justify-between p-4 md:p-6 border-b border-gray-700">
                             <CardTitle className="text-xl md:text-2xl text-emerald-400 text-center md:text-left font-bold">
-                               GRADE 7 AND 8 REVISION NOTES
+                               PP1 AND PP2 REVISION MATERIALS
                             </CardTitle>
                             <div className="relative mt-2 md:mt-0">
                                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">

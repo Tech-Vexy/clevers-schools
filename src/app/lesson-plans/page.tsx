@@ -90,7 +90,10 @@ const LessonPlans = () => {
                         value={activeCategory}
                         onValueChange={category => {
                             setActiveCategory(category);
-                            setActivePlan(categories.find(c => c.name === category).plans[0].label);
+                            const selectedCategory = categories.find(c => c.name === category);
+                            if (selectedCategory) {
+                                setActivePlan(selectedCategory.plans[0].label);
+                            }
                         }}
                         className="w-full"
                     >

@@ -57,7 +57,7 @@ export default function Assignments() {
     const router = useRouter();
 
     // Assignment folder IDs and names
-    const folderNames: { [key: string]: string } = {
+    const folderNames: { [key: string]: string } = useMemo(() => ({
         '16HImwQkImhK4VzQtL8BEAvLMeRegX6P3': 'All Assignments',
         '1OWeBIo-kKSuLtWeWxkIFru6RMSVXKuQT': 'Top National Schools',
         '1PEEVNEFK43iX6QW0y920nxKsmfAjZA6_': '2020 Holiday Assignments',
@@ -89,9 +89,9 @@ export default function Assignments() {
         '1v0NUVQ4urHjCycbFlAtrDfpeai8_x9SI': 'Brookshine Schools',
         '1wfP7dHivBUNLiPDK0W1sm7NDEB9rbG7T': 'Baricho High School',
         '1fI0Ff4yKW3N4xRPcxMpNfjyCQQeU75C5': 'Anestar School'
-    };
+    }), []);
 
-    const folderIds = Object.keys(folderNames);
+    const folderIds = useMemo(() => Object.keys(folderNames), [folderNames]);
 
     useEffect(() => {
         const fetchFiles = async () => {
@@ -100,7 +100,7 @@ export default function Assignments() {
             setLoading(false);
         };
         fetchFiles();
-    }, []);
+    }, [folderIds]);
 
     // Memoized filtered files based on search query
     const filteredMaterial = useMemo(() => {
@@ -111,7 +111,7 @@ export default function Assignments() {
             file.name.toLowerCase().includes(lowercaseQuery) ||
             folderNames[file.folderId].toLowerCase().includes(lowercaseQuery)
         );
-    }, [material, searchQuery]);
+    }, [material, searchQuery, folderNames]);
 
     // Group files by folder
     const groupedFiles = useMemo(() => {

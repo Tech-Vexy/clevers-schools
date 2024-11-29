@@ -62,9 +62,9 @@ const NavBar = () => {
       { title: 'Home', href: '/' },
       { title: 'FORM 1234 Notes', href: '/form1234-notes' },
       { title: 'KCSE Past Papers', href: '/kcse' },
-      { title: 'KCSE REVISION Mocks', href: '/mocks/2024' },
-      { title: '2024 Form 1234 Termly Exams', href: '/termly-exams' },
+      { title: 'KCSE REVISION Mocks', href: '/mocks' },
       { title: 'Lesson Plans', href: '/lesson-plans', dropdown: true, items: navigationData.lessonPlans },
+      {title: 'Form 1-4 Resources', href: '/secondary'}
     ],
     [
       { title: '2024 Schemes of Work', href: '/schemes', dropdown: true, items: navigationData.schemes },
@@ -72,14 +72,15 @@ const NavBar = () => {
       { title: 'Revision Booklets', href: '/revision-booklets' },
       { title: 'Topic Tests', href: '/topic-tests' },
       { title: '2024 Assignments', href: '/assignments' },
-      { title: '2024 Grade 123456 Resources', href: '/grade1to6Resources' },
+      { title: 'Grade 1-6 Resources', href: '/grade1to6Resources' },
     ],
     [
-      { title: 'Grade 123456 Revision', href: '/grade123456Revision' },
-      { title: 'Grade 78 JSS Resources', href: '/jss-resources' },
+      { title: 'Grade 1-6 Revision', href: '/grade123456Revision' },
+      { title: 'Grade 78 Resources', href: '/grade78Resources' },
       { title: 'PP1', href: '/pp1' },
       { title: 'PP2 Resources', href: '/pp2' },
-      { title: 'IGCSE Resources', href: '/igcse' },
+      { title: 'IGCSE Cambridge', href: '/igcse/cambridge' },
+      {title: 'IGCSE Edexcel', href: '/igcse/edexcel' }
     ],
   ];
 
@@ -116,7 +117,7 @@ const NavBar = () => {
       </TooltipProvider>
 
       {item.dropdown && (
-        <div className="invisible group-hover:visible opacity-0 group-hover:opacity-100 absolute z-10 mt-1 w-48 bg-green-800 rounded shadow-lg transition-all duration-200 ease-in-out">
+        <div className="invisible group-hover:visible opacity-0 group-hover:opacity-100 absolute z-10 mt-1 w-48 bg-green-800 rounded shadow-lg transition-all duration-200 font-nunito ease-in-out">
           {item.items && item.items.map((dropItem: NavItem, idx: number) => (
             <TooltipProvider key={idx}>
               <Tooltip>

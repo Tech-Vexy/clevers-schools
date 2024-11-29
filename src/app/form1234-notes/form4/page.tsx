@@ -56,7 +56,7 @@ export default function Form4Notes() {
     const router = useRouter();
 
     // Updated folder IDs for Form 4 Notes
-    const folderIds = [
+    const folderIds = useMemo(() => [
         '1fxaKAEaNYy55IJBcRss9GyGsklzfdR07',
         '15g6N6rI8FNeWbSTvYQuMqzXsIU574kmv',
         '1HrkZY5zH3i7wkXykytBDd8PZR4MCe-AG',
@@ -71,7 +71,7 @@ export default function Form4Notes() {
         '1fO1QBiAMPbEIvMbVV3F9XXieJRJnjauG',
         '1EITJgGe6ZEcYE0oD4Vjtod4_NFYbcd0B',
         '12P6c_Mkvw6PvyXFa2qyAjh-GoI8B_0XM'
-    ];
+    ], []);
 
     // Updated folder names mapping for Form 4 Notes
     const folderNames: { [key: string]: string } = {
@@ -98,7 +98,7 @@ export default function Form4Notes() {
             setLoading(false);
         };
         fetchFiles();
-    }, []);
+    }, [folderIds]);
 
     // Memoized filtered files based on search query
     const filteredMaterial = useMemo(() => {

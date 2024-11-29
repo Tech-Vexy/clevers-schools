@@ -50,7 +50,7 @@ const fetchGoogleDriveFiles = async (folderIds: string[]): Promise<FileItem[]> =
     }
 };
 
-export default function Grade1To6RevisionNotes() {
+export default function CountyMocks2023() {
     const [material, setMaterial] = useState<FileItem[]>([]);
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
@@ -58,8 +58,39 @@ export default function Grade1To6RevisionNotes() {
 
     // Assignment folder IDs and names
     const folderNames: { [key: string]: string } = useMemo(() => ({
-        '13cvkDMqzdU2RLzxQwObkeOumz4a8KhbH': 'Grade 7',
-       
+        '1CW2lckf7Er2A4Lk43InZqYi9Yog7Q8hL': 'WAHUNDURA MOCK',
+        '1Hd-01VB23db6Y6YiKhgvUpz_vBXacCu5': 'SUNRISE PRE MOCK',
+        '1eCED3eej6947FrrxQB5-U75vw5K-jMFt': 'SUKELLEMO JOINT PRE MOCK EXAMS',
+        '1paxuvoPlYRlrWuCEhwtLeN5Gv1qMrIDy': 'SAMIA JOINT MOCK ',
+        '1MlkVARgFO3cJhtlGXqDe6_Ov4uOVcgoj': 'PANGANI MOCK ',
+        '1mW9Y_MisNLOoisDsCPUx5eq15TkN3Itk': 'NYARIRA CLUSTER MOCK',
+        '1s5-cRv_JsSTQw5TnbK9Jz5jXfmQgUJ2C': 'NGINDARA GIRLS MOCK',
+        '13T97AmU7FEwIQG8T0Ff5He_8RJQLKYOf': 'MUMIAS WEST PRE MOCK EXAMS',
+        '1JyJIo0_xmoJ8qIZMc1blZ7aXpVaK8vIR': 'MOMALICHE 2 EXAMS PRE MOCK ',
+        '11Q5HN9caQFyBVT7p1zth8W1BjK_tCJ7B': 'MOKASA MOCK REVISION EXAMS',
+        '1fd9zVjU81i7d7-lmzYacSpsWQJ40v6vR': 'MOKASA 2 MOCK ',
+        '1zLTWcrQjKyn5cf8yyCTCj7s_zTozh2Kb': 'MECS CLUSTER JOINT MOCK EXAM',
+        '1ORBtkktIzppvsL7-lCa-yMBqV_ZcM_Xa': 'MARANDA HIGH SCHOOL MOCK ',
+        '1J6lnRY_Um2TlJEIcwR8wOmABgQQgwAw5': 'MANGU HIGH REVISION MOCK ',
+        '1czEbkAVKoU44cbIg40aOBmcDt0OgbYF8': 'LUGARI CONSTITUENCY MOCK 1',
+        '1owJeOk5jM4NIpbq3fY7cBuBNEeTdW-7x': 'LANJET EVALUATION MOCK',
+        '1wrCA4uTQE6BoT5oEOCWmYeq7UAYCnaSx': 'LAINAKU II FORM 4 JOINT MOCK',
+        '137bsYZQwUevKTrior9Mi5vjfl9EiL7Uh': 'KENYA HIGH POST MOCK ',
+        '1o7OgK-Q9SpzeExJuhL_fF5o6CqJSCUph': 'KASSU MOCK ',
+        '1IoO9uNZEo6BkMD65-6aDklQht1SDGtp-': 'KAPSABET INTERNAL TRIAL 1',
+        '1tZKDtYi_sdMrV1RHIPLniqAWjV3ZuuGo': 'KAPSABET BOYS POST MOCK ',
+        '1UBq8VfiwnRiDnMTIdnUE6C8CaEAX8zW-': 'KAPSABET 2 MOCK ',
+        '1uQ7uyVZWyPF1SiDJBEu2j80sSG-5aX3j': 'KALA MOCK ',
+        '1WmIgv4_ZuanfS9KrKJ-8VfMGy2vqOJe_': 'IAINAKU REVISION MOCK ',
+        '1LOBAbZePVtViUHcHRq9JwUtvvpbVhj69': 'CHOGORIA MURUGI ZONE PRE MOCK ',
+        '1BOWygtiuFwmr5agAyCDsdG4f9Fe7n4k9': 'CEKANA MOCKS',
+        '13F7rjLjqF9xdgSRm5Gt5KZzByVw9ND96': 'CATHOLIC DIOCESE OK KAKAMEGA MOCK ',
+        '1RkYlh2yuM0M61G5y67fA3vVFgYzmm_TG': 'BSJE JOINT MOCK',
+        '1cNG11XekvkaV866NV7gHs_Yt4YO7GRzT': 'ASUMBI PRE MOCK EXAMS',
+        '1KfzGArDZe1DRj25zvsLlW9j-LLkAkmLq': 'ARISE AND SHINE PRE MOCK',
+        '1UGInyDcCokdnvqjT6u0LC5ay7YoLasci': 'ACHIEVERS JOINT MOCK '
+    
+
     }), []);
 
     const folderIds = Object.keys(folderNames);
@@ -115,7 +146,7 @@ export default function Grade1To6RevisionNotes() {
     }
 
     return (
-        <div className="flex flex-col h-full overflow-hidden">
+        <div className="flex flex-col h-full  overflow-hidden">
             <div className="flex-1 overflow-y-auto px-4 py-8 bg-amber-200">
                 <div className="relative max-w-4xl mx-auto">
                     <div className="absolute inset-0 bg-grid-pattern opacity-10 pointer-events-none"></div>
@@ -124,7 +155,7 @@ export default function Grade1To6RevisionNotes() {
                     <Card className="shadow-2xl backdrop-blur-sm border border-gray-700 rounded-xl relative">
                         <CardHeader className="space-y-2 md:space-y-0 md:flex md:flex-row md:items-center md:justify-between p-4 md:p-6 border-b border-gray-700">
                             <CardTitle className="text-xl md:text-2xl text-emerald-400 text-center md:text-left font-bold">
-                               GRADE 7 AND 8 REVISION NOTES
+                              2023 COUNTY MOCKS
                             </CardTitle>
                             <div className="relative mt-2 md:mt-0">
                                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">

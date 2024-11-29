@@ -55,9 +55,7 @@ export default function Form1Notes() {
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
     const router = useRouter();
-
-    // Updated folder IDs for Form 3 Notes
-    const folderIds = [
+    const folderIds = useMemo(() => [
         '1F7H96FRxDZ_4DavvKthGAPAtO8f2drdK',
         '1brQK0kdto2B0BMUOk1PuFchVsQIce9nM',
         '1izW0AS9vd9OP-aZTLeLFRsXa0ZMqy0DX',
@@ -72,7 +70,9 @@ export default function Form1Notes() {
         '1IGidrkaIWLRWbrLXauYnC3dbCx0eqVIK',
         '1LJGHLcdxEn28EXJcGCXZzr-Bsd2BTMlC',
         '1693n4QSOqP_64RVGm4m2feMa7Hu0aFBn'
-    ];
+    ], []);
+
+    // Updated folder IDs for Form 3 Notes
 
     // Updated folder names mapping for Form 3 Notes
     const folderNames: { [key: string]: string } = {
@@ -99,7 +99,7 @@ export default function Form1Notes() {
             setLoading(false);
         };
         fetchFiles();
-    }, []);
+    }, [folderIds]);
 
     // Memoized filtered files based on search query
     const filteredMaterial = useMemo(() => {
@@ -109,19 +109,19 @@ export default function Form1Notes() {
         return material.filter(file =>
             file.name.toLowerCase().includes(lowercaseQuery)
         );
-    }, [material, searchQuery]);
+    }, [searchQuery, material]);
 
-    // Group files by folder
+    // Group files by folderId
     const groupedFiles = useMemo(() => {
         return filteredMaterial.reduce((acc, file) => {
-            const folderId = file.folderId;
-            if (!acc[folderId]) {
-                acc[folderId] = [];
+            if (!acc[file.folderId]) {
+                acc[file.folderId] = [];
             }
-            acc[folderId].push(file);
+            acc[file.folderId].push(file);
             return acc;
         }, {} as { [key: string]: FileItem[] });
     }, [filteredMaterial]);
+   
 
     const handleDocumentClick = (file: FileItem) => {
         router.push(`/document/${encodeURIComponent(file.id)}?fileData=${encodeURIComponent(JSON.stringify(file))}`);

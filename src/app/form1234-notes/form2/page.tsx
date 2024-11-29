@@ -57,7 +57,7 @@ export default function Form2Notes() {
     const router = useRouter();
 
     // Updated folder IDs for Form 3 Notes
-    const folderIds = [
+    const folderIds = useMemo(() => [
         '1F7H96FRxDZ_4DavvKthGAPAtO8f2drdK',
         '1YX1wnZPyN8WmaJgcFD2bNBkFoiM4falk',
         '1izW0AS9vd9OP-aZTLeLFRsXa0ZMqy0DX',
@@ -72,7 +72,7 @@ export default function Form2Notes() {
         '1IGidrkaIWLRWbrLXauYnC3dbCx0eqVIK',
         '1LJGHLcdxEn28EXJcGCXZzr-Bsd2BTMlC',
         '1693n4QSOqP_64RVGm4m2feMa7Hu0aFBn'
-    ];
+    ], []);
 
     // Updated folder names mapping for Form 3 Notes
     const folderNames: { [key: string]: string } = {
@@ -99,7 +99,7 @@ export default function Form2Notes() {
             setLoading(false);
         };
         fetchFiles();
-    }, []);
+    }, [folderIds]);
 
     // Memoized filtered files based on search query
     const filteredMaterial = useMemo(() => {

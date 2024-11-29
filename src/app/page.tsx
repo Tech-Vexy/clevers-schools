@@ -1,16 +1,16 @@
 'use client';
 import React from 'react';
-import JuniorSecondarySubjects from '@/app/junior/page';
-import SeniorSecondarySubjects from '@/app/senior/page';
 import IGCSESection from './igcse/page';
 import CollegeSection from './college/page';
+import SecondarySchoolResources from './secondary/page';
 import KCSESection from './kcse/page';
 import ScrollButtons from './components/ScrollButtons';
-
+import Grade78Resources from './grade78Resources/page';
+import Grade1to6ResourcesLayout from './grade1to6Resources/page';
 import ThesisResearchSection from './research/page';
 import WeeklyQuizzesNavigation from './quizes/page';
-import PrePrimarySection from './pre-primary/page';
-import ElementarySchoolSection from './elementary/page';
+import PrePrimary from './pre-primary/page';
+
 export default function SecondarySchoolPage() {
     return (
         <>
@@ -25,31 +25,31 @@ export default function SecondarySchoolPage() {
                     </h1>
                     <KCSESection/>
                 </div>
-                <div className='container mx-auto px-4 py-8 border-2 bg-chart-1'>
+                <div className='container mx-auto px-4 py-8 border-2 '>
                     <h1 className='text-3xl font-bold text-center text-gray-950'>
                         PRE-PRIMARY SCHOOL RESOURCES
                     </h1>
-                    <PrePrimarySection/>
+                    <PrePrimary/>
                 </div>
-                <div className='container mx-auto px-4 py-8 border-2 bg-slate-200'>
+                <div className='container mx-auto px-4 py-8 border-2 '>
                     <h1 className='text-3xl font-bold text-center text-gray-950'>
-                        ELEMENTARY SCHOOL RESOURCES
+                        GRADE 1 TO 6 RESOURCES
                     </h1>
-                    <ElementarySchoolSection/>
+                    <Grade1to6ResourcesLayout/>
                 </div>
-                <div className='container mx-auto px-4 py-8 border-2 bg-amber-200'>
+                <div className='container mx-auto px-4 py-8 border-2'>
                     <h1 className='text-3xl font-bold text-center text-gray-950'>
-                        JUNIOR SECONDARY SCHOOL RESOURCES
+                        GRADE 7 AND GRADE 8 RESOURCES
                     </h1>
-                    <JuniorSecondarySubjects/>
+                    <Grade78Resources/>
 
                 </div>
 
-                <div className='container mx-auto px-4 py-8 border-2 bg-emerald-500'>
+                <div className='container mx-auto px-4 py-8 border-2 '>
                     <h1 className='text-3xl font-bold text-center text-gray-950'>
-                        SENIOR SECONDARY SCHOOL RESOURCES
+                       FORM 1 2 3 4 RESOURCES
                     </h1>
-                    <SeniorSecondarySubjects/>
+                    <SecondarySchoolResources/>
 
                 </div>
                 <div className='container mx-auto px-4 py-8 border-2 bg-indigo-400'>
