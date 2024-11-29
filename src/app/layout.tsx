@@ -2,6 +2,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { metadata } from '@/lib/metadata';
 import { SITE_URL } from '@/lib/constants';
 import { geistSans, geistMono } from './components/Fonts';
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import MetaTags from './components/MetaTags';
 import StructuredData from './components/StructuredData';
 import AppLayout from "./components/AppLayout";
@@ -161,7 +162,7 @@ export default function RootLayout({
           <div className="max-w-screen-xl mx-auto">
           <Footer />
           </div>
-          
+          <SpeedInsights />
         </body>
       </html>
     </AuthProvider>
