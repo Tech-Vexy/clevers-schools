@@ -29,7 +29,7 @@ interface WelcomePopupProps {
 }
 
 // Lightweight fallback components
-const NavBarFallback = () => <div className="h-12" />;
+const NavBarFallback = () => <div className="h-12 bg-green-700" />;
 const ChatFallback = () => <div className="h-32" />;
 
 // Components
@@ -62,7 +62,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
         if (hour < 18) return 'Good Afternoon';
         return 'Good Evening';
     }, []);
-
+    
     useEffect(() => {
         setGreeting(getGreeting());
         
@@ -130,14 +130,14 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
                 <div className="flex-1 p-4">
                     <div className="flex gap-4 h-full">
                         {/* Left Sidebar */}
-                        <aside className="hidden md:block w-72 bg-white rounded shadow-sm">
+                        <aside className="hidden md:block w-72 bg-gray-300 rounded shadow-sm">
                             <div className="h-full">
                                 <LeftBar />
                             </div>
                         </aside>
 
                         {/* Main Content */}
-                        <main className="flex-1 bg-gray-100 rounded shadow-sm overflow-hidden flex flex-col">
+                        <main className="flex-1 bg-gray-300 rounded shadow-sm overflow-hidden flex flex-col">
                             <div className="flex-1 overflow-y-auto px-6 py-4 overflow-x-hidden">
                                 {children}
                             </div>
@@ -149,7 +149,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
                         </main>
 
                         {/* Right Sidebar */}
-                        <aside className="hidden md:block w-72 bg-white rounded shadow-sm">
+                        <aside className="hidden md:block w-72 bg-gray-300 rounded shadow-sm">
                             <div className="h-full ">
                                <RightBar/>
                             </div>

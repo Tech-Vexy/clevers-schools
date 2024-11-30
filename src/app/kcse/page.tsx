@@ -1,76 +1,123 @@
 'use client';
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { BookOpen, Calendar } from 'lucide-react';
-import KCSE2008 from "@/app/kcse/2008/page";
-import KCSE2009 from "@/app/kcse/2009/page";
-import KCSE2010 from "@/app/kcse/2010/page";
-import KCSE2011 from "@/app/kcse/2011/page";
-import KCSE2012 from "@/app/kcse/2012/page";
-import KCSE2013 from "@/app/kcse/2013/page";
-import KCSE2014 from "@/app/kcse/2014/page";
-import KCSE2015 from "@/app/kcse/2015/page";
-import KCSE2016 from "@/app/kcse/2016/page";
-import KCSE2017 from "@/app/kcse/2017/page";
-import KCSE2018 from "@/app/kcse/2018/page";
-import KCSE2019 from "@/app/kcse/2019/page";
-import KCSE2020 from "@/app/kcse/2020/page";
-import KCSE2021 from "@/app/kcse/2021/page";
-import KCSE2022 from "@/app/kcse/2022/page";
-import KCSE2023 from "@/app/kcse/2023/page";
+import { BookOpen } from 'lucide-react';
 
 const KCSEPastPapers = () => {
-    const years = [
-        { year: "2023", path: "/kcse/2023", component: KCSE2023 },
-        { year: "2022", path: "/kcse/2022", component: KCSE2022 },
-        { year: "2021", path: "/kcse/2021", component: KCSE2021 },
-        { year: "2020", path: "/kcse/2020", component: KCSE2020 },
-        { year: "2019", path: "/kcse/2019", component: KCSE2019 },
-        { year: "2018", path: "/kcse/2018", component: KCSE2018 },
-        { year: "2017", path: "/kcse/2017", component: KCSE2017 },
-        { year: "2016", path: "/kcse/2016", component: KCSE2016 },
-        { year: "2015", path: "/kcse/2015", component: KCSE2015 },
-        { year: "2014", path: "/kcse/2014", component: KCSE2014 },
-        { year: "2013", path: "/kcse/2013", component: KCSE2013 },
-        { year: "2012", path: "/kcse/2012", component: KCSE2012 },
-        { year: "2011", path: "/kcse/2011", component: KCSE2011 },
-        { year: "2010", path: "/kcse/2010", component: KCSE2010 },
-        { year: "2009", path: "/kcse/2009", component: KCSE2009 },
-        { year: "2008", path: "/kcse/2008", component: KCSE2008 },
+    const papers = [
+        {
+            year: "2023",
+            path: "/kcse/2023",
+            description: "Access the latest KCSE examination papers from 2023, including all subjects and marking schemes"
+        },
+        {
+            year: "2022",
+            path: "/kcse/2022",
+            description: "Complete set of 2022 KCSE examination papers with detailed answers and marking guidelines"
+        },
+        {
+            year: "2021",
+            path: "/kcse/2021",
+            description: "Comprehensive 2021 KCSE papers covering all subjects with solutions and marking schemes"
+        },
+        {
+            year: "2020",
+            path: "/kcse/2020",
+            description: "Full collection of 2020 KCSE examination papers with detailed marking schemes"
+        },
+        {
+            year: "2019",
+            path: "/kcse/2019",
+            description: "Complete set of 2019 KCSE papers with answers and examination guidelines"
+        },
+        {
+            year: "2018",
+            path: "/kcse/2018",
+            description: "2018 KCSE examination papers with comprehensive solutions and marking criteria"
+        },
+        {
+            year: "2017",
+            path: "/kcse/2017",
+            description: "Full set of 2017 KCSE papers including all subjects and marking schemes"
+        },
+        {
+            year: "2016",
+            path: "/kcse/2016",
+            description: "Complete 2016 KCSE examination papers with detailed answers and guidelines"
+        },
+        {
+            year: "2015",
+            path: "/kcse/2015",
+            description: "Comprehensive collection of 2015 KCSE papers with solutions and marking schemes"
+        },
+        {
+            year: "2014",
+            path: "/kcse/2014",
+            description: "2014 KCSE examination papers with detailed marking schemes and answers"
+        },
+        {
+            year: "2013",
+            path: "/kcse/2013",
+            description: "Complete set of 2013 KCSE papers with comprehensive solutions and guidelines"
+        },
+        {
+            year: "2012",
+            path: "/kcse/2012",
+            description: "Full collection of 2012 KCSE examination papers and marking schemes"
+        },
+        {
+            year: "2011",
+            path: "/kcse/2011",
+            description: "2011 KCSE papers with detailed solutions and examination guidelines"
+        },
+        {
+            year: "2010",
+            path: "/kcse/2010",
+            description: "Complete set of 2010 KCSE examination papers with marking schemes"
+        },
+        {
+            year: "2009",
+            path: "/kcse/2009",
+            description: "Comprehensive 2009 KCSE papers with solutions and marking criteria"
+        },
+        {
+            year: "2008",
+            path: "/kcse/2008",
+            description: "Full collection of 2008 KCSE examination papers and marking schemes"
+        }
     ];
 
     return (
-        <div className="w-full p-6  min-h-screen">
-            <Card className="w-full shadow-lg bg-orange-200">
-                <CardHeader className="sticky top-0 z-50 ">
+        <div className="w-full p-6 min-h-screen">
+            <Card className="w-full shadow-lg bg-green-600">
+                <CardHeader className="sticky top-0 z-50">
                     <div className="flex items-center justify-center gap-2 mb-2">
                         <BookOpen className="w-6 h-6 text-primary" />
-                        <CardTitle className="text-3xl font-bold text-center ">
+                        <CardTitle className="text-3xl font-bold text-center">
                             KCSE Past Papers
                         </CardTitle>
                     </div>
-                    <p className="text-center text-muted-foreground mb-4">
-                        Access comprehensive KCSE past papers from 2008 to 2023
-                    </p>
+                  
                 </CardHeader>
 
                 <CardContent className="p-6">
-                    <div className="flex flex-col gap-4">
-                        {years.map(({ year, path }) => (
-                            <a
-                                key={year}
-                                href={path}
-                                className="block rounded-xl bg-white p-6 shadow-sm border hover:shadow-md transition-shadow"
-                            >
-                                <div className="flex items-center gap-2">
-                                    <Calendar className="w-5 h-5 text-primary" />
-                                    <h2 className="text-xl font-semibold text-primary">
-                                        KCSE {year}
+                    <ul className="space-y-4">
+                        {papers.map(({ year, path, description }) => (
+                            <li key={year} className="rounded-xl bg-white shadow-sm border hover:shadow-md transition-shadow">
+                                <a
+                                    href={path}
+                                    className="block p-6"
+                                >
+                                    <h2 className="text-xl font-semibold text-primary mb-2">
+                                        KCSE {year} Past Papers
                                     </h2>
-                                </div>
-                            </a>
+                                    <p className="text-gray-600">
+                                        {description}
+                                    </p>
+                                </a>
+                            </li>
                         ))}
-                    </div>
+                    </ul>
                 </CardContent>
             </Card>
         </div>

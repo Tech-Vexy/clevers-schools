@@ -11,33 +11,33 @@ import ThesisResearchSection from './research/page';
 import WeeklyQuizzesNavigation from './quizes/page';
 import PrePrimary from './pre-primary/page';
 
-export default function SecondarySchoolPage() {
+export default function Home() {
     return (
         <>
-            <main className="min-h-screen bg-gray-50">
-                <div className='container mx-auto px-0 py-8 border-2 '>
+            <main className="min-h-screen ">
+                <div className='container mx-auto px-0 py-8 border-b-2 '>
                     <h1 className='text-3xl font-bold text-center text-gray-950'>IGCSE CURRICULUM RESOURCES</h1>
                     <IGCSESection />
                 </div>
-                <div className='container mx-auto px-4 py-8 border-2 bg-orange-200'>
+                <div className='container mx-auto px-4 py-8 border-b-2 '>
                     <h1 className='text-3xl font-bold text-center text-gray-950'>
-                        KCSE PAST PAPERS FROM 2018 TO 2023
+                        KCSE PAST PAPERS FROM 2008
                     </h1>
                     <KCSESection/>
                 </div>
-                <div className='container mx-auto px-4 py-8 border-2 '>
+                <div className='container mx-auto px-4 py-8 border-b-2 '>
                     <h1 className='text-3xl font-bold text-center text-gray-950'>
                         PRE-PRIMARY SCHOOL RESOURCES
                     </h1>
                     <PrePrimary/>
                 </div>
-                <div className='container mx-auto px-4 py-8 border-2 '>
+                <div className='container mx-auto px-4 py-8 border-b-2 '>
                     <h1 className='text-3xl font-bold text-center text-gray-950'>
                         GRADE 1 TO 6 RESOURCES
                     </h1>
                     <Grade1to6ResourcesLayout/>
                 </div>
-                <div className='container mx-auto px-4 py-8 border-2'>
+                <div className='container mx-auto px-4 py-8 border-b-2'>
                     <h1 className='text-3xl font-bold text-center text-gray-950'>
                         GRADE 7 AND GRADE 8 RESOURCES
                     </h1>
@@ -45,27 +45,27 @@ export default function SecondarySchoolPage() {
 
                 </div>
 
-                <div className='container mx-auto px-4 py-8 border-2 '>
+                <div className='container mx-auto px-4 py-8 border-b-2 '>
                     <h1 className='text-3xl font-bold text-center text-gray-950'>
                        FORM 1 2 3 4 RESOURCES
                     </h1>
                     <SecondarySchoolResources/>
 
                 </div>
-                <div className='container mx-auto px-4 py-8 border-2 bg-indigo-400'>
+                <div className='container mx-auto px-4 py-8 border-b-2'>
                     <h1 className='text-3xl font-bold text-center text-gray-950'>
                         COLLEGE RESOURCES
                     </h1>
                     <CollegeSection/>
                 </div>
                
-                <div className='container mx-auto px-4 py-8 border-2 bg-stone-700'>
+                <div className='container mx-auto px-4 py-8 border-b-2'>
                     <h1 className='text-3xl font-bold text-center text-gray-950'>
                         THESIS AND RESEARCH
                     </h1>
                     <ThesisResearchSection/>
                 </div>
-                <div className='container mx-auto px-4 py-8 border-2 bg-rose-400'>
+                <div className='container mx-auto px-4 py-8 border-b-2'>
                     <h1 className='text-3xl font-bold text-center text-gray-950'>
                         WEEKLY QUIZES
                     </h1>
