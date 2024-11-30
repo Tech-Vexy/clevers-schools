@@ -3,7 +3,7 @@ import React from 'react';
 import IGCSESection from './igcse/page';
 import CollegeSection from './college/page';
 import SecondarySchoolResources from './secondary/page';
-import KCSESection from './kcse/page';
+import KCSEPastPapers from './kcse/page';
 import ScrollButtons from './components/ScrollButtons';
 import Grade78Resources from './grade78Resources/page';
 import Grade1to6ResourcesLayout from './grade1to6Resources/page';
@@ -15,60 +15,43 @@ export default function Home() {
     return (
         <>
             <main className="min-h-screen ">
-                <div className='container mx-auto px-0 py-8 border-b-2 '>
-                    <h1 className='text-3xl font-bold text-center text-gray-950'>IGCSE CURRICULUM RESOURCES</h1>
+                <div className='container mx-auto p-4 border-b-2 border-black'>
                     <IGCSESection />
                 </div>
-                <div className='container mx-auto px-4 py-8 border-b-2 '>
-                    <h1 className='text-3xl font-bold text-center text-gray-950'>
-                        KCSE PAST PAPERS FROM 2008
-                    </h1>
-                    <KCSESection/>
+                <div className='container mx-auto p-4 border-b-2 border-black'>
+                    
+                    <KCSEPastPapers/>
                 </div>
-                <div className='container mx-auto px-4 py-8 border-b-2 '>
-                    <h1 className='text-3xl font-bold text-center text-gray-950'>
-                        PRE-PRIMARY SCHOOL RESOURCES
-                    </h1>
+                <div className='container mx-auto p-4 border-b-2  border-black'>
+                   
                     <PrePrimary/>
                 </div>
-                <div className='container mx-auto px-4 py-8 border-b-2 '>
-                    <h1 className='text-3xl font-bold text-center text-gray-950'>
-                        GRADE 1 TO 6 RESOURCES
-                    </h1>
+                <div className='container mx-auto p-4 border-b-2 border-black'>
+                    
                     <Grade1to6ResourcesLayout/>
                 </div>
-                <div className='container mx-auto px-4 py-8 border-b-2'>
-                    <h1 className='text-3xl font-bold text-center text-gray-950'>
-                        GRADE 7 AND GRADE 8 RESOURCES
-                    </h1>
+                <div className='container mx-auto p-4 border-b-2 border-black'>
+                    
                     <Grade78Resources/>
 
                 </div>
 
-                <div className='container mx-auto px-4 py-8 border-b-2 '>
-                    <h1 className='text-3xl font-bold text-center text-gray-950'>
-                       FORM 1 2 3 4 RESOURCES
-                    </h1>
+                <div className='container mx-auto p-4 border-b-2 border-black '>
+                    
                     <SecondarySchoolResources/>
 
                 </div>
-                <div className='container mx-auto px-4 py-8 border-b-2'>
-                    <h1 className='text-3xl font-bold text-center text-gray-950'>
-                        COLLEGE RESOURCES
-                    </h1>
+                <div className='container mx-auto p-4 border-b-2 border-black'>
+                    
                     <CollegeSection/>
                 </div>
                
-                <div className='container mx-auto px-4 py-8 border-b-2'>
-                    <h1 className='text-3xl font-bold text-center text-gray-950'>
-                        THESIS AND RESEARCH
-                    </h1>
+                <div className='container mx-auto p-4 border-b-2 border-black'>
+                    
                     <ThesisResearchSection/>
                 </div>
-                <div className='container mx-auto px-4 py-8 border-b-2'>
-                    <h1 className='text-3xl font-bold text-center text-gray-950'>
-                        WEEKLY QUIZES
-                    </h1>
+                <div className='container mx-auto p-4 border-b-2 border-black'>
+                    
                     <WeeklyQuizzesNavigation/>
                 </div>
 

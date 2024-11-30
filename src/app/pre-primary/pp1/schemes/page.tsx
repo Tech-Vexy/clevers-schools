@@ -36,7 +36,7 @@ const fetchGoogleDriveFiles = async (folderId: string): Promise<FileItem[]> => {
     }
 };
 
-export default function PP1Schemes() {
+export default function PP1Schemes1() {
     const [material, setMaterial] = useState<FileItem[]>([]);
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');

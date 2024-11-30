@@ -62,12 +62,12 @@ const NavBar = () => {
       { title: 'Home', href: '/' },
       { title: 'FORM 1234 Notes', href: '/form1234-notes' },
       { title: 'KCSE Past Papers', href: '/kcse' },
-      { title: 'KCSE REVISION Mocks', href: '/mocks' },
+      { title: 'County Mocks', href: '/mocks' },
       { title: 'Lesson Plans', href: '/lesson-plans', dropdown: true, items: navigationData.lessonPlans },
       {title: 'Form 1-4 Resources', href: '/secondary'}
     ],
     [
-      { title: '2024 Schemes of Work', href: '/schemes', dropdown: true, items: navigationData.schemes },
+      { title: 'Schemes of Work', href: '/schemes', dropdown: true, items: navigationData.schemes },
       { title: 'Setbook Guides', href: '/setbook-guides' },
       { title: 'Revision Booklets', href: '/revision-booklets' },
       { title: 'Topic Tests', href: '/topic-tests' },
@@ -77,8 +77,8 @@ const NavBar = () => {
     [
       { title: 'Grade 1-6 Revision', href: '/grade123456Revision' },
       { title: 'Grade 78 Resources', href: '/grade78Resources' },
-      { title: 'PP1', href: '/pp1' },
-      { title: 'PP2 Resources', href: '/pp2' },
+      { title: 'PP1 Resources', href: '/pre-primary/pp1' },
+      { title: 'PP2 Resources', href: '/pre-primary/pp2' },
       { title: 'IGCSE Cambridge', href: '/igcse/cambridge' },
       {title: 'IGCSE Edexcel', href: '/igcse/edexcel' }
     ],
@@ -92,13 +92,13 @@ const NavBar = () => {
             <div className="px-2 py-1 hover:bg-green-700 cursor-pointer border border-green-600 rounded transition-colors duration-200">
               <div className="flex items-center justify-between">
                 {item.dropdown ? (
-                  <span className="text-white text-lg whitespace-nowrap overflow-hidden text-ellipsis font-nunito">
+                  <span className="text-white text-center text-xl capitalize whitespace-nowrap overflow-hidden text-ellipsis font-nunito">
                     {item.title}
                   </span>
                 ) : (
                   <Link 
                     href={item.href} 
-                    className="text-white text-xl font-nunito font-normal whitespace-nowrap overflow-hidden text-ellipsis w-full"
+                    className="text-white text-xl  uppercase font-nunito font-normal whitespace-nowrap overflow-hidden text-ellipsis w-full"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     {item.title}
