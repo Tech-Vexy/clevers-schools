@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 // Constants
-const FOLDER_ID = '1WEiT_KYdTkmfv5Jws-gufdcRQFC-Q8YS';
+const FOLDER_ID = '1SpaOayIHCjF9BDRlClok4afdT87u-opo';
 const API_ENDPOINT = '/api/drive/files';
 
 // Types
