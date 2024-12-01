@@ -2,18 +2,12 @@ import { NextRequest } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { google } from 'googleapis';
 
-type Props = {
-    params: {
-        fileId: string
-    }
-}
-
 export async function GET(
     request: NextRequest,
-    props: Props
+    { params }: { params: { fileId: string } }
 ) {
     try {
-        const { fileId } = props.params;
+        const { fileId } = params;
 
         // Check authentication
         const session = await getServerSession();
