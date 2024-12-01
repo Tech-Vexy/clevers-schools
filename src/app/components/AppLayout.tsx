@@ -7,7 +7,7 @@ import dynamic from 'next/dynamic';
 import { Logo } from '@/app/components/Logo';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import RightBar from './RightBar';
-
+import SearchBar from './SearchBar';
 
 import LeftBar from './LeftBar';
 
@@ -52,7 +52,8 @@ const WelcomePopup: React.FC<WelcomePopupProps> = ({ greeting, onClose }) => (
 );
 
 const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
-   
+
+    const folderId= '10jDiBvSHoijsP2yeK752N7gii9jXdOr0';
     const [greeting, setGreeting] = useState('');
     const [isWelcomeVisible, setIsWelcomeVisible] = useState(true);
 
@@ -138,6 +139,12 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
 
                         {/* Main Content */}
                         <main className="flex-1 bg-purple-200 rounded shadow-sm overflow-hidden flex flex-col">
+                            <div>
+                                <div className='bg-green-600 p-2 border-2'>
+                                    <h2>SEARCH WHAT YOU NEED HERE :-</h2>
+                                </div>
+                                <SearchBar folderId={folderId}/>
+                            </div>
                             <div className="flex-1 overflow-y-auto px-6 py-4 overflow-x-hidden">
                                 {children}
                             </div>
