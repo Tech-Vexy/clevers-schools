@@ -135,7 +135,7 @@ const FileCard: React.FC<FileCardProps> = ({ file, onClick }) => {
                 aria-hidden="true"
             />
             <div className="flex-1 min-w-0">
-                <h3 className="text-sm md:text-base font-medium text-black group-hover:text-emerald-300 truncate">
+                <h3 className="text-sm md:text-base font-medium text-wrap text-black group-hover:text-emerald-300 truncate">
                     {file.name}
                 </h3>
                 {file.lastModified && (

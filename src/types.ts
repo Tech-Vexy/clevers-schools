@@ -7,6 +7,20 @@ export interface User {
     updatedAt: Date;
 }
 
+export interface SearchResult {
+    id: string;
+    name: string;
+    mimeType: string;
+    webViewLink: string;
+    modifiedTime: string;
+    parents: string[];
+  }
+  
+ export interface SearchResponse {
+    files: SearchResult[];
+    nextPageToken: string | null;
+    total: number;
+  }
 export interface Subscription {
     userId: string;
     planId: string;

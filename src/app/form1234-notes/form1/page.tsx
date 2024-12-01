@@ -142,9 +142,9 @@ export default function Form1Notes() {
     }
 
     return (
-        <div className="flex flex-col h-full overflow-hidden">
+        <div className="flex flex-col h-full w-full overflow-hidden">
             <div className="flex-1 overflow-y-auto px-4 py-8 bg-amber-200">
-                <div className="relative max-w-4xl mx-auto">
+                <div className="relative md:max-w-screen  max-w-4xl mx-auto">
                     <div className="absolute inset-0 bg-grid-pattern opacity-10 pointer-events-none"></div>
                     <div className="absolute inset-0 bg-gradient-to-t from-gray-900/90 to-transparent pointer-events-none"></div>
 
@@ -192,7 +192,7 @@ export default function Form1Notes() {
                                                 <FileText className="h-5 w-5 md:h-6 md:w-6 text-blue-800 group-hover:text-emerald-400
                                                                    transition-colors mr-3 flex-shrink-0" />
                                                 <div className="flex-1 min-w-0">
-                                                    <h3 className="text-sm md:text-base font-medium text-blue-800 group-hover:text-emerald-300 truncate">
+                                                    <h3 className="text-sm md:text-base font-medium text-blue-800 text-wrap group-hover:text-emerald-300 truncate">
                                                         {file.name}
                                                     </h3>
                                                 </div>

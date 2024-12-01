@@ -10,7 +10,7 @@ import NavProfile from '@/app/profile/page'; // Assuming NavProfile is in the sa
 
 const Login = () => {
     return (
-        <Card className="w-full max-w-md shadow-lg hover:shadow-xl transition-shadow duration-300">
+        <Card className="w-full max-w-md shadow-lg hover:shadow-xl transition-shadow duration-300 ">
             <CardHeader className="bg-green-400 border-b border-gray-200 py-4">
                 <CardTitle className="text-2xl text-center font-normal text-white flex items-center justify-center">
                     LOGIN AREA
@@ -122,7 +122,7 @@ const NationalSchools = () => {
                 </CardTitle>
             </CardHeader>
             <CardContent className="">
-                <Link href='/mocks/national' className='text-gray-950'>
+                <Link href='/nationals/' className='text-gray-950'>
                 NATIONAL SCHOOLS EXAMS
                 </Link>
             </CardContent>

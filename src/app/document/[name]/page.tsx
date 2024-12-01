@@ -8,7 +8,6 @@ import { Button } from '@/components/ui/button';
 import { Loader2, Download, Lock } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 
-// Updated type to match Google Drive file structure
 interface FileItem {
     id: string;
     name: string;
@@ -25,7 +24,6 @@ interface SessionUser {
     id: string;
 }
 
-// Add proper error handling component
 const ErrorDisplay = ({ message }: { message: string }) => (
     <Card className="border-red-500">
         <CardContent className="text-center py-4">
@@ -34,7 +32,6 @@ const ErrorDisplay = ({ message }: { message: string }) => (
     </Card>
 );
 
-// Extract download button component
 const DownloadButton = ({ 
     isProcessing, 
     subscription, 
@@ -58,7 +55,7 @@ const DownloadButton = ({
             <Lock className="mr-2 h-4 w-4" />
         )}
         {isProcessing
-            ? 'Processing...'
+            ? 'Downloading...'
             : subscription?.isSubscribed
                 ? 'Download Document'
                 : 'GET ACCESS'}
@@ -81,7 +78,6 @@ const DocumentPage = () => {
         setIsMounted(true);
     }, []);
 
-    // Extract API calls to custom hooks or services
     const handleCheckSubscription = async () => {
         try {
             setError(null);
@@ -97,14 +93,15 @@ const DocumentPage = () => {
     };
 
     const handleFileDownload = async () => {
-        if (!session?.user || !fileData?.webViewLink) return;
+        if (!session?.user || !fileData?.id) return;
         
         setIsProcessing(true);
         setError(null);
         
         try {
+            // First log the download
             const user = session.user as SessionUser;
-            const response = await fetch('/api/downloads/log', {
+            const logResponse = await fetch('/api/downloads/log', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -115,10 +112,49 @@ const DocumentPage = () => {
                 }),
             });
 
-            if (!response.ok) throw new Error('Download logging failed');
-            window.open(fileData.webViewLink, '_blank', 'noopener,noreferrer');
+            if (!logResponse.ok) throw new Error('Download logging failed');
+
+            // Then initiate the file download
+            const downloadResponse = await fetch(`/api/downloads/file/${fileData.id}`);
+            
+            if (!downloadResponse.ok) {
+                throw new Error('File download failed');
+            }
+
+            // Get the filename from the content-disposition header if available
+            const contentDisposition = downloadResponse.headers.get('content-disposition');
+            const fileName = contentDisposition
+                ? decodeURIComponent(contentDisposition.split('filename=')[1].replace(/['"]/g, ''))
+                : fileData.name;
+
+            // Create a blob from the response
+            const blob = await downloadResponse.blob();
+            
+            // Create a temporary URL for the blob
+            const url = window.URL.createObjectURL(blob);
+            
+            // Create a temporary link element and trigger the download
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = fileName;
+            document.body.appendChild(link);
+            link.click();
+            
+            // Clean up
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(url);
+
+            toast({
+                title: 'Success',
+                description: 'Download started successfully',
+            });
         } catch (error) {
-            setError('Failed to process download');
+            setError('Failed to download file');
+            toast({
+                title: 'Error',
+                description: 'Failed to download file. Please try again.',
+                variant: 'destructive',
+            });
             console.error('Download error:', error);
         } finally {
             setIsProcessing(false);
@@ -149,7 +185,6 @@ const DocumentPage = () => {
                 if (fileDataParam) {
                     const parsedData: FileItem = JSON.parse(decodeURIComponent(fileDataParam));
 
-                    // Validate file data
                     if (!parsedData.id || !parsedData.name) {
                         throw new Error('Invalid file data format');
                     }
@@ -175,14 +210,13 @@ const DocumentPage = () => {
         initializePage();
     }, [searchParams, session, isMounted]);
 
-    // Handle initial loading state
     if (!isMounted) {
         return null;
     }
 
     if (isLoading || status === 'loading') {
         return (
-            <div className="min-h-screen flex items-center justify-center ">
+            <div className="min-h-screen flex items-center justify-center">
                 <div className="bg-gray-800/80 p-6 rounded-full shadow-xl">
                     <Loader2 className="h-8 w-8 animate-spin text-emerald-500" />
                 </div>
@@ -191,7 +225,7 @@ const DocumentPage = () => {
     }
 
     return (
-        <div className="container mx-auto px-4 py-6  bg-orange-200">
+        <div className="container mx-auto px-4 py-6 bg-orange-200">
             <div className="relative max-w-2xl mx-auto">
                 <div className="absolute inset-0 bg-grid-pattern opacity-10 pointer-events-none"></div>
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900/90 to-transparent pointer-events-none"></div>

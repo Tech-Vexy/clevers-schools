@@ -170,7 +170,7 @@ export default function Form4Plan() {
                                                 <FileText className="h-5 w-5 md:h-6 md:w-6 text-blue-800 group-hover:text-emerald-400
                                                                    transition-colors mr-3 flex-shrink-0" />
                                                 <div className="flex-1 min-w-0">
-                                                    <h3 className="text-sm md:text-base font-medium text-blue-800 group-hover:text-emerald-300 truncate">
+                                                    <h3 className="text-sm md:text-base font-medium text-wrap text-blue-800 group-hover:text-emerald-300 truncate">
                                                         {file.name}
                                                     </h3>
                                                 </div>

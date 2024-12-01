@@ -9,7 +9,6 @@ import AppLayout from "./components/AppLayout";
 import Footer from "./components/Footer";
 import AuthProvider from "@/providers";
 import "./globals.css";
-
 export { metadata };
 
 const SITE_NAME = 'Clevers Schools Resources';
@@ -157,6 +156,7 @@ export default function RootLayout({
         <body 
           className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-full bg-pink-100`}
         >
+         
           <AppLayout>{children}</AppLayout>
           <Analytics />
           <div className="max-w-screen-xl mx-auto">

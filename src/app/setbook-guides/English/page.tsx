@@ -106,7 +106,7 @@ export default function EnglishSetbookGuides() {
                                     >
                                         {getFileIcon(file.mimeType)}
                                         <div className="flex-1 min-w-0 ml-3">
-                                            <h3 className="text-sm md:text-base font-medium text-blue-600 
+                                            <h3 className="text-sm md:text-base font-medium text-wrap  text-blue-600 
                                                          dark:text-blue-400 group-hover:text-blue-500 truncate">
                                                 {file.name}
                                             </h3>

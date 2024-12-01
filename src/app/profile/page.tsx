@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Button } from "@/components/ui/button";
 import {  LogOut, Crown } from 'lucide-react';
 import { signOut, useSession } from 'next-auth/react';
+import { Card, CardContent,  CardHeader, CardTitle } from '@/components/ui/card';
 
 interface SubscriptionData {
     isSubscribed: boolean;
@@ -56,20 +57,18 @@ const NavProfile = () => {
     };
 
     return (
-        <div className="flex flex-col p-4 border rounded-lg shadow-sm">
-            <div className="block items-center justify-start gap-2 mb-4">
-                <h2 className="text-lg font-semibold">Current User</h2>
-                <div className="flex flex-col space-y-1">
-                    <p className="text-sm font-medium leading-none">
-                        {session.user?.email}
-                    </p>
-
-                </div>
-            </div>
+        <Card className="flex flex-col  border-2 rounded-lg shadow-sm items-center">
+            <CardHeader className="block  w-full mb-4 bg-green-500">
+                <CardTitle className="text-lg font-semibold">Current User</CardTitle>
+            
+            </CardHeader>
 
             {/* Subscription Status Section */}
             {!loading && (
-                <div className="py-2">
+                <CardContent className="py-2">
+                     <p className="text-md font-medium text-headertext leading-none">
+                        {session.user?.email}
+                    </p>
                     <div className="flex items-center gap-2">
                         <Crown className="h-4 w-4 text-yellow-500" />
                         <span className="text-sm font-medium">
@@ -83,20 +82,20 @@ const NavProfile = () => {
                             {subscriptionData.subscription.remainingDays} days remaining
                         </p>
                     )}
-                </div>
+                </CardContent>
             )}
 
-            <div className="flex gap-2 mt-4">
+            <div className="flex gap-2 mt-4 p-4 ml-6 items-center">
                 <Button 
                     variant="outline" 
-                    className="flex items-center gap-2 text-red-600" 
+                    className=" items-center gap-2 text-red-600" 
                     onClick={handleSignOut}
                 >
-                    <LogOut className="h-4 w-4" />
+                    <LogOut className="h-4 w-4 text-center" />
                     Log out
                 </Button>
             </div>
-        </div>
+        </Card>
     );
 };
 

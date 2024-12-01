@@ -50,7 +50,7 @@ const fetchGoogleDriveFiles = async (folderIds: string[]): Promise<FileItem[]> =
     }
 };
 
-export default function CountyMocks2024() {
+export default function CountyMocks2018() {
     const [material, setMaterial] = useState<FileItem[]>([]);
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
@@ -58,31 +58,19 @@ export default function CountyMocks2024() {
 
     // Assignment folder IDs and names
     const folderNames: { [key: string]: string } = useMemo(() => ({
-
-        '1ETfLmygQl1truGlkBYJW0spCuNdmi91F': '2024 ACK JOINT MOCK MUMIAS',
-        '13pgpKwj2hotyE0k-4GGWhebZ6A-l75w3': '2024 BSJE{Bondo sub county joint) JOINT EXAMINATION QUESTIONS',
-        '1y-MSLsjYkuNVGG1kgfEPKgLz-8FKtgQD': 'STAREHE GIRLS CENTRE MOCK EXAMINATION 2024',
-        '1ZoJuvbgX4QQgoPf2qVbQ8vM4LJajy5RA': 'MUSJET EXAMINATION 2024',
-        '1nly_NoVnTZIQMztDUP2SagvULsmWqTkF': 'Muranga south kcse 2024 mock',
-        '1yZSa_FVR8vn0SnLm9noun0ozKFwjtS62': 'MOKASA II JOINT MOCK 2024',
-        '1xE9dr4wPIikI-OH0y6pBr6lGi0JTYYtN': 'moi high kabarak post mock KCSE 2024',
-        '1OO6v6DCgDAa2mlV58BgtX6sopX14q-ji': 'MOI GIRLS HIGH SCHOOL',
-        '1tOZUeLM8_ef9WmiqXEmt5-a_T_ZqZrLj': 'MATUNGU SUB COUNTY JOINT EXAM SEPTEMBER 2024',
-        '1lYscN7U-TZ41nwohj7dvTEinIUSwC0kZ': 'MASENO HIGH KCSE QUESTION AND ANSWERS',
-        '1wGZ69nxtr8t2_LrxylGE9xKwEAfioNnm': 'MARANDA PRE-MOCK FULL EXAM',
-        '1zDvQ6i1-leVRqbgI43RVY5r_tFDtUdG1': 'LORETO,LIMURU & MARANDA JOINT MOCK 2024',
-        '1qpOpVUU0TIo6lJ6qoCL1pD8nm8pJA11G': 'KENYA HIGH REVISION MOCK',
-        '11s-ixWSp8c8XuA1ToPSd-UHIhtjKuV51': 'KCSE BOKAKE JOINT MOCK',
-        '1t2bQK9cphr0umQq_i9OHLsHhHPKG7U4l': 'KCSE 2024 KISII HIGH REVISION MOCK',
-        '1zWOYmmuGjzrtvYDafJ_TZrq0lp9bubnn': 'KASSU JET JOINT MOCK 2024',
-        '1kiZP2GX4PuCUvwOu2uLGhJuWXvBJstar': 'KALA JOINT TRIAL EXAMINATION JULY/AUG 2024',
-        '17GXv77EEjnZMPmLKmt-Sapgz4ANhmbXm': 'KABIANGA HIGH KCSE 2024 MOCK',
-        '1xCV2Z0SeRbhYw2CLPz2HcXtjFqoi9uxB': 'CHAMPIONS JET**INCOMPLETE',
-        '1LPz68Ex9jx-d1EfARjiJJQuiOO95gYes': 'BUKAKA CLUSTER EXAMINATION 2024',
-        '1f6nJ4FX3DdijcwrPfS0zNk5JET6rMMlF': '2024 NAKURU JOINT MOCK REVISION PAPERS',
-        '1aydeK_mXeDNW2M27qTpb-ol0akYiNACr': '2024 KCSE PANGANI GIRLS REVISION MOCK',
-        '1vT_l4XjBEfN5FPT-am6rAFAicxjsKaKY': '2024 CEKANA REVISION MOCK QUESTION AND ANSWERS'
-       
+        '1z7ZviTT9f3XxCIrOmw8lOGLiQHse9yl7': 'KCSE Mocks Past Papers',
+        '1i_th-TiTrkOcMs2LJqlWPuuu24OEic_v': 'Kedijet Joint',
+        '1B1Xyto9G2c0XE6lazl1PV2g_H9Io6eNJ': 'Samia',
+        '1CKEEcjg4A5H0C3KLfZ1UIqMZtN_Vl6x0': 'Nyandarua',
+        '1I1TiiqR3PUO_Q69riiFkukqiDGdGyMod': 'Central National',
+        '10-kvOfprQUeIBVAH2cCf4Vi6zbwuald9': 'Nairobi Joint',
+        '1bMRHbEvKxdPBc5OtcTU79gm4bfUPGVE0': 'Kassu',
+        '1xC7KZ4ktfwrF5TC5YftutbEhQMrg6ySm': 'Mokasa',
+        '1pmVhD9Y9B8jbLIcS2aw5KUqFnffvd-CD': 'Maranda',
+        '1hl848DeIv7Il23yv6RMTPVwbCnZelsyf': 'Achievers',
+        '1Lt1RGN2NnQaT77rlrt8HtKfNOp3viZDr': 'Mosta',
+        '1vUmGGRVaRWP4YDtjI_rrelgK5BXXv6RZ': 'Kakamega',
+        '1-dpEMJpdfDPM48uoRN1vXtElc_0_LUpF': 'Gatanga',
 
     }), []);
 
@@ -148,7 +136,7 @@ export default function CountyMocks2024() {
                     <Card className="shadow-2xl backdrop-blur-sm border border-gray-700 rounded-xl relative">
                         <CardHeader className="space-y-2 md:space-y-0 md:flex md:flex-row md:items-center md:justify-between p-4 md:p-6 border-b border-gray-700">
                             <CardTitle className="text-xl md:text-2xl text-emerald-400 text-center md:text-left font-bold">
-                              2024 COUNTY MOCKS
+                              2018 COUNTY MOCKS
                             </CardTitle>
                             <div className="relative mt-2 md:mt-0">
                                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -189,7 +177,7 @@ export default function CountyMocks2024() {
                                                 <FileText className="h-5 w-5 md:h-6 md:w-6 text-blue-800 group-hover:text-emerald-400
                                                                    transition-colors mr-3 flex-shrink-0" />
                                                 <div className="flex-1 min-w-0">
-                                                    <h3 className="text-sm md:text-base font-medium text-blue-800 group-hover:text-emerald-300 truncate">
+                                                    <h3 className="text-sm md:text-base text-wrap font-medium text-blue-800 group-hover:text-emerald-300 truncate">
                                                         {file.name}
                                                     </h3>
                                                 </div>

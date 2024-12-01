@@ -50,7 +50,7 @@ const fetchGoogleDriveFiles = async (folderIds: string[]): Promise<FileItem[]> =
     }
 };
 
-export default function CountyMocks2024() {
+export default function CountyMocks2014() {
     const [material, setMaterial] = useState<FileItem[]>([]);
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
@@ -58,32 +58,19 @@ export default function CountyMocks2024() {
 
     // Assignment folder IDs and names
     const folderNames: { [key: string]: string } = useMemo(() => ({
-
-        '1ETfLmygQl1truGlkBYJW0spCuNdmi91F': '2024 ACK JOINT MOCK MUMIAS',
-        '13pgpKwj2hotyE0k-4GGWhebZ6A-l75w3': '2024 BSJE{Bondo sub county joint) JOINT EXAMINATION QUESTIONS',
-        '1y-MSLsjYkuNVGG1kgfEPKgLz-8FKtgQD': 'STAREHE GIRLS CENTRE MOCK EXAMINATION 2024',
-        '1ZoJuvbgX4QQgoPf2qVbQ8vM4LJajy5RA': 'MUSJET EXAMINATION 2024',
-        '1nly_NoVnTZIQMztDUP2SagvULsmWqTkF': 'Muranga south kcse 2024 mock',
-        '1yZSa_FVR8vn0SnLm9noun0ozKFwjtS62': 'MOKASA II JOINT MOCK 2024',
-        '1xE9dr4wPIikI-OH0y6pBr6lGi0JTYYtN': 'moi high kabarak post mock KCSE 2024',
-        '1OO6v6DCgDAa2mlV58BgtX6sopX14q-ji': 'MOI GIRLS HIGH SCHOOL',
-        '1tOZUeLM8_ef9WmiqXEmt5-a_T_ZqZrLj': 'MATUNGU SUB COUNTY JOINT EXAM SEPTEMBER 2024',
-        '1lYscN7U-TZ41nwohj7dvTEinIUSwC0kZ': 'MASENO HIGH KCSE QUESTION AND ANSWERS',
-        '1wGZ69nxtr8t2_LrxylGE9xKwEAfioNnm': 'MARANDA PRE-MOCK FULL EXAM',
-        '1zDvQ6i1-leVRqbgI43RVY5r_tFDtUdG1': 'LORETO,LIMURU & MARANDA JOINT MOCK 2024',
-        '1qpOpVUU0TIo6lJ6qoCL1pD8nm8pJA11G': 'KENYA HIGH REVISION MOCK',
-        '11s-ixWSp8c8XuA1ToPSd-UHIhtjKuV51': 'KCSE BOKAKE JOINT MOCK',
-        '1t2bQK9cphr0umQq_i9OHLsHhHPKG7U4l': 'KCSE 2024 KISII HIGH REVISION MOCK',
-        '1zWOYmmuGjzrtvYDafJ_TZrq0lp9bubnn': 'KASSU JET JOINT MOCK 2024',
-        '1kiZP2GX4PuCUvwOu2uLGhJuWXvBJstar': 'KALA JOINT TRIAL EXAMINATION JULY/AUG 2024',
-        '17GXv77EEjnZMPmLKmt-Sapgz4ANhmbXm': 'KABIANGA HIGH KCSE 2024 MOCK',
-        '1xCV2Z0SeRbhYw2CLPz2HcXtjFqoi9uxB': 'CHAMPIONS JET**INCOMPLETE',
-        '1LPz68Ex9jx-d1EfARjiJJQuiOO95gYes': 'BUKAKA CLUSTER EXAMINATION 2024',
-        '1f6nJ4FX3DdijcwrPfS0zNk5JET6rMMlF': '2024 NAKURU JOINT MOCK REVISION PAPERS',
-        '1aydeK_mXeDNW2M27qTpb-ol0akYiNACr': '2024 KCSE PANGANI GIRLS REVISION MOCK',
-        '1vT_l4XjBEfN5FPT-am6rAFAicxjsKaKY': '2024 CEKANA REVISION MOCK QUESTION AND ANSWERS'
-       
-
+        '1nRJB1r3-Xb6SZPZu-Jmu81NvALy2cBYJ': 'Mathematics',
+        '162sBkGuWcyrMVSYNh0qOkj65fVhTXpHT': 'Kiswahili',
+        '1ODx0nJdItBYPxtVSx3tbfdFUQivzssvH': 'Home Science',
+        '1YlOSBAMkklrWWjAGyRFhIynbi4o5tQya':'History',
+        '1xLneBJEukBCrZ9dRrtUIrA703GUGuC7P': 'Geography',
+        '1R4ox6h1ob0kLkLQY87WRJa5nPV8h5mB6': 'English',
+        '1EeLJTYBUOnQaGY-ghYDQV1LuvcrG8prz': 'CRE',
+        '1yiT15IOCPAwqt1s6UsnIodjfmvEZevy0': 'Computer Studies',
+        '1SYKL3rxo8NXvixtqXFibKrGC_dlaAjD4': 'Chemistry',
+        '1BUN704kJjhqILNGqXS-gYH7D0thlDr_6': 'Business',
+        '1siq7JmbJxw7ucTehAgITMwQteMwT-bcp': 'Biology',
+        '1GlBfGK8F53wPZwbgYGCTvzWuISkzjnv6': 'Agriculture',
+        '1yftP0oTcch1OFA-mEFuvdujfEMmjc7UH': 'Physics'
     }), []);
 
     const folderIds = Object.keys(folderNames);
@@ -148,7 +135,7 @@ export default function CountyMocks2024() {
                     <Card className="shadow-2xl backdrop-blur-sm border border-gray-700 rounded-xl relative">
                         <CardHeader className="space-y-2 md:space-y-0 md:flex md:flex-row md:items-center md:justify-between p-4 md:p-6 border-b border-gray-700">
                             <CardTitle className="text-xl md:text-2xl text-emerald-400 text-center md:text-left font-bold">
-                              2024 COUNTY MOCKS
+                              2014 COUNTY MOCKS
                             </CardTitle>
                             <div className="relative mt-2 md:mt-0">
                                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -189,7 +176,7 @@ export default function CountyMocks2024() {
                                                 <FileText className="h-5 w-5 md:h-6 md:w-6 text-blue-800 group-hover:text-emerald-400
                                                                    transition-colors mr-3 flex-shrink-0" />
                                                 <div className="flex-1 min-w-0">
-                                                    <h3 className="text-sm md:text-base font-medium text-blue-800 group-hover:text-emerald-300 truncate">
+                                                    <h3 className="text-sm md:text-base text-wrap font-medium text-blue-800 group-hover:text-emerald-300 truncate">
                                                         {file.name}
                                                     </h3>
                                                 </div>
