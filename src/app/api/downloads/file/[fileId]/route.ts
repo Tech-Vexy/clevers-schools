@@ -1,18 +1,24 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { google } from 'googleapis';
 
+type Props = {
+    params: {
+        fileId: string
+    }
+}
+
 export async function GET(
-    req: NextRequest,
-    { params }: { params: { fileId: string } }
+    request: NextRequest,
+    props: Props
 ) {
     try {
-        const { fileId } = params;
+        const { fileId } = props.params;
 
         // Check authentication
         const session = await getServerSession();
         if (!session?.user) {
-            return new NextResponse('Unauthorized', { status: 401 });
+            return new Response('Unauthorized', { status: 401 });
         }
 
         // Initialize Google Drive client
@@ -33,7 +39,7 @@ export async function GET(
         });
 
         if (!file.data) {
-            return new NextResponse('File not found', { status: 404 });
+            return new Response('File not found', { status: 404 });
         }
 
         // Get the file content
@@ -70,11 +76,11 @@ export async function GET(
             },
         });
 
-        return new NextResponse(stream, {
+        return new Response(stream, {
             headers,
         });
     } catch (error) {
         console.error('Download error:', error);
-        return new NextResponse('Internal Server Error', { status: 500 });
+        return new Response('Internal Server Error', { status: 500 });
     }
 }
