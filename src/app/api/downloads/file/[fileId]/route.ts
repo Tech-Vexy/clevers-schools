@@ -4,11 +4,10 @@ import { google } from 'googleapis';
 
 export async function GET(
     req: NextRequest,
-    context: { params: { fileId: string } }
+    { params }: { params: { fileId: string } }
 ) {
     try {
-        // Await the params
-        const { fileId } = await context.params;
+        const { fileId } = params;
 
         // Check authentication
         const session = await getServerSession();
