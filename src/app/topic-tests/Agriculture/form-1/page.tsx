@@ -35,13 +35,13 @@ const fetchGoogleDriveFiles = async (folderId: string): Promise<FileItem[]> => {
     }
 };
 
-export default function Form1c() {
+export default function Form1() {
     const [material, setMaterial] = useState<FileItem[]>([]);
     const [loading, setLoading] = useState(true);
     const router = useRouter();
 
     // Replace this with your Google Drive folder ID
-    const folderId = '1qRpa3d8friOJfwV9fZXHL7dmDOe_qLUc';
+    const folderId = '1pNGVD2bHj2wc4cx-8GRYY8jdetD955Bn';
 
     useEffect(() => {
         const fetchFiles = async () => {
@@ -94,7 +94,7 @@ export default function Form1c() {
                                         <FileText className="h-5 w-5 md:h-6 md:w-6 text-gray-500 group-hover:text-emerald-400
                                                            transition-colors mr-3 flex-shrink-0" />
                                         <div className="flex-1 min-w-0">
-                                            <h3 className="text-sm md:text-base font-medium text-black group-hover:text-emerald-300 truncate">
+                                            <h3 className="text-sm md:text-base font-medium text-blue-800 text-wrap group-hover:text-emerald-300 truncate">
                                                 {file.name}
                                             </h3>
                                         </div>

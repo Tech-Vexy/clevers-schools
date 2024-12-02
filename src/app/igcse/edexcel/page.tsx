@@ -1,30 +1,44 @@
-// components/IGCSESection.tsx
-
+import React from 'react';
 import { BookOpen } from 'lucide-react';
-import Link from 'next/link';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-const Home: React.FC = () => {
+import EdexcelOLevel from './O-Level/page';
+import EdexcelGCSE from './GCSE/page';
+
+interface LevelComponentProps {
+  children: React.ReactNode;
+}
+
+const LevelSection: React.FC<LevelComponentProps> = ({ children }) => (
+  <div className="w-full p-4 rounded-lg bg-white shadow-sm hover:shadow-md transition-shadow duration-200">
+    {children}
+  </div>
+);
+
+const EdexcelSection: React.FC = () => {
+  const levels = [
+    { Component: EdexcelOLevel, key: 'o-level' },
+    { Component: EdexcelGCSE, key: 'gcse' },
+  ];
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4 pl-4">
-         
-            <Link
-            
-              href="/igcse/edexcel/O-Level"
-              className="p-3 text-gray-950 font-semibold bg-slate-100 hover:bg-purple-500 rounded-md shadow-sm hover:shadow-md transition-shadow border border-gray-200 flex items-center gap-2"
-            >
-                <BookOpen size={16} className="text-blue-500" />
-                O LEVEL
-            </Link>
-            <Link
-            
-              href="/igcse/edexcel/IGCSE"
-              className="p-3 text-gray-950 font-semibold bg-slate-100 hover:bg-purple-500 rounded-md shadow-sm hover:shadow-md transition-shadow border border-gray-200 flex items-center gap-2"
-            >
-                <BookOpen size={16} className="text-blue-500" />
-                IGCSE
-            </Link>
-    </div>
+    <Card className="w-full border border-gray-200 rounded-lg overflow-hidden">
+      <CardHeader className="bg-green-500 border-b border-green-600">
+        <CardTitle className="text-xl text-white flex items-center gap-3">
+          <BookOpen className="h-6 w-6" />
+          <span className="font-semibold">IGCSE EDEXCEL RESOURCES</span>
+        </CardTitle>
+      </CardHeader>
+      
+      <CardContent className="flex flex-col gap-6 p-6">
+        {levels.map(({ Component, key }) => (
+          <LevelSection key={key}>
+            <Component />
+          </LevelSection>
+        ))}
+      </CardContent>
+    </Card>
   );
 };
 
-export default Home;
+export default EdexcelSection;

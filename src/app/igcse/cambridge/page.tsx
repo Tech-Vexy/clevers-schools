@@ -1,37 +1,45 @@
-// components/IGCSESection.tsx
-
+import React from 'react';
 import { BookOpen } from 'lucide-react';
-import Link from 'next/link';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import CambridgeALevel from './A-Level/page';
+import CambridgeOLevel from './O-Level/page';
+import CambridgeGCSELevel from './GCSE/page';
 
-const Home: React.FC = () => {
+interface LevelComponentProps {
+  children: React.ReactNode;
+}
+
+const LevelSection: React.FC<LevelComponentProps> = ({ children }) => (
+  <div className="w-full p-4 rounded-lg bg-white shadow-sm hover:shadow-md transition-shadow duration-200">
+    {children}
+  </div>
+);
+
+const IGCSESection: React.FC = () => {
+  const levels = [
+    { Component: CambridgeALevel, key: 'a-level' },
+    { Component: CambridgeOLevel, key: 'o-level' },
+    { Component: CambridgeGCSELevel, key: 'gcse' },
+  ];
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4 pl-4">
-         <Link
-            
-              href="/igcse/cambridge/A-Level"
-              className="p-3 text-gray-950 font-semibold bg-slate-100 hover:bg-purple-500 rounded-md shadow-sm hover:shadow-md transition-shadow border border-gray-200 flex items-center gap-2"
-            >
-                <BookOpen size={16} className="text-blue-500" />
-             A LEVEL
-            </Link>
-            <Link
-            
-              href="/igcse/cambridge/O-Level"
-              className="p-3 text-gray-950 font-semibold bg-slate-100 hover:bg-purple-500 rounded-md shadow-sm hover:shadow-md transition-shadow border border-gray-200 flex items-center gap-2"
-            >
-                <BookOpen size={16} className="text-blue-500" />
-                O LEVEL
-            </Link>
-            <Link
-            
-              href="/igcse/cambridge/iGCSE"
-              className="p-3 text-gray-950 font-semibold bg-slate-100 hover:bg-purple-500 rounded-md shadow-sm hover:shadow-md transition-shadow border border-gray-200 flex items-center gap-2"
-            >
-                <BookOpen size={16} className="text-blue-500" />
-                IGCSE
-            </Link>
-    </div>
+    <Card className="w-full border border-gray-200 rounded-lg overflow-hidden">
+      <CardHeader className="bg-green-500 border-b border-green-600">
+        <CardTitle className="text-xl text-white flex items-center gap-3">
+          <BookOpen className="h-6 w-6" />
+          <span className="font-semibold">IGCSE CAMBRIDGE RESOURCES</span>
+        </CardTitle>
+      </CardHeader>
+      
+      <CardContent className="flex flex-col gap-6 p-6">
+        {levels.map(({ Component, key }) => (
+          <LevelSection key={key}>
+            <Component />
+          </LevelSection>
+        ))}
+      </CardContent>
+    </Card>
   );
 };
 
-export default Home;
+export default IGCSESection;

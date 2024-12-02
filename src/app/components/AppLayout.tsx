@@ -139,11 +139,13 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
 
                         {/* Main Content */}
                         <main className="flex-1 bg-purple-200 rounded shadow-sm overflow-hidden flex flex-col">
-                            <div>
-                                <div className='bg-green-600 p-2 border-2'>
+                            <div className=' p-4 border-2  '>
+                                <div className='bg-green-600  border-2 text-xl text-white'>
                                     <h2>SEARCH WHAT YOU NEED HERE :-</h2>
                                 </div>
-                                <SearchBar folderId={folderId}/>
+                               <div className='bg-orange-50'>
+                               <SearchBar folderId={folderId}/>
+                               </div>
                             </div>
                             <div className="flex-1 overflow-y-auto px-6 py-4 overflow-x-hidden">
                                 {children}

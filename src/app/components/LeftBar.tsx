@@ -35,35 +35,35 @@ const SetbookGuides = () => (
       </h2>
       <ol>
         <li>
-          <Link href="#" className="block font-medium capitalize text-blue-600">
+          <Link href="/setbook-guides" className="block font-medium capitalize text-blue-600">
             <span className="text-red-600">1.</span> A GUIDE OF THE FATHERS OF THE
             NATIONS
           </Link>
         </li>
         <li>
-          <Link href="#" className="block font-medium capitalize text-blue-600">
+          <Link href="/setbook-guides" className="block font-medium capitalize text-blue-600">
             <span className="text-red-600">2.</span> A STUDY GUIDE TO A SILENT SONG
             AND OTHER STORIES
           </Link>
         </li>
         <li>
-          <Link href="#" className="block font-medium capitalize text-blue-600">
+          <Link href="/setbook-guides" className="block font-medium capitalize text-blue-600">
             <span className="text-red-600">3.</span> MWONGOZO WA BEMBEA YA MAISHA
           </Link>
         </li>
         <li>
-          <Link href="#" className="block font-medium capitalize text-blue-600">
+          <Link href="/setbook-guides" className="block font-medium capitalize text-blue-600">
             <span className="text-red-600">4.</span> MWONGOZO WA MAPAMBAZUKO YA
             MACHWEO
           </Link>
         </li>
         <li>
-          <Link href="#" className="block font-medium capitalize text-blue-600">
+          <Link href="/setbook-guides" className="block font-medium capitalize text-blue-600">
             <span className="text-red-600">5.</span> MWONGOZO WA NGUU ZA JADI
           </Link>
         </li>
         <li>
-          <Link href="#" className="block font-medium capitalize text-blue-600">
+          <Link href="/setbook-guides" className="block font-medium capitalize text-blue-600">
             <span className="text-red-600">6.</span> ARTIST OF THE FLOATING WORLD
           </Link>
         </li>

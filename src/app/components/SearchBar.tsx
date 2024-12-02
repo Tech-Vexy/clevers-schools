@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useRouter } from 'next/navigation';
-import { FileIcon } from 'lucide-react';
+import { FileIcon, Loader2, XCircle } from 'lucide-react';
 
 interface File {
   id: string;
@@ -13,7 +13,7 @@ interface File {
   webViewLink: string;
 }
 
-const ITEMS_PER_PAGE = 10; // Set the number of items per page
+const ITEMS_PER_PAGE = 10;
 
 export default function SearchBar({ folderId }: { folderId: string }) {
   const [query, setQuery] = useState('');
@@ -21,7 +21,7 @@ export default function SearchBar({ folderId }: { folderId: string }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [hasSearched, setHasSearched] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1); // Current page number
+  const [currentPage, setCurrentPage] = useState(1);
 
   const router = useRouter();
 
@@ -31,8 +31,7 @@ export default function SearchBar({ folderId }: { folderId: string }) {
 
     setLoading(true);
     setError(null);
-    setHasSearched(true);
-    setCurrentPage(1); // Reset to first page on new search
+    setCurrentPage(1);
 
     try {
       const response = await fetch(`/api/drive/search?folderId=${folderId}&q=${encodeURIComponent(query)}`);
@@ -40,11 +39,11 @@ export default function SearchBar({ folderId }: { folderId: string }) {
         throw new Error('Failed to fetch files');
       }
       const data = await response.json();
-      // Filter out folders from the search results
       const nonFolderFiles = data.files.filter(
         (file: File) => file.mimeType !== 'application/vnd.google-apps.folder'
       );
       setFiles(nonFolderFiles);
+      setHasSearched(true);
     } catch {
       setError('An error occurred while searching. Please try again.');
     } finally {
@@ -52,11 +51,18 @@ export default function SearchBar({ folderId }: { folderId: string }) {
     }
   };
 
+  const handleClear = () => {
+    setQuery('');
+    setFiles([]);
+    setError(null);
+    setHasSearched(false);
+    setCurrentPage(1);
+  };
+
   const handleDocumentClick = (file: File) => {
     router.push(`/document/${encodeURIComponent(file.id)}?fileData=${encodeURIComponent(JSON.stringify(file))}`);
   };
 
-  // Pagination logic
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const paginatedFiles = files.slice(startIndex, startIndex + ITEMS_PER_PAGE);
   const totalPages = Math.ceil(files.length / ITEMS_PER_PAGE);
@@ -64,21 +70,47 @@ export default function SearchBar({ folderId }: { folderId: string }) {
   return (
     <div className="w-full mx-auto p-4">
       <form onSubmit={handleSearch} className="flex gap-2 mb-4">
-        <Input
-          type="text"
-          placeholder="Search files..."
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          className="flex-grow"
-        />
-        <Button type="submit" disabled={loading || !query.trim()}>
-          {loading ? 'Searching...' : 'Search'}
+        <div className="relative flex-grow">
+          <Input
+            type="text"
+            placeholder="Search files..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            className="border-2 bg-white w-full pr-8"
+          />
+          {query && (
+            <XCircle
+              className="absolute right-2 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 hover:text-gray-600 cursor-pointer"
+              onClick={() => setQuery('')}
+            />
+          )}
+        </div>
+        <Button type="submit" disabled={loading || !query.trim()} className="bg-green-700">
+          {loading ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Searching...
+            </>
+          ) : (
+            'Search'
+          )}
         </Button>
+        {(hasSearched || query) && (
+          <Button type="button" onClick={handleClear} variant="outline">
+            Clear All
+          </Button>
+        )}
       </form>
 
       {error && <p className="text-red-500 mb-4">{error}</p>}
 
-      {hasSearched && paginatedFiles.length > 0 && (
+      {loading && (
+        <div className="flex justify-center items-center py-8">
+          <Loader2 className="h-8 w-8 animate-spin text-green-700" />
+        </div>
+      )}
+
+      {!loading && paginatedFiles.length > 0 && (
         <div className="space-y-2">
           {paginatedFiles.map((file) => (
             <div
@@ -97,11 +129,10 @@ export default function SearchBar({ folderId }: { folderId: string }) {
         </div>
       )}
 
-      {hasSearched && files.length === 0 && (
+      {hasSearched && !loading && files.length === 0 && (
         <p className="text-gray-500 text-center">No files found.</p>
       )}
 
-      {/* Pagination controls */}
       {totalPages > 1 && (
         <div className="flex justify-center items-center mt-4 space-x-4">
           <Button

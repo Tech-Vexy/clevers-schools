@@ -1,14 +1,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { ChevronDown, Menu, X } from 'lucide-react';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 
-// Define the interface for navigation items
 interface NavItem {
   title: string;
   href: string;
@@ -19,7 +12,6 @@ interface NavItem {
 const NavBar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // Consolidated navigation data
   const navigationData = {
     lessonPlans: [
       { title: 'All Lesson Plans', href: '/lesson-plans' },
@@ -86,55 +78,38 @@ const NavBar = () => {
 
   const NavLink = ({ item }: { item: NavItem }) => (
     <div className="relative group">
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <div className="px-2 py-1 hover:bg-green-700 cursor-pointer border border-green-600 rounded transition-colors duration-200">
-              <div className="flex items-center justify-between">
-                {item.dropdown ? (
-                  <span className="text-white text-center text-xl capitalize whitespace-nowrap overflow-hidden text-ellipsis font-nunito">
-                    {item.title}
-                  </span>
-                ) : (
-                  <Link 
-                    href={item.href} 
-                    className="text-white text-xl  uppercase font-nunito font-normal whitespace-nowrap overflow-hidden text-ellipsis w-full"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    {item.title}
-                  </Link>
-                )}
-                {item.dropdown && (
-                  <ChevronDown className="w-3 h-3 text-white ml-1 flex-shrink-0" />
-                )}
-              </div>
-            </div>
-          </TooltipTrigger>
-          <TooltipContent side="bottom" className="bg-gray-900 text-white px-2 py-1 text-xs rounded">
-            {item.title}
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+      <div className="px-2 py-1 hover:bg-green-700 cursor-pointer border border-green-600 rounded transition-colors duration-200">
+        <div className="flex items-center justify-between">
+          {item.dropdown ? (
+            <span className="text-white text-sm whitespace-nowrap overflow-hidden text-ellipsis font-nunito">
+              {item.title}
+            </span>
+          ) : (
+            <Link 
+              href={item.href} 
+              className="text-white text-sm uppercase font-nunito font-normal whitespace-nowrap overflow-hidden text-ellipsis w-full"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              {item.title}
+            </Link>
+          )}
+          {item.dropdown && (
+            <ChevronDown className="w-3 h-3 text-white ml-1 flex-shrink-0" />
+          )}
+        </div>
+      </div>
 
       {item.dropdown && (
         <div className="invisible group-hover:visible opacity-0 group-hover:opacity-100 absolute z-10 mt-1 w-48 bg-green-800 rounded shadow-lg transition-all duration-200 font-nunito ease-in-out">
           {item.items && item.items.map((dropItem: NavItem, idx: number) => (
-            <TooltipProvider key={idx}>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Link
-                    href={dropItem.href}
-                    className="block px-2 py-1 text-sm text-white hover:bg-green-700 border-b border-green-600 last:border-none transition-colors duration-150 font-nunito"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    {dropItem.title}
-                  </Link>
-                </TooltipTrigger>
-                <TooltipContent side="right" className="bg-gray-900 text-white px-2 py-1 text-xs rounded">
-                  {dropItem.title}
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            <Link
+              key={idx}
+              href={dropItem.href}
+              className="block px-2 py-1 text-sm text-white hover:bg-green-700 border-b border-green-600 last:border-none transition-colors duration-150 font-nunito"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              {dropItem.title}
+            </Link>
           ))}
         </div>
       )}
@@ -146,60 +121,43 @@ const NavBar = () => {
 
     return (
       <div className="w-full">
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <div
-                className="px-2 py-1 hover:bg-green-700 bg-gray-800 cursor-pointer border border-green-600 rounded w-full transition-colors duration-200"
-                onClick={() => item.dropdown ? setIsOpen(!isOpen) : null}
+        <div
+          className="px-2 py-1 hover:bg-green-700 bg-gray-800 cursor-pointer border border-green-600 rounded w-full transition-colors duration-200"
+          onClick={() => item.dropdown ? setIsOpen(!isOpen) : null}
+        >
+          <div className="flex items-center justify-between">
+            {item.dropdown ? (
+              <span className="text-white text-sm font-nunito">{item.title}</span>
+            ) : (
+              <Link 
+                href={item.href} 
+                className="text-white text-sm w-full font-nunito"
+                onClick={() => setIsMobileMenuOpen(false)}
               >
-                <div className="flex items-center justify-between">
-                  {item.dropdown ? (
-                    <span className="text-white text-sm font-nunito">{item.title}</span>
-                  ) : (
-                    <Link 
-                      href={item.href} 
-                      className="text-white text-sm w-full font-nunito"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                    >
-                      {item.title}
-                    </Link>
-                  )}
-                  {item.dropdown && (
-                    <ChevronDown
-                      className={`w-3 h-3 text-white transform transition-transform duration-200 ${
-                        isOpen ? 'rotate-180' : ''
-                      }`}
-                    />
-                  )}
-                </div>
-              </div>
-            </TooltipTrigger>
-            <TooltipContent side="right" className="bg-gray-900 text-white px-2 py-1 text-xs rounded">
-              {item.title}
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+                {item.title}
+              </Link>
+            )}
+            {item.dropdown && (
+              <ChevronDown
+                className={`w-3 h-3 text-white transform transition-transform duration-200 ${
+                  isOpen ? 'rotate-180' : ''
+                }`}
+              />
+            )}
+          </div>
+        </div>
 
         {item.dropdown && isOpen && (
           <div className="mt-0.5 bg-green-800 rounded shadow-lg">
             {item.items?.map((dropItem, idx) => (
-              <TooltipProvider key={idx}>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Link
-                      href={dropItem.href}
-                      className="block px-2 py-1 text-sm text-white hover:bg-green-700 border-b border-green-600 last:border-none transition-colors duration-150 font-nunito"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                    >
-                      {dropItem.title}
-                    </Link>
-                  </TooltipTrigger>
-                  <TooltipContent side="right" className="bg-gray-900 text-white px-2 py-1 text-xs rounded">
-                    {dropItem.title}
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
+              <Link
+                key={idx}
+                href={dropItem.href}
+                className="block px-2 py-1 text-sm text-white hover:bg-green-700 border-b border-green-600 last:border-none transition-colors duration-150 font-nunito"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                {dropItem.title}
+              </Link>
             ))}
           </div>
         )}
@@ -208,7 +166,7 @@ const NavBar = () => {
   };
 
   return (
-    <nav className="bg-green-900 px-4 py-2 w-full border-x-2 border-solid border-green-700 font-nunito">
+    <nav className="bg-green-900 py-2 w-full border-x-2 border-solid border-green-700 font-nunito">
       <div className="md:hidden flex justify-center mb-1">
         <button
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}

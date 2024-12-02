@@ -1,7 +1,6 @@
 import { google } from 'googleapis';
 import { NextResponse } from 'next/server';
 
-// Enhanced type definitions
 interface SearchResult {
   files: Array<{
     id: string;
@@ -13,7 +12,7 @@ interface SearchResult {
     thumbnailLink?: string;
     description?: string;
     fullText?: string;
-    matchScore?: number;  // Added to track relevance
+    matchScore?: number;
   }>;
   nextPageToken?: string;
   totalItems: number;
@@ -39,7 +38,6 @@ interface SearchOptions {
   minMatchScore?: number;
 }
 
-// Initialize Google Auth with expanded scope
 const auth = new google.auth.GoogleAuth({
   credentials: {
     client_email: process.env.GOOGLE_CLIENT_EMAIL,
@@ -54,7 +52,6 @@ const auth = new google.auth.GoogleAuth({
 
 const drive = google.drive({ version: 'v3', auth });
 
-// Enhanced caching with TTL and size limit
 class SearchCache {
   private cache: Map<string, { data: SearchResult; timestamp: number }>;
   private readonly maxSize: number;
@@ -78,7 +75,6 @@ class SearchCache {
 
   set(key: string, data: SearchResult) {
     if (this.cache.size >= this.maxSize) {
-      // Remove oldest entries
       const oldestKey = Array.from(this.cache.entries())
         .sort(([, a], [, b]) => a.timestamp - b.timestamp)[0][0];
       this.cache.delete(oldestKey);
@@ -89,9 +85,6 @@ class SearchCache {
 
 const searchCache = new SearchCache();
 
-/**
- * Calculates string similarity using Levenshtein distance
- */
 function calculateSimilarity(str1: string, str2: string): number {
   const matrix: number[][] = [];
   const len1 = str1.length;
@@ -122,9 +115,6 @@ function calculateSimilarity(str1: string, str2: string): number {
   return 1 - matrix[len1][len2] / maxLength;
 }
 
-/**
- * Enhanced search query builder with advanced filtering
- */
 function buildSearchQuery(folderId: string, query: string | undefined, options: SearchOptions): string {
   const queryParts = [`'${folderId}' in parents and trashed = false`];
 
@@ -155,9 +145,6 @@ function buildSearchQuery(folderId: string, query: string | undefined, options: 
   return queryParts.join(' ');
 }
 
-/**
- * Enhanced folder search with improved matching and metadata
- */
 async function searchFolder(
   folderId: string,
   query: string | undefined,
@@ -190,7 +177,6 @@ async function searchFolder(
 
     let files = response.data.files || [];
     
-    // Enhanced fuzzy matching
     if (options.fuzzyMatch && query) {
       files = files.map(file => {
         const nameScore = file.name ? calculateSimilarity(query.toLowerCase(), file.name.toLowerCase()) : 0;
@@ -207,7 +193,6 @@ async function searchFolder(
 
     let allFiles = files.filter(file => file.id) as SearchResult['files'];
 
-    // Recursive subfolder search with improved concurrency
     if (depth < maxDepth) {
       const subfolders = files.filter(
         file => file.mimeType === 'application/vnd.google-apps.folder'
@@ -225,7 +210,6 @@ async function searchFolder(
           )
         );
 
-        // Filter out rejected promises and combine results
         allFiles = allFiles.concat(
           subfolderResults
             .filter((result): result is PromiseFulfilledResult<SearchResult> => 
@@ -236,7 +220,6 @@ async function searchFolder(
       }
     }
 
-    // Sort results by match score if fuzzy matching is enabled
     if (options.fuzzyMatch) {
       allFiles.sort((a, b) => (b.matchScore || 0) - (a.matchScore || 0));
     }
@@ -260,9 +243,6 @@ async function searchFolder(
   }
 }
 
-/**
- * Enhanced API route handler with expanded options
- */
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
@@ -319,7 +299,9 @@ export async function GET(request: Request) {
       429: 'Too many requests',
     };
 
-    const statusCode = (error as { code?: number }).code || 500;
+    let statusCode = (error as { code?: number }).code || 500;
+    statusCode = Math.max(200, Math.min(599, statusCode));
+    
     const errorMessage = errorResponses[statusCode] || 'Failed to search files';
 
     return NextResponse.json(
