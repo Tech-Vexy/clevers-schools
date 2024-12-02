@@ -2,13 +2,17 @@ import { NextRequest } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { google } from 'googleapis';
 
-export async function GET(
-    request: NextRequest,
-    { params }: { params: { fileId: string } }
-) {
-    try {
-        const { fileId } = params;
+type RouteParams = {
+    params: {
+        fileId: string;
+    };
+    searchParams: { [key: string]: string | string[] | undefined };
+};
 
+export async function GET(request: NextRequest, context: RouteParams) {
+    try {
+        const { fileId } = context.params;
+        
         // Check authentication
         const session = await getServerSession();
         if (!session?.user) {
@@ -59,11 +63,9 @@ export async function GET(
                 response.data.on('data', (chunk: Buffer) => {
                     controller.enqueue(chunk);
                 });
-
                 response.data.on('end', () => {
                     controller.close();
                 });
-
                 response.data.on('error', (error: Error) => {
                     controller.error(error);
                 });
