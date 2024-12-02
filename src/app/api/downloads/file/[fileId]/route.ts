@@ -2,14 +2,13 @@ import { NextRequest } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { google } from 'googleapis';
 
-// Use built-in Next.js types for route segments
 export async function GET(
     request: NextRequest,
-    context: { params: Record<string, string | string[]> }
+    { params }: { params: { fileId: string } } // Correctly type the context
 ) {
     try {
-        const fileId = context.params.fileId as string;
-        
+        const fileId = params.fileId; // Extract the fileId from params
+
         // Check authentication
         const session = await getServerSession();
         if (!session?.user) {
@@ -29,7 +28,7 @@ export async function GET(
 
         // Get file metadata first to verify existence and get mimeType
         const file = await drive.files.get({
-            fileId: fileId,
+            fileId,
             fields: 'name, mimeType',
         });
 
@@ -40,7 +39,7 @@ export async function GET(
         // Get the file content
         const response = await drive.files.get(
             {
-                fileId: fileId,
+                fileId,
                 alt: 'media',
             },
             { responseType: 'stream' }
@@ -51,7 +50,7 @@ export async function GET(
         headers.set('Content-Type', file.data.mimeType || 'application/octet-stream');
         headers.set(
             'Content-Disposition',
-            `attachment; filename="${encodeURIComponent(file.data.name || 'download')}"`,
+            `attachment; filename="${encodeURIComponent(file.data.name || 'download')}"`
         );
 
         // Create a ReadableStream from the response data
