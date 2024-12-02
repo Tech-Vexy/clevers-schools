@@ -1,13 +1,14 @@
-import { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { google } from 'googleapis';
+import type { RouteContext } from 'next/dist/server/web/types';
 
 export async function GET(
     request: NextRequest,
-    { params }: { params: { fileId: string } } // Correctly type the context
+    context: RouteContext<{ params: { fileId: string } }> // Correct type for context
 ) {
     try {
-        const fileId = params.fileId; // Extract the fileId from params
+        const fileId = context.params.fileId;
 
         // Check authentication
         const session = await getServerSession();
