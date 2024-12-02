@@ -2,16 +2,13 @@ import { NextRequest } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { google } from 'googleapis';
 
-type RouteParams = {
-    params: {
-        fileId: string;
-    };
-    searchParams: { [key: string]: string | string[] | undefined };
-};
-
-export async function GET(request: NextRequest, context: RouteParams) {
+// Use built-in Next.js types for route segments
+export async function GET(
+    request: NextRequest,
+    context: { params: Record<string, string | string[]> }
+) {
     try {
-        const { fileId } = context.params;
+        const fileId = context.params.fileId as string;
         
         // Check authentication
         const session = await getServerSession();
