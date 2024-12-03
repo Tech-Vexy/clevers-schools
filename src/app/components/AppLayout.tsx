@@ -114,7 +114,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
             )}
 
             {/* Main Layout */}
-            <main className="flex flex-col flex-1 pt-14 bg-pink-100 max-w-screen-xl mx-auto border-x-2 border-gray-400">
+            <main className="flex  flex-col flex-1 pt-14 bg-pink-100 max-w-screen-xl mx-auto border-x-2 border-gray-400">
                 {/* Navigation */}
                 <nav className="w-full bg-white shadow-sm">
                     <Suspense fallback={<NavBarFallback />}>
