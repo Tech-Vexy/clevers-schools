@@ -8,21 +8,62 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from 'next/link';
 
+// Email validation regex pattern
+const EMAIL_REGEX = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+
+// Common disposable email domains
+const DISPOSABLE_DOMAINS = [
+    'tempmail.com',
+    'throwawaymail.com',
+    'temp-mail.org',
+    'guerrillamail.com',
+    'sharklasers.com',
+    // Add more as needed
+];
+
 export default function RegisterPage() {
     const router = useRouter();
     const [error, setError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [emailError, setEmailError] = useState<string | null>(null);
+
+    const validateEmail = (email: string): boolean => {
+        // Reset email error
+        setEmailError(null);
+
+        // Check basic email format
+        if (!EMAIL_REGEX.test(email)) {
+            setEmailError('Please enter a valid email address');
+            return false;
+        }
+
+        // Check for disposable email domains
+        const domain = email.split('@')[1].toLowerCase();
+        if (DISPOSABLE_DOMAINS.includes(domain)) {
+            setEmailError('Please use a non-disposable email address');
+            return false;
+        }
+
+        return true;
+    };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setIsLoading(true);
         setError(null);
+        setEmailError(null);
 
         const formData = new FormData(e.currentTarget);
         const name = formData.get('name') as string;
         const email = formData.get('email') as string;
         const password = formData.get('password') as string;
         const confirmPassword = formData.get('confirmPassword') as string;
+
+        // Validate email format
+        if (!validateEmail(email)) {
+            setIsLoading(false);
+            return;
+        }
 
         // Check if passwords match
         if (password !== confirmPassword) {
@@ -32,6 +73,36 @@ export default function RegisterPage() {
         }
 
         try {
+            // First, verify email validity
+            const verifyResponse = await fetch('/api/auth/verify-email', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email }),
+            });
+
+            const verifyData = await verifyResponse.json();
+
+            if (!verifyResponse.ok) {
+                const errorMessage = verifyData.error || 'Invalid email address';
+                const details = verifyData.details;
+                
+                // Handle specific validation failures
+                if (details?.disposable) {
+                    throw new Error('Please use a non-disposable email address');
+                }
+                if (details?.reputation === 'low') {
+                    throw new Error('This email domain has a low reputation score');
+                }
+                if (!details?.mxValid) {
+                    throw new Error('Invalid email domain');
+                }
+                
+                throw new Error(errorMessage);
+            }
+
+            // If email is valid, proceed with registration
             const response = await fetch('/api/auth/register', {
                 method: 'POST',
                 headers: {
@@ -50,12 +121,19 @@ export default function RegisterPage() {
                 throw new Error(data.error || 'Something went wrong');
             }
 
-            // Automatically sign in after successful registration
+            // Automatically redirect to sign in after successful registration
             router.push('/auth/signin');
         } catch (error) {
             setError(error instanceof Error ? error.message : 'An error occurred');
         } finally {
             setIsLoading(false);
+        }
+    };
+
+    const handleEmailBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+        const email = e.target.value;
+        if (email) {
+            validateEmail(email);
         }
     };
 
@@ -85,7 +163,14 @@ export default function RegisterPage() {
                                 type="email"
                                 required
                                 placeholder="Enter your email"
+                                onBlur={handleEmailBlur}
+                                className={emailError ? 'border-red-500' : ''}
                             />
+                            {emailError && (
+                                <div className="text-sm text-red-500">
+                                    {emailError}
+                                </div>
+                            )}
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="password">Password</Label>

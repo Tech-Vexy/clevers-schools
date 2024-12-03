@@ -32,6 +32,14 @@ interface SubscriptionData {
     amount: number;
 }
 
+const formatDate = (date: Date): string => {
+    return new Date(date).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
+};
+
 const SubscriptionPageContent: React.FC = () => {
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -102,9 +110,35 @@ const SubscriptionPageContent: React.FC = () => {
                 throw new Error(errorData.message || 'Failed to create subscription');
             }
 
+            const subscriptionData = await subscriptionResponse.json();
+
+            // Send confirmation email
+            const emailResponse = await fetch('/api/subscription/send-confirmation', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: session.user.email,
+                    name: session.user.name,
+                    subscriptionDetails: {
+                        startDate: subscriptionData.startDate,
+                        expiryDate: subscriptionData.expiryDate,
+                        amount: subscriptionData.amount,
+                        reference: response.reference,
+                        currency: 'KES'
+                    }
+                }),
+            });
+
+            if (!emailResponse.ok) {
+                console.error('Failed to send confirmation email');
+                // Don't throw error here as subscription is already created
+            }
+
             toast({
                 title: 'Success',
-                description: 'Your subscription has been activated successfully!',
+                description: 'Your subscription has been activated successfully! A confirmation email has been sent to your inbox.',
             });
 
             router.push(returnUrl);
@@ -190,7 +224,13 @@ const SubscriptionPageContent: React.FC = () => {
                         <div className="text-center space-y-2">
                             <p className="text-2xl font-bold text-green-600">You Have An Active Subscription</p>
                             <p className="text-gray-500">
-                                Your subscription expires in {subscriptionData.remainingDays} days.
+                                Your subscription expires in {subscriptionData.remainingDays} days
+                                {subscriptionData.expiryDate && (
+                                    <> (on {formatDate(subscriptionData.expiryDate)})</>
+                                )}.
+                            </p>
+                            <p className="text-sm text-gray-500 mt-4">
+                                Reference: {subscriptionData.reference}
                             </p>
                         </div>
                     ) : (
@@ -206,6 +246,7 @@ const SubscriptionPageContent: React.FC = () => {
                                     <li>Access to all study materials</li>
                                     <li>Unlimited downloads</li>
                                     <li>1 Year of access</li>
+                                    <li>Email confirmation with subscription details</li>
                                 </ul>
                             </div>
 

@@ -1,58 +1,65 @@
-import React from 'react';
-import {
-    Accordion,
-    AccordionContent,
-    AccordionItem,
-    AccordionTrigger
-} from "@/components/ui/accordion";
-import Physics from "@/app/topic-tests/physics/page";
-import Chemistry from "@/app/topic-tests/chemistry/page";
-import CRE from "@/app/topic-tests/cre/page";
-import Computer from "@/app/topic-tests/computer/page";
-import English from "@/app/topic-tests/English/page";
-import Mathematics from "@/app/topic-tests/mathematics/page";
-import Kiswahili from "@/app/topic-tests/Kiswahili/page";
-import Geography from "@/app/topic-tests/Geography/page";
-import Business from "@/app/topic-tests/Business/page";
-import Biology from "@/app/topic-tests/Biology/page";
-import Agriculture from "@/app/topic-tests/Agriculture/page";
-import History from "@/app/topic-tests/History/page";
+import React from "react";
+import Agriculture from "./Agriculture/page";
+import Biology from "./Biology/page";
+import Business from "./Business/page";
+import Chemistry from "./chemistry/page";
+import Computer from "./computer/page";
+import CRE from "./cre/page";
+import English from "./English/page";
+import Geography from "./Geography/page";
+import History from "./History/page";
+import Kiswahili from "./Kiswahili/page";
+import Mathematics from "./mathematics/page";
+import Physics from "./physics/page";
+import Mapwork from "./mapwork/page";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { BookOpen } from "lucide-react";
 
-export default function Page() {
-    const subjects = [
-        { name: 'Agriculture', component: Agriculture },
-        { name: 'Biology', component: Biology },
-        { name: 'Business', component: Business },
-        { name: 'Chemistry', component: Chemistry },
-        { name: 'Computer', component: Computer },
-        { name: 'CRE', component: CRE },
-        { name: 'English', component: English },
-        { name: 'Geography', component: Geography },
-        { name: 'History', component: History },
-        { name: 'Kiswahili', component: Kiswahili },
-        { name: 'Mathematics', component: Mathematics },
-        { name: 'Physics', component: Physics },
+interface LevelComponentProps {
+    children: React.ReactNode;
+  }
+  
+  const LevelSection: React.FC<LevelComponentProps> = ({ children }) => (
+    <div className="w-full p-4 rounded-lg bg-white shadow-sm hover:shadow-md transition-shadow duration-200">
+      {children}
+    </div>
+  );
+  
+  const TopicTests: React.FC = () => {
+    const levels = [
+        {Component: Agriculture, key: 'agriculture'},
+        {Component: Biology, key: 'biology'},
+        {Component: Business, key: 'business'},
+        {Component: Chemistry, key: 'chemistry'},
+        {Component: Computer, key: 'computer'},
+        {Component: CRE, key: 'cre'},
+        {Component: English, key: 'english'},
+        {Component: Geography, key: 'geography'},
+        {Component: History, key: 'history'},
+        {Component: Kiswahili, key: 'kiswahili'},
+        {Component: Mathematics, key: 'mathematics'},
+        {Component: Physics, key: 'physics'},
+        {Component: Mapwork, key: 'mapwork'}
     ];
-
+  
     return (
-        <div className="w-full max-w-4xl mx-auto p-4 border-2 border-gray-300 rounded-lg">
-            <h2 className="text-2xl font-bold mb-6 text-center">TOPICAL TESTS</h2>
-            <Accordion type="multiple" defaultValue={subjects.map((_, index) => `item-${index}`)}>
-                {subjects.map((subject, index) => (
-                    <AccordionItem
-                        value={`item-${index}`}
-                        key={subject.name}
-                        className="border border-gray-200 mb-2 rounded-lg"
-                    >
-                        <AccordionTrigger className="hover:bg-gray-100 px-4 py-2 rounded-t-lg">
-                            {subject.name.toUpperCase()}
-                        </AccordionTrigger>
-                        <AccordionContent className="p-4 border-t border-gray-200">
-                            <subject.component />
-                        </AccordionContent>
-                    </AccordionItem>
-                ))}
-            </Accordion>
-        </div>
+      <Card className="w-full border border-gray-200 rounded-lg overflow-hidden">
+        <CardHeader className="bg-green-500 border-b border-green-600">
+          <CardTitle className="text-xl text-white flex items-center gap-3">
+            <BookOpen className="h-6 w-6" />
+            <span className="font-semibold">TOPIC TESTS ALL SUBJECTS</span>
+          </CardTitle>
+        </CardHeader>
+        
+        <CardContent className="flex flex-col gap-6 p-6">
+          {levels.map(({ Component, key }) => (
+            <LevelSection key={key}>
+              <Component />
+            </LevelSection>
+          ))}
+        </CardContent>
+      </Card>
     );
-}
+  };
+  
+  export default TopicTests;

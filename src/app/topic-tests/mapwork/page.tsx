@@ -47,18 +47,14 @@ const fetchGoogleDriveFiles = async (folderId: string): Promise<FileItem[]> => {
     }
 };
 
-export default function CRE() {
+export default function Mapwork() {
     const [searchQuery, setSearchQuery] = useState('');
     const [folderStates, setFolderStates] = useState<{ [key: string]: FolderState }>({});
     const router = useRouter();
 
     // Assignment folder IDs and names
     const folderNames: { [key: string]: string } = useMemo(() => ({
-        '1PHpJ1-ru-YEX_maSDL09YiQyjykoAo8i': 'Form 1',
-        '1xFkRUebB3S-TcI05ZHGTrJCgJiY1qOZ7': 'Form 2',
-        '1G6BJ69akLjAg8WMaU1m4AVGbFpZRnHBx': 'Form 3',
-        '1xx3JWfv-gyfgdhu0zi62_-QpYGLgDcqz': 'Form 4',
-        '1U24_ahGTCevLwI7yz3tBid3BM9egaiuM': 'IRE'
+        '1djiTBTCevc6LNqm0NdiHODcYEMlZJZQ1': 'All'
     }), []);
 
     useEffect(() => {
@@ -125,7 +121,7 @@ export default function CRE() {
                     <Card className="shadow-2xl h-full backdrop-blur-sm border border-gray-700 rounded-xl relative">
                         <CardHeader className="space-y-2 md:space-y-0 md:flex md:flex-row md:items-center md:justify-between p-4 md:p-6 border-b border-gray-700">
                             <CardTitle className="text-xl md:text-2xl text-emerald-400 text-center md:text-left font-bold">
-                                CRE TOPIC TESTS
+                              MAPWORK TOPIC TESTS
                             </CardTitle>
                             <div className="relative mt-2 md:mt-0">
                                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
