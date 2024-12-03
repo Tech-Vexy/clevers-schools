@@ -132,7 +132,7 @@ function SignInForm() {
 
 export default function SignIn() {
     return (
-        <div className="min-h-screen h-full flex items-center w-full justify-center bg-gray-50">
+        <div className="min-h-screen h-full flex  w-full  bg-gray-50">
             <div className=" w-full space-y-8 p-8 bg-white rounded-lg shadow">
                 <div>
                     <h2 className="text-center text-3xl font-extrabold text-gray-900">

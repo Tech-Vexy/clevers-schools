@@ -138,7 +138,7 @@ export default function RegisterPage() {
     };
 
     return (
-        <div className="min-h-screen flex items-center  w-full px-4 bg-[url('/bg1.jpg')] text-headertext">
+        <div className="min-h-screen flex   w-full px-4  text-headertext">
             <Card className="w-full  bg-gray-100">
                 <CardHeader>
                     <CardTitle className="text-2xl text-center">Register</CardTitle>

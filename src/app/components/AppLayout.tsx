@@ -89,7 +89,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
             <header className="fixed top-0 left-0 right-0 z-50">
                 <div className="h-14">
                     <div className="max-w-screen-xl mx-auto h-full border-x-2 border-headers bg-headers shadow-md">
-                        <div className="flex items-center justify-between h-full px-6">
+                        <div className="flex items-center justify-between h-full px-6 max-w-screen-xl mx-auto">
                             <Link
                                 href="/"
                                 className="flex items-center space-x-4 group"
@@ -114,7 +114,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
             )}
 
             {/* Main Layout */}
-            <main className="flex  flex-col flex-1 pt-14 bg-pink-100 max-w-screen-xl mx-auto border-x-2 border-gray-400">
+            <main className="flex flex-col flex-1 pt-14 bg-pink-100 max-w-screen-xl mx-auto border-x-2 border-gray-400 w-full">
                 {/* Navigation */}
                 <nav className="w-full bg-white shadow-sm">
                     <Suspense fallback={<NavBarFallback />}>
@@ -128,7 +128,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
                 </div>
 
                 {/* Content Grid */}
-                <div className="flex-1 p-4">
+                <div className="flex-1 p-4 max-w-screen-xl mx-auto w-full">
                     <div className="flex gap-4 h-full">
                         {/* Left Sidebar */}
                         <aside className="hidden md:block w-72 bg-purple-200 rounded shadow-sm">
@@ -171,3 +171,4 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
 };
 
 export default AppLayout;
+
