@@ -178,7 +178,7 @@ const SubscriptionPageContent: React.FC = () => {
         return null;
     }
 
-    const amountInNGN = 1000 * 100; // Amount in kobo (NGN cents)
+    const amountInNGN = 100 * 100; // Amount in kobo (NGN cents)
     const publicKey = process.env.NEXT_PUBLIC_PAYSTACK_API;
 
     if (!publicKey) {
