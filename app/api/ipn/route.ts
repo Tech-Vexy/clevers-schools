@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { getAuthToken, getTransactionStatus } from "@/lib/pesapal"
-import { connectToDatabase } from "@/lib/db"
+import { connectToDatabase } from "@/lib/mongodb"
 
 // Types for payment records
 interface PaymentRecord {

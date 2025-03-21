@@ -4,8 +4,8 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { AlertCircle, ArrowRight, Badge, CheckCircle, User } from "lucide-react";
-import { useSession } from 'next-auth/react';
+import { AlertCircle, ArrowRight, Badge, CheckCircle, LogOut, User } from "lucide-react";
+import { signOut, useSession } from 'next-auth/react';
 
 interface SubscriptionData {
     id: string
@@ -60,6 +60,7 @@ function SubscriptionStatus() {
         </div>
       )
     }
+    
 
     // Format date
     const formatDate = (date: Date): string => {
@@ -88,6 +89,10 @@ function SubscriptionStatus() {
 const Login = () => {
     const { data: session, status } = useSession();
     const isAuthenticated = status === "authenticated";
+
+    const handleSignOut = () => {
+        signOut({ callbackUrl: '/' });
+    };
     
     return (
         <>
@@ -109,7 +114,7 @@ const Login = () => {
                       </Link>
                       <div className="text-xs text-gray-500 mt-2">
                         Don&#39;t have an account?
-                        <Link href="/auth/register" className="text-primary hover:underline ml-1">
+                        <Link href="/auth/signup" className="text-primary hover:underline ml-1">
                           Sign Up
                         </Link>
                       </div>
@@ -134,6 +139,16 @@ const Login = () => {
                     <div className="space-y-2">
                      <SubscriptionStatus/>
                     </div>
+                    <div className="flex gap-2 mt-4 p-4 ml-6 items-center">
+                <Button 
+                    variant="outline" 
+                    className=" items-center gap-2 text-red-600" 
+                    onClick={handleSignOut}
+                >
+                    <LogOut className="h-4 w-4 text-center" />
+                    Log out
+                </Button>
+            </div>
                   </CardContent>
                 </Card>
               )}

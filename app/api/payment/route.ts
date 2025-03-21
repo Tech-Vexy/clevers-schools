@@ -3,7 +3,7 @@ import { type NextRequest, NextResponse } from "next/server"
 import crypto from "crypto"
 import { getAuthToken, registerIPN, submitOrder, getTransactionStatus } from "@/lib/pesapal"
 import { MongoClient, type ObjectId } from "mongodb"
-
+import { connectToDatabase } from "@/lib/mongodb"
 // TypeScript interfaces
 interface OrderData {
   orderId: string
@@ -39,26 +39,11 @@ interface DBOrder {
 
 // MongoDB configuration
 const MONGODB_URI = process.env.MONGODB_URI as string
-const DB_NAME = process.env.DB_NAME || "pesapal_payments"
+const DB_NAME = process.env.MONGODB_DB || "pesapal_payments"
 
 // MongoDB client and collection
 let cachedClient: MongoClient | null = null
 
-async function connectToDatabase(): Promise<{ client: MongoClient; db: MongoClient["db"] }> {
-  if (cachedClient) {
-    return { client: cachedClient, db: cachedClient.db(DB_NAME) }
-  }
-
-  if (!MONGODB_URI) {
-    throw new Error("MONGODB_URI environment variable is not defined")
-  }
-
-  const client = new MongoClient(MONGODB_URI)
-  await client.connect()
-  cachedClient = client
-
-  return { client, db: client.db(DB_NAME) }
-}
 
 // Save order to MongoDB
 async function saveOrderToDatabase(orderData: OrderData, ipnId: string, orderResponse: any): Promise<string> {

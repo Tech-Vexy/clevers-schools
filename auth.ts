@@ -1,6 +1,6 @@
 import type { NextAuthOptions } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
-import { connectToDatabase } from "@/lib/db"
+import { connectToDatabase } from "@/lib/mongodb"
 import bcrypt from "bcrypt"
 import { MongoClient } from "mongodb"
 import { MongoDBAdapter } from "@next-auth/mongodb-adapter"

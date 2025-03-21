@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { getAuthToken, getTransactionStatus } from "@/lib/pesapal"
-import { connectToDatabase } from "@/lib/db"
+import { connectToDatabase } from "@/lib/mongodb"
 
 // Update subscription status
 async function updateSubscriptionStatus(orderTrackingId: string, status: string) {
