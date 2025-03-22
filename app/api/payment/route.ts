@@ -33,13 +33,15 @@ interface DBOrder {
   orderTrackingId?: string
   redirectUrl?: string
   paymentMethod?: string
+  paymentAccount?: string
+  paymentDate?: Date
   createdAt: Date
   updatedAt: Date
 }
 
 // MongoDB configuration
 const MONGODB_URI = process.env.MONGODB_URI as string
-const DB_NAME = process.env.MONGODB_DB || "pesapal_payments"
+const DB_NAME = process.env.MONGODB_DB || "Clevers-Schools"
 
 // MongoDB client and collection
 let cachedClient: MongoClient | null = null
@@ -199,4 +201,3 @@ export async function GET(request: NextRequest) {
     )
   }
 }
-

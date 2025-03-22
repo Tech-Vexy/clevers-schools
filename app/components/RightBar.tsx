@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { AlertCircle, ArrowRight, Badge, CheckCircle, LogOut, User } from "lucide-react";
 import { signOut, useSession } from 'next-auth/react';
@@ -148,6 +148,26 @@ const Login = () => {
                     <LogOut className="h-4 w-4 text-center" />
                     Log out
                 </Button>
+            </div>
+            <div>
+            <Card>
+              <CardHeader>
+                <CardTitle>Need Help?</CardTitle>
+                <CardDescription>Contact our support team for assistance</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground mb-4">
+                  If you have any questions or need help with your account, our support team is here to assist you.
+                </p>
+              </CardContent>
+              <CardFooter>
+                <Link href="mailto:support@schoolresources.clevers.co.ke" className="w-full">
+                  <Button variant="outline" className="w-full text-blue-500">
+                    Contact Support
+                  </Button>
+                </Link>
+              </CardFooter>
+            </Card>
             </div>
                   </CardContent>
                 </Card>
