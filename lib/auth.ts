@@ -1,4 +1,4 @@
-import { connectToDatabase } from "@/lib/db"
+import { connectToDatabase } from "@/lib/mongodb"
 import bcrypt from "bcrypt"
 import { ObjectId } from "mongodb"
 

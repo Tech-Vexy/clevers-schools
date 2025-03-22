@@ -1,68 +1,72 @@
-import type { NextAuthOptions } from "next-auth"
-import CredentialsProvider from "next-auth/providers/credentials"
-import { connectToDatabase } from "@/lib/mongodb"
-import bcrypt from "bcrypt"
-import { MongoClient } from "mongodb"
-import { MongoDBAdapter } from "@next-auth/mongodb-adapter"
+import { NextAuthOptions } from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
+import { connectToDatabase } from "@/lib/mongodb";
+import bcrypt from "bcryptjs";
 
 export const authOptions: NextAuthOptions = {
-  adapter: MongoDBAdapter(
-    connectToDatabase().then(({ client }) => client.db()) as Promise<MongoClient>
-  ),
-  session: {
-    strategy: "jwt",
-  },
-  pages: {
-    signIn: "/auth/signin",
-    // signUp property isn't supported in PagesOptions type
-    // signUp: "/auth/signup",
-    error: "/auth/error",
-  },
-  providers: [
-    CredentialsProvider({
-      name: "Credentials",
-      credentials: {
-        email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" },
-      },
-      async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) {
-          throw new Error("Email and password are required")
-        }
+    providers: [
+        CredentialsProvider({
+            name: "credentials",
+            credentials: {
+                email: { label: "Email", type: "email" },
+                password: { label: "Password", type: "password" }
+            },
+            async authorize(credentials) {
+                try {
+                    if (!credentials?.email || !credentials?.password) {
+                        return null;
+                    }
 
-        const { db } = await connectToDatabase()
-        const user = await db.collection("users").findOne({ email: credentials.email })
+                    const { db } = await connectToDatabase();
+                    const user = await db.collection("users").findOne({
+                        email: credentials.email,
+                    });
 
-        if (!user) {
-          throw new Error("No user found with this email")
-        }
+                    if (!user) {
+                        return null;
+                    }
 
-        const isPasswordValid = await bcrypt.compare(credentials.password, user.password)
+                    const passwordMatch = await bcrypt.compare(
+                        credentials.password,
+                        user.password
+                    );
 
-        if (!isPasswordValid) {
-          throw new Error("Invalid password")
-        }
+                    if (!passwordMatch) {
+                        return null;
+                    }
 
-        return {
-          id: user._id.toString(),
-          name: user.name,
-          email: user.email,
-        }
-      },
-    }),
-  ],
-  callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
-        token.id = user.id
-      }
-      return token
+                    return {
+                        id: user._id.toString(),
+                        email: user.email,
+                        name: user.name,
+                    };
+                } catch (error) {
+                    console.error("Auth error:", error);
+                    return null;
+                }
+            },
+        }),
+    ],
+    session: {
+        strategy: "jwt",
     },
-    async session({ session, token }) {
-      if (session.user) {
-        session.user.id = token.id as string
-      }
-      return session
+    pages: {
+        signIn: "/auth/signin",
+        error: "/auth/error", // Add an error page to redirect users to
     },
-  },
-}
+    callbacks: {
+        async jwt({ token, user }) {
+            if (user) {
+                token.id = user.id;
+            }
+            return token;
+        },
+        async session({ session, token }) {
+            if (session.user) {
+                session.user.id = token.id as string;
+            }
+            return session;
+        },
+    },
+    debug: process.env.NODE_ENV === "development", // Enable debug mode in development
+};

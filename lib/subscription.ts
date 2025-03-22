@@ -1,4 +1,4 @@
-import { connectToDatabase } from "@/lib/db"
+import { connectToDatabase } from "@/lib/mongodb"
 
 // Check if a payment reference has already been processed
 export async function isPaymentReferenceProcessed(reference: string): Promise<boolean> {
