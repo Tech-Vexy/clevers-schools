@@ -156,17 +156,13 @@ const Login = () => {
                 <CardDescription>Contact our support team for assistance</CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-muted-foreground mb-4">
-                  If you have any questions or need help with your account, our support team is here to assist you.
-                </p>
-              </CardContent>
-              <CardFooter>
-                <Link href="mailto:support@schoolresources.clevers.co.ke" className="w-full">
+              <Link href="mailto:support@schoolresources.clevers.co.ke" className="w-full">
                   <Button variant="outline" className="w-full text-blue-500">
                     Contact Support
                   </Button>
                 </Link>
-              </CardFooter>
+              </CardContent>
+            
             </Card>
             </div>
                   </CardContent>
