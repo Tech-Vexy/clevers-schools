@@ -2,57 +2,107 @@ import { type NextRequest, NextResponse } from "next/server"
 import { getAuthToken, getTransactionStatus } from "@/lib/pesapal"
 import { connectToDatabase } from "@/lib/mongodb"
 
-// Types for payment records
-interface PaymentRecord {
-  orderTrackingId: string
-  paymentStatus: string
-  paymentMethod: string
-  amount: number
-  currency: string
-  confirmationCode?: string
-  paymentDate?: string
-  createdAt: Date
-  updatedAt: Date
+// Update subscription status
+async function updateSubscriptionStatus(orderTrackingId: string, status: string, paymentDetails: any) {
+  const { db } = await connectToDatabase()
+  const subscriptions = db.collection("subscriptions")
+  const orders = db.collection("orders")
+
+  // Find the subscription
+  const subscription = await subscriptions.findOne({ orderTrackingId })
+
+  if (!subscription) {
+    throw new Error("Subscription not found")
+  }
+
+  // Update subscription status
+  await subscriptions.updateOne(
+    { orderTrackingId },
+    {
+      $set: {
+        status: status === "COMPLETED" ? "active" : status.toLowerCase(),
+        paymentMethod: paymentDetails.payment_method,
+        paymentAccount: paymentDetails.payment_account,
+        paymentDate: new Date(paymentDetails.created_date),
+        updatedAt: new Date(),
+      },
+    },
+  )
+
+  // Update the corresponding order as well
+  const order = await orders.findOne({ orderTrackingId })
+
+  if (order) {
+    await orders.updateOne(
+      { orderTrackingId },
+      {
+        $set: {
+          status: status,
+          paymentMethod: paymentDetails.payment_method,
+          paymentAccount: paymentDetails.payment_account,
+          paymentDate: new Date(paymentDetails.created_date),
+          updatedAt: new Date(),
+        },
+      },
+    )
+  }
+
+  return subscription
 }
 
-// Save or update payment record in MongoDB
-async function savePaymentRecord(status: any): Promise<string> {
+// Create a subscription if it doesn't exist
+async function createSubscriptionIfNeeded(orderTrackingId: string, status: any) {
   const { db } = await connectToDatabase()
-  const collection = db.collection("payments")
+  const subscriptions = db.collection("subscriptions")
+  const orders = db.collection("orders")
+  const users = db.collection("users")
 
-  const paymentRecord: PaymentRecord = {
-    orderTrackingId: status.order_tracking_id,
-    paymentStatus: status.payment_status_description,
+  // Check if subscription already exists
+  const existingSubscription = await subscriptions.findOne({ orderTrackingId })
+
+  if (existingSubscription) {
+    // Subscription exists, just update it
+    return updateSubscriptionStatus(orderTrackingId, status.payment_status_description, status)
+  }
+
+  // Find the order
+  const order = await orders.findOne({ orderTrackingId })
+
+  if (!order) {
+    throw new Error("Order not found")
+  }
+
+  // Find the user
+  const user = await users.findOne({ email: order.email || order.userEmail })
+
+  if (!user) {
+    throw new Error("User not found")
+  }
+
+  // Create a new subscription
+  const startDate = new Date()
+  const expiryDate = new Date()
+  expiryDate.setDate(expiryDate.getDate() + 365) // 1 year
+
+  const subscription = {
+    userId: user._id.toString(),
+    userEmail: user.email,
+    orderTrackingId,
+    orderId: order.orderId,
+    amount: order.amount,
+    currency: order.currency,
+    status: status.payment_status_description === "COMPLETED" ? "active" : "pending",
+    startDate,
+    expiryDate,
     paymentMethod: status.payment_method,
-    amount: status.amount,
-    currency: status.currency,
-    confirmationCode: status.confirmation_code,
-    paymentDate: status.payment_date,
+    paymentAccount: status.payment_account,
+    paymentDate: new Date(status.created_date),
     createdAt: new Date(),
     updatedAt: new Date(),
   }
 
-  // Check if record already exists
-  const existingRecord = await collection.findOne({ orderTrackingId: status.order_tracking_id })
-
-  if (existingRecord) {
-    // Update existing record
-    await collection.updateOne(
-      { orderTrackingId: status.order_tracking_id },
-      {
-        $set: {
-          ...paymentRecord,
-          createdAt: existingRecord.createdAt, // Preserve original creation date
-          updatedAt: new Date(), // Update the update timestamp
-        },
-      },
-    )
-    return `Updated payment record: ${status.order_tracking_id}`
-  } else {
-    // Create new record
-    await collection.insertOne(paymentRecord)
-    return `Created payment record: ${status.order_tracking_id}`
-  }
+  await subscriptions.insertOne(subscription)
+  return subscription
 }
 
 export async function GET(request: NextRequest) {
@@ -64,19 +114,23 @@ export async function GET(request: NextRequest) {
   }
 
   try {
+    // Get auth token and transaction status
     const authToken = await getAuthToken()
     const status = await getTransactionStatus(authToken, orderTrackingId)
 
     console.log("IPN received:", status)
 
-    // Save transaction data to MongoDB
-    const dbResult = await savePaymentRecord(status)
-    console.log(dbResult)
+    // Create or update subscription based on payment status
+    const subscription = await createSubscriptionIfNeeded(orderTrackingId, status)
 
-    return NextResponse.json({ message: "IPN Received", status })
+    return NextResponse.json({
+      message: "IPN Received and processed",
+      status: status.payment_status_description,
+      subscription,
+    })
   } catch (error) {
     console.error("IPN error:", error)
-    return NextResponse.json({ message: "IPN Error" }, { status: 500 })
+    return NextResponse.json({ message: "IPN Error", error: (error as Error).message }, { status: 500 })
   }
 }
 

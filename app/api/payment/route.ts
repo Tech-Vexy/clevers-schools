@@ -1,9 +1,9 @@
-// Update imports to use the shared utility functions
 import { type NextRequest, NextResponse } from "next/server"
 import crypto from "crypto"
 import { getAuthToken, registerIPN, submitOrder, getTransactionStatus } from "@/lib/pesapal"
-import { MongoClient, type ObjectId } from "mongodb"
 import { connectToDatabase } from "@/lib/mongodb"
+import type { ObjectId } from "mongodb"
+
 // TypeScript interfaces
 interface OrderData {
   orderId: string
@@ -39,18 +39,33 @@ interface DBOrder {
   updatedAt: Date
 }
 
-// MongoDB configuration
-const MONGODB_URI = process.env.MONGODB_URI as string
-const DB_NAME = process.env.MONGODB_DB || "Clevers-Schools"
-
-// MongoDB client and collection
-let cachedClient: MongoClient | null = null
-
-
 // Save order to MongoDB
 async function saveOrderToDatabase(orderData: OrderData, ipnId: string, orderResponse: any): Promise<string> {
   const { db } = await connectToDatabase()
   const orders = db.collection("orders")
+
+  // Check if order already exists
+  const existingOrder = await orders.findOne({
+    $or: [{ orderId: orderData.orderId }, { orderTrackingId: orderResponse.order_tracking_id }],
+  })
+
+  if (existingOrder) {
+    // Update existing order
+    await orders.updateOne(
+      { _id: existingOrder._id },
+      {
+        $set: {
+          status: orderResponse.status,
+          ipnId: ipnId,
+          orderTrackingId: orderResponse.order_tracking_id,
+          redirectUrl: orderResponse.redirect_url,
+          paymentMethod: orderResponse.payment_method,
+          updatedAt: new Date(),
+        },
+      },
+    )
+    return existingOrder._id.toString()
+  }
 
   const dbOrder: DBOrder = {
     orderId: orderData.orderId,
@@ -177,9 +192,45 @@ export async function GET(request: NextRequest) {
         paymentDate: new Date(paymentStatus.created_date),
       })
 
+      // If payment is completed, create a subscription if this is a subscription order
+      if (
+        paymentStatus.payment_status_description === "COMPLETED" &&
+        (orderMerchantReference.startsWith("SUB-") || paymentStatus.description?.includes("Subscription"))
+      ) {
+        // Create subscription via API call to subscription endpoint
+        try {
+          const { db } = await connectToDatabase()
+          const orders = db.collection("orders")
+
+          // Get the order
+          const order = await orders.findOne({
+            $or: [{ orderId: orderMerchantReference }, { orderTrackingId: orderTrackingId }],
+          })
+
+          if (order) {
+            // Call the subscription API to create a subscription
+            const subscriptionResponse = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/subscription`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                orderTrackingId: orderTrackingId,
+              }),
+            })
+
+            const subscriptionData = await subscriptionResponse.json()
+            console.log("Subscription created:", subscriptionData)
+          }
+        } catch (subscriptionError) {
+          console.error("Error creating subscription:", subscriptionError)
+        }
+      }
+
       return NextResponse.json({
         success: true,
         message: "IPN received and processed successfully",
+        status: paymentStatus.payment_status_description,
       })
     } catch (error) {
       // Still update the order with the notification type
@@ -188,6 +239,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({
         success: true,
         message: "IPN received but status check failed",
+        error: (error as Error).message,
       })
     }
   } catch (error) {
@@ -201,3 +253,4 @@ export async function GET(request: NextRequest) {
     )
   }
 }
+

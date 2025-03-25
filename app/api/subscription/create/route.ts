@@ -14,6 +14,7 @@ async function saveIframeSubscription(userId: string, data: any) {
   const { db } = await connectToDatabase()
   const subscriptions = db.collection("subscriptions")
   const users = db.collection("users")
+  const orders = db.collection("orders") // Get orders collection for tracking
 
   // Get user email
   const user = await users.findOne({ _id: new ObjectId(userId) })
@@ -62,6 +63,24 @@ async function saveIframeSubscription(userId: string, data: any) {
   }
 
   const result = await subscriptions.insertOne(subscription)
+
+  // Create a corresponding order record for tracking
+  const orderData = {
+    orderId: "ORD-" + crypto.randomUUID().substring(0, 8),
+    userId: userId,
+    userEmail: user.email,
+    reference: data.reference,
+    amount: data.amount || SUBSCRIPTION_AMOUNT,
+    currency: data.currency || "KES",
+    status: "COMPLETED",
+    description: "Subscription payment",
+    paymentMethod: data.paymentMethod || "iframe",
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  }
+
+  await orders.insertOne(orderData)
+
   return { id: result.insertedId.toString(), ...subscription }
 }
 
@@ -70,6 +89,7 @@ async function saveRedirectSubscription(userId: string, orderData: any, orderRes
   const { db } = await connectToDatabase()
   const subscriptions = db.collection("subscriptions")
   const users = db.collection("users")
+  const orders = db.collection("orders") // Get orders collection for tracking
 
   // Get user email
   const user = await users.findOne({ _id: new ObjectId(userId) })
@@ -80,6 +100,15 @@ async function saveRedirectSubscription(userId: string, orderData: any, orderRes
   const startDate = new Date()
   const expiryDate = new Date()
   expiryDate.setDate(expiryDate.getDate() + orderData.duration)
+
+  // Check if a subscription with this order tracking ID already exists
+  const existingSubscription = await subscriptions.findOne({
+    orderTrackingId: orderResponse.order_tracking_id,
+  })
+
+  if (existingSubscription) {
+    return { id: existingSubscription._id.toString(), ...existingSubscription }
+  }
 
   const subscription = {
     userId,
@@ -96,6 +125,31 @@ async function saveRedirectSubscription(userId: string, orderData: any, orderRes
   }
 
   const result = await subscriptions.insertOne(subscription)
+
+  // Create or update the corresponding order record
+  const existingOrder = await orders.findOne({
+    orderTrackingId: orderResponse.order_tracking_id,
+  })
+
+  if (!existingOrder) {
+    // Create a new order record
+    const orderRecord = {
+      orderId: orderData.orderId,
+      orderTrackingId: orderResponse.order_tracking_id,
+      userId: userId,
+      userEmail: user.email,
+      amount: orderData.amount,
+      currency: orderData.currency,
+      status: "PENDING",
+      description: "Subscription payment",
+      paymentMethod: orderResponse.payment_method || "redirect",
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }
+
+    await orders.insertOne(orderRecord)
+  }
+
   return { id: result.insertedId.toString(), ...subscription }
 }
 
@@ -121,9 +175,23 @@ async function createSubscriptionFromOrder(orderTrackingId: string) {
     throw new Error("Order not found")
   }
 
+  // Update order status in database
+  await orders.updateOne(
+    { orderTrackingId },
+    {
+      $set: {
+        status: status.payment_status_description,
+        paymentMethod: status.payment_method,
+        paymentAccount: status.payment_account,
+        paymentDate: new Date(status.created_date),
+        updatedAt: new Date(),
+      },
+    },
+  )
+
   // Get user by email
   const users = db.collection("users")
-  const user = await users.findOne({ email: order.email })
+  const user = await users.findOne({ email: order.email || order.userEmail })
 
   if (!user) {
     throw new Error("User not found")

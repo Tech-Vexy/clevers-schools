@@ -154,4 +154,3 @@ export async function getTransactionStatus(authToken: string, orderTrackingId: s
     throw new Error("Failed to get transaction status")
   }
 }
-

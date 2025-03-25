@@ -316,27 +316,11 @@ const SubscriptionPageContent: React.FC = () => {
           <div className="space-y-4">
             <h4 className="font-medium text-center">Choose your payment method:</h4>
             
-            {/* Option 1: PesaPal iframe */}
-            <div className="w-full bg-white rounded-lg overflow-hidden border">
-              <iframe
-                width="100%"
-                height="40"
-                src={`https://store.pesapal.com/embed-code?pageUrl=https://store.pesapal.com/subscribetocleversschools&email=${encodeURIComponent(session?.user?.email || "")}&amount=${SUBSCRIPTION_AMOUNT}`}
-                frameBorder="0"
-                allowFullScreen
-                title="PesaPal Payment"
-              />
-            </div>
-
-            {/* Option 2: Redirect payment */}
             <div className="text-center">
-              <p className="text-sm text-muted-foreground mb-3">
-                Having trouble with the payment form above?
-              </p>
               <Link href="/payment">
-                <Button variant="outline" className="gap-2">
+                <Button className="w-full gap-2">
                   <CreditCard className="h-4 w-4" />
-                  Use Alternative Payment Form
+                  Proceed to Payment
                 </Button>
               </Link>
             </div>
