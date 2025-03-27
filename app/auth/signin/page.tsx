@@ -9,7 +9,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Loader2 } from "lucide-react"
+import { Loader2, Eye, EyeOff } from "lucide-react"
 import Link from "next/link"
 import { useToast } from "@/hooks/use-toast"
 
@@ -22,6 +22,7 @@ export default function SignIn() {
     email: "",
     password: "",
   })
+  const [showPassword, setShowPassword] = useState(false)
 
   const callbackUrl = searchParams?.get("callbackUrl") || "/"
   const error = searchParams?.get("error")
@@ -85,15 +86,27 @@ export default function SignIn() {
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <Label htmlFor="password">Password</Label>
+                <Link href="/auth/forgot-password" className="text-xs text-primary hover:underline">
+                  Forgot password?
+                </Link>
               </div>
-              <Input
-                id="password"
-                name="password"
-                type="password"
-                value={formData.password}
-                onChange={handleChange}
-                required
-              />
+              <div className="relative">
+                <Input
+                  id="password"
+                  name="password"
+                  type={showPassword ? "text" : "password"}
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                />
+                <button
+                  type="button"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
+              </div>
             </div>
           </CardContent>
           <CardFooter className="flex flex-col space-y-4">
