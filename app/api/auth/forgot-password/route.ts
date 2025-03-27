@@ -52,11 +52,15 @@ export async function POST(request: NextRequest) {
 
     // Send email with reset link
     const { data, error } = await resend.emails.send({
-      from: "StudyPortal <noreply@schoolresources.clevers.co.ke>",
+      from: "Clevers Schools Resources <noreply@schoolresources.clevers.co.ke>",
       to: email,
       subject: "Reset Your Password",
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <a href="https://schoolresources.clevers.co.ke">
+          <img src="https://schoolresources.clevers.co.ke/logo.png" alt="Clevers Schools Resources" style="width: 200px; margin: 20px 0;">
+          <span style="color: #00a651; font-size: 24px; font-weight: bold;">Clevers Schools Resources</span>
+        </a>
           <h2>Reset Your Password</h2>
           <p>Hello,</p>
           <p>We received a request to reset your password. Click the button below to create a new password:</p>

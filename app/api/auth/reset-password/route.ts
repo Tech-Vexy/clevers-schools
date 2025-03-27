@@ -4,14 +4,21 @@ import bcrypt from "bcrypt"
 
 export async function POST(request: NextRequest) {
   try {
-    const { token, email, password } = await request.json()
+    const { token, email, password, confirmPassword } = await request.json()
 
+    // Validate all required fields
     if (!token || !email || !password) {
       return NextResponse.json({ message: "Missing required fields" }, { status: 400 })
     }
 
+    // Validate password length
     if (password.length < 8) {
       return NextResponse.json({ message: "Password must be at least 8 characters long" }, { status: 400 })
+    }
+
+    // Validate password confirmation if provided
+    if (confirmPassword && password !== confirmPassword) {
+      return NextResponse.json({ message: "Passwords do not match" }, { status: 400 })
     }
 
     const { db } = await connectToDatabase()

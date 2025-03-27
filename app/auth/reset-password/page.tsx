@@ -2,22 +2,61 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
-import { Loader2, AlertCircle, Eye, EyeOff } from "lucide-react"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Loader2, AlertCircle, Eye, EyeOff, CheckCircle } from "lucide-react"
+import Link from "next/link"
+import { useToast } from "@/hooks/use-toast"
 
 export default function ResetPasswordPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const token = searchParams.get("token")
+  const { toast } = useToast()
+
+  const token = searchParams?.get("token")
+  const email = searchParams?.get("email")
 
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
-  const [success, setSuccess] = useState("")
+  const [success, setSuccess] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [isValidToken, setIsValidToken] = useState(false)
+  const [verifying, setVerifying] = useState(true)
+
+  // Verify token on page load
+  useEffect(() => {
+    async function verifyToken() {
+      if (!token || !email) {
+        setError("Missing token or email. Please check your reset link.")
+        setVerifying(false)
+        return
+      }
+
+      try {
+        const response = await fetch(`/api/auth/verify-reset-token?token=${token}&email=${encodeURIComponent(email)}`)
+        const data = await response.json()
+
+        if (response.ok && data.valid) {
+          setIsValidToken(true)
+        } else {
+          setError(data.message || "Invalid or expired token. Please request a new password reset link.")
+        }
+      } catch (err) {
+        setError("Failed to verify token. Please try again later.")
+      } finally {
+        setVerifying(false)
+      }
+    }
+
+    verifyToken()
+  }, [token, email])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -27,121 +66,176 @@ export default function ResetPasswordPage() {
       return
     }
 
+    if (password.length < 8) {
+      setError("Password must be at least 8 characters long")
+      return
+    }
+
     setLoading(true)
     setError("")
-    setSuccess("")
 
     try {
-      const res = await fetch("/api/auth/reset-password", {
+      const response = await fetch("/api/auth/reset-password", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ token, password }),
+        body: JSON.stringify({
+          token,
+          email,
+          password,
+          confirmPassword,
+        }),
       })
 
-      const data = await res.json()
+      const data = await response.json()
 
-      if (res.ok) {
-        setSuccess(data.message)
-        router.push("/auth/login")
+      if (response.ok) {
+        setSuccess(true)
+        toast({
+          title: "Success",
+          description: data.message || "Your password has been reset successfully.",
+        })
+
+        // Redirect to login after 3 seconds
+        setTimeout(() => {
+          router.push("/auth/signin")
+        }, 3000)
       } else {
-        setError(data.error)
+        setError(data.message || "Failed to reset password")
       }
-    } catch (error: any) {
-      setError(error.message || "Something went wrong")
+    } catch (error) {
+      setError("An unexpected error occurred. Please try again later.")
     } finally {
       setLoading(false)
     }
   }
 
-  return (
-    <div className="flex items-center justify-center h-screen bg-gray-100">
-      <div className="bg-white p-8 rounded shadow-md w-96">
-        <h2 className="text-2xl font-semibold mb-4">Reset Password</h2>
-        {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
-            <strong className="font-bold">Error!</strong>
-            <span className="block sm:inline">{error}</span>
-            <span className="absolute top-0 bottom-0 right-0 px-4 py-3">
-              <AlertCircle className="h-6 w-6" />
-            </span>
-          </div>
-        )}
-        {success && (
-          <div
-            className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4"
-            role="alert"
-          >
-            <strong className="font-bold">Success!</strong>
-            <span className="block sm:inline">{success}</span>
-          </div>
-        )}
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label htmlFor="password" className="block text-gray-700 text-sm font-bold mb-2">
-              New Password
-            </label>
-            <div className="relative">
-              <input
-                type={showPassword ? "text" : "password"}
-                id="password"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                placeholder="Enter new password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-              <button
-                type="button"
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-              </button>
-            </div>
-          </div>
-          <div className="mb-6">
-            <label htmlFor="confirmPassword" className="block text-gray-700 text-sm font-bold mb-2">
-              Confirm Password
-            </label>
-            <div className="relative">
-              <input
-                type={showConfirmPassword ? "text" : "password"}
-                id="confirmPassword"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                placeholder="Confirm new password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required
-              />
-              <button
-                type="button"
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
-                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              >
-                {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-              </button>
-            </div>
-          </div>
-          <div className="flex items-center justify-between">
-            <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-              type="submit"
-              disabled={loading}
-            >
-              {loading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Resetting...
-                </>
-              ) : (
-                "Reset Password"
-              )}
-            </button>
-          </div>
-        </form>
+  if (verifying) {
+    return (
+      <div className="container flex items-center justify-center min-h-screen py-12">
+        <Card className="w-full max-w-md">
+          <CardContent className="pt-6 flex flex-col items-center justify-center">
+            <Loader2 className="h-8 w-8 animate-spin text-primary mb-4" />
+            <p>Verifying your reset link...</p>
+          </CardContent>
+        </Card>
       </div>
+    )
+  }
+
+  if (success) {
+    return (
+      <div className="container flex items-center justify-center min-h-screen py-12">
+        <Card className="w-full max-w-md">
+          <CardHeader>
+            <div className="flex justify-center mb-4">
+              <CheckCircle className="h-12 w-12 text-green-500" />
+            </div>
+            <CardTitle className="text-2xl text-center">Password Reset Successful</CardTitle>
+            <CardDescription className="text-center">
+              Your password has been reset successfully. You will be redirected to the login page shortly.
+            </CardDescription>
+          </CardHeader>
+          <CardFooter className="flex justify-center">
+            <Link href="/auth/signin">
+              <Button>Go to Login</Button>
+            </Link>
+          </CardFooter>
+        </Card>
+      </div>
+    )
+  }
+
+  return (
+    <div className="container flex items-center justify-center min-h-screen py-12">
+      <Card className="w-full max-w-md">
+        <CardHeader>
+          <CardTitle className="text-2xl text-center">Reset Password</CardTitle>
+          <CardDescription className="text-center">Enter your new password below</CardDescription>
+        </CardHeader>
+        <CardContent>
+          {error && (
+            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md mb-4">
+              <div className="flex">
+                <AlertCircle className="h-5 w-5 mr-2" />
+                <span>{error}</span>
+              </div>
+            </div>
+          )}
+
+          {!isValidToken ? (
+            <div className="text-center py-4">
+              <p className="mb-4">This reset link is invalid or has expired.</p>
+              <Link href="/auth/forgot-password">
+                <Button>Request New Reset Link</Button>
+              </Link>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit}>
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="password">New Password</Label>
+                  <div className="relative">
+                    <Input
+                      id="password"
+                      type={showPassword ? "text" : "password"}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                      minLength={8}
+                    />
+                    <button
+                      type="button"
+                      className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </button>
+                  </div>
+                  <p className="text-xs text-muted-foreground">Password must be at least 8 characters long</p>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="confirmPassword">Confirm Password</Label>
+                  <div className="relative">
+                    <Input
+                      id="confirmPassword"
+                      type={showConfirmPassword ? "text" : "password"}
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      required
+                    />
+                    <button
+                      type="button"
+                      className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    >
+                      {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </button>
+                  </div>
+                </div>
+
+                <Button type="submit" className="w-full" disabled={loading}>
+                  {loading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Resetting Password...
+                    </>
+                  ) : (
+                    "Reset Password"
+                  )}
+                </Button>
+              </div>
+            </form>
+          )}
+        </CardContent>
+        <CardFooter className="flex justify-center">
+          <Link href="/auth/signin" className="text-sm text-muted-foreground hover:text-primary">
+            Back to Sign In
+          </Link>
+        </CardFooter>
+      </Card>
     </div>
   )
 }
