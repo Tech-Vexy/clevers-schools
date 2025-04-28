@@ -39,7 +39,7 @@ export default function UnpaidPage() {
   }, []);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
+    <div className="min-h-screen flex w-full items-center justify-center bg-gray-50 p-4">
       <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full">
         <div className="text-center">
           <div className="flex items-center justify-center mb-4">
