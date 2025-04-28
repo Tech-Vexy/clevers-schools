@@ -1,12 +1,11 @@
 'use client';
 import Link from 'next/link';
-import React from 'react';
-
+import React, {useState} from 'react';
 
 export default function Home() {
+     
     return (
-        <>
-           
+        <> 
            <div className="p-4 border-b-2">
             <h2 className="text-red-600 text-xl font-bold">KCSE REVISION EDUCATION MATERIALS</h2>
             <div className="text-gray-700 font-bold mt-2 pb-4">REVISION EDUCATION MATERIALS</div>
@@ -378,6 +377,7 @@ export default function Home() {
            
             </div>
             <Link href="/subscribe" className='text-blue-800 pl-12 text-center underline font-bold text-xl pb-2'>GET UNLIMITED ACCESS NOW</Link>
-        </>
+    
+        </>  
     );
 }

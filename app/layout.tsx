@@ -1,3 +1,4 @@
+
 import { Analytics } from "@vercel/analytics/react";
 import { metadata } from '@/lib/metadata';
 import { SITE_URL } from '@/lib/constants';
@@ -10,6 +11,9 @@ import Footer from "./components/Footer";
 import AuthProvider from "@/providers";
 import "./globals.css";
 export { metadata };
+import PaymentCheck from '@/app/components/PaymentCheck';
+
+
 
 const SITE_NAME = 'Clevers Schools Resources';
 const SITE_DESCRIPTION = 'Access official IGCSE past papers, Cambridge resources, and Edexcel materials. Expert-curated lesson plans and teaching resources for international curriculum schools in Kenya.';
@@ -131,7 +135,11 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+const paid = false;
+  
+
   return (
+    <PaymentCheck paid={paid}>
     <AuthProvider>
       <html 
         lang="en" 
@@ -166,5 +174,6 @@ export default function RootLayout({
         </body>
       </html>
     </AuthProvider>
+  </PaymentCheck>
   );
 }
