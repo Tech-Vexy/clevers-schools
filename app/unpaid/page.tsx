@@ -133,13 +133,6 @@ export default function UnpaidPage() {
             <div className="border-t border-gray-200 w-full absolute"></div>
             <span className="relative bg-white px-4 text-sm text-gray-500">OR</span>
           </div>
-          
-          <button 
-            className="flex items-center justify-center bg-purple-600 text-white px-4 py-3 rounded-lg hover:bg-purple-700 transition-colors w-full shadow-sm"
-          >
-            <CreditCard className="h-5 w-5 mr-2" />
-            <span className="font-medium">Pay Online</span>
-          </button>
         </div>
         
         <div className="mt-8 text-center text-xs text-gray-500">
