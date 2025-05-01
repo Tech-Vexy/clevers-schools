@@ -1,23 +1,43 @@
-// app/unpaid/page.js
 "use client";
 import { useState, useEffect } from "react";
 import { Mail, Phone, AlertTriangle, CreditCard, Clock } from "lucide-react";
 
 export default function UnpaidPage() {
   const [timeLeft, setTimeLeft] = useState({
-    days: 7,
+    days: 0,
     hours: 0,
     minutes: 0,
     seconds: 0
   });
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Set the date 7 days from now
-    const targetDate = new Date();
-    targetDate.setDate(targetDate.getDate() + 7);
+    // Fetch the timer end time from the API
+    const fetchTimerData = async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetch('/api/timer');
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch timer data');
+        }
+        
+        const data = await response.json();
+        return data.endTime;
+      } catch (err) {
+        setError('Failed to load timer. Please refresh the page.');
+        console.error('Error fetching timer data:', err);
+        return null;
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-    const calculateTimeLeft = () => {
-      const difference = targetDate.getTime() - new Date().getTime();
+    // Calculate and update time remaining
+    const calculateTimeLeft = (endTime: number) => {
+      const difference = endTime - new Date().getTime();
+      
       if (difference > 0) {
         setTimeLeft({
           days: Math.floor(difference / (1000 * 60 * 60 * 24)),
@@ -25,17 +45,47 @@ export default function UnpaidPage() {
           minutes: Math.floor((difference / 1000 / 60) % 60),
           seconds: Math.floor((difference / 1000) % 60)
         });
+        return true;
+      } else {
+        // Timer has expired
+        setTimeLeft({
+          days: 0,
+          hours: 0,
+          minutes: 0,
+          seconds: 0
+        });
+        return false;
       }
     };
 
-    // Initial calculation
-    calculateTimeLeft();
+    let timer: string | number | NodeJS.Timeout | undefined;
+    let endTime: any;
+
+    // Initialize timer
+    const initializeTimer = async () => {
+      endTime = await fetchTimerData();
+      
+      if (endTime) {
+        const timerActive = calculateTimeLeft(endTime);
+        
+        if (timerActive) {
+          // Update every second if timer is still active
+          timer = setInterval(() => {
+            const stillActive = calculateTimeLeft(endTime);
+            if (!stillActive) {
+              clearInterval(timer);
+            }
+          }, 1000);
+        }
+      }
+    };
+
+    initializeTimer();
     
-    // Update every second
-    const timer = setInterval(calculateTimeLeft, 1000);
-    
-    // Clear on unmount
-    return () => clearInterval(timer);
+    // Cleanup on unmount
+    return () => {
+      if (timer) clearInterval(timer);
+    };
   }, []);
 
   return (
@@ -70,35 +120,41 @@ export default function UnpaidPage() {
             Website Takedown Timer
           </h2>
           
-          <div className="flex justify-between items-center bg-gray-50 rounded-lg p-4">
-            <div className="flex flex-col items-center">
-              <div className="bg-white text-red-600 rounded-lg px-4 py-3 font-bold text-2xl shadow-sm border border-gray-100">
-                {String(timeLeft.days).padStart(2, '0')}
+          {isLoading ? (
+            <div className="text-center py-8 text-gray-500">Loading timer...</div>
+          ) : error ? (
+            <div className="text-center py-4 text-red-500">{error}</div>
+          ) : (
+            <div className="flex justify-between items-center bg-gray-50 rounded-lg p-4">
+              <div className="flex flex-col items-center">
+                <div className="bg-white text-red-600 rounded-lg px-4 py-3 font-bold text-2xl shadow-sm border border-gray-100">
+                  {String(timeLeft.days).padStart(2, '0')}
+                </div>
+                <span className="text-xs mt-2 text-gray-600 font-medium">Days</span>
               </div>
-              <span className="text-xs mt-2 text-gray-600 font-medium">Days</span>
-            </div>
-            <div className="text-gray-300 text-2xl font-light">:</div>
-            <div className="flex flex-col items-center">
-              <div className="bg-white text-red-600 rounded-lg px-4 py-3 font-bold text-2xl shadow-sm border border-gray-100">
-                {String(timeLeft.hours).padStart(2, '0')}
+              <div className="text-gray-300 text-2xl font-light">:</div>
+              <div className="flex flex-col items-center">
+                <div className="bg-white text-red-600 rounded-lg px-4 py-3 font-bold text-2xl shadow-sm border border-gray-100">
+                  {String(timeLeft.hours).padStart(2, '0')}
+                </div>
+                <span className="text-xs mt-2 text-gray-600 font-medium">Hours</span>
               </div>
-              <span className="text-xs mt-2 text-gray-600 font-medium">Hours</span>
-            </div>
-            <div className="text-gray-300 text-2xl font-light">:</div>
-            <div className="flex flex-col items-center">
-              <div className="bg-white text-red-600 rounded-lg px-4 py-3 font-bold text-2xl shadow-sm border border-gray-100">
-                {String(timeLeft.minutes).padStart(2, '0')}
+              <div className="text-gray-300 text-2xl font-light">:</div>
+              <div className="flex flex-col items-center">
+                <div className="bg-white text-red-600 rounded-lg px-4 py-3 font-bold text-2xl shadow-sm border border-gray-100">
+                  {String(timeLeft.minutes).padStart(2, '0')}
+                </div>
+                <span className="text-xs mt-2 text-gray-600 font-medium">Minutes</span>
               </div>
-              <span className="text-xs mt-2 text-gray-600 font-medium">Minutes</span>
-            </div>
-            <div className="text-gray-300 text-2xl font-light">:</div>
-            <div className="flex flex-col items-center">
-              <div className="bg-white text-red-600 rounded-lg px-4 py-3 font-bold text-2xl shadow-sm border border-gray-100">
-                {String(timeLeft.seconds).padStart(2, '0')}
+              <div className="text-gray-300 text-2xl font-light">:</div>
+              <div className="flex flex-col items-center">
+                <div className="bg-white text-red-600 rounded-lg px-4 py-3 font-bold text-2xl shadow-sm border border-gray-100">
+                  {String(timeLeft.seconds).padStart(2, '0')}
+                </div>
+                <span className="text-xs mt-2 text-gray-600 font-medium">Seconds</span>
               </div>
-              <span className="text-xs mt-2 text-gray-600 font-medium">Seconds</span>
             </div>
-          </div>
+          )}
           
           <p className="text-sm text-center text-gray-500 mt-3">
             After this timer expires, the website will be taken down automatically.
@@ -129,10 +185,6 @@ export default function UnpaidPage() {
             <span className="font-medium">Call Developer</span>
           </a>
           
-          <div className="relative flex items-center justify-center">
-            <div className="border-t border-gray-200 w-full absolute"></div>
-            <span className="relative bg-white px-4 text-sm text-gray-500">OR</span>
-          </div>
         </div>
         
         <div className="mt-8 text-center text-xs text-gray-500">
