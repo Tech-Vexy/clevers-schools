@@ -1,4 +1,4 @@
-/*// scripts/setup-data.js
+/* // scripts/setup-data.js
 const fs = require('fs');
 const path = require('path');
 
@@ -34,4 +34,4 @@ if (!fs.existsSync(timerFilePath)) {
   console.log(`Current timer expiration: ${new Date(data.endTime).toLocaleString()}`);
 }
 
-console.log('Setup complete!');
+console.log('Setup complete!'); */
