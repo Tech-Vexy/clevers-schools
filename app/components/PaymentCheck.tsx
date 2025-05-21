@@ -9,7 +9,7 @@ interface PaymentCheckProps {
   paid?: boolean;
 }
 
-export default function PaymentCheck({ children, paid = false }: PaymentCheckProps) {
+export default function PaymentCheck({ children, paid = true }: PaymentCheckProps) {
   const router = useRouter();
   
   useEffect(() => {
