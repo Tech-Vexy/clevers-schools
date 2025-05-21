@@ -1,66 +1,56 @@
 'use client';
 
-import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { getAllFilesInFolder } from "@/lib/firebaseUtils";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { FileText, Loader2, ChevronLeft, ChevronRight } from "lucide-react";
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { FileText, Search, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { getAllFilesInFolder } from '@/lib/firebaseUtils';
 
-type FileItem = {
+// Define FileItem interface
+interface FileItem {
+    id: string;
     name: string;
-    url: string;
+    downloadUrl?: string;
+    mimeType: string;
+    lastModified?: string;
 }
 
-type PaginationControlsProps = {
-    currentPage: number;
-    totalPages: number;
-    onPageChange: (page: number) => void;
-}
-
-function PaginationControls({ currentPage, totalPages, onPageChange }: PaginationControlsProps) {
-    return (
-        <div className="flex items-center justify-center space-x-4 mt-6">
-            <Button
-                variant="outline"
-                size="sm"
-                onClick={() => onPageChange(currentPage - 1)}
-                disabled={currentPage === 1}
-                className="flex items-center bg-gray-800 text-gray-200 border-gray-700 hover:bg-gray-700"
-            >
-                <ChevronLeft className="h-4 w-4 mr-1" />
-                Previous
-            </Button>
-            <span className="text-sm text-gray-300 bg-gray-800 px-3 py-1 rounded-md border border-gray-700">
-                Page {currentPage} of {totalPages}
-            </span>
-            <Button
-                variant="outline"
-                size="sm"
-                onClick={() => onPageChange(currentPage + 1)}
-                disabled={currentPage === totalPages}
-                className="flex items-center bg-gray-800 text-gray-200 border-gray-700 hover:bg-gray-700"
-            >
-                Next
-                <ChevronRight className="h-4 w-4 ml-1" />
-            </Button>
-        </div>
-    );
-}
+// Loading component
+const LoadingSpinner = () => (
+    <div className="flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-emerald-500"></div>
+    </div>
+);
 
 export default function Page() {
     const [material, setMaterial] = useState<FileItem[]>([]);
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
+    const [searchQuery, setSearchQuery] = useState('');
     const itemsPerPage = 10;
     const router = useRouter();
     const folderPath = 'gs://clevers-school-resources.appspot.com/WEEKLY QUIZES/ELEMENTARY/GRADE 3';
+    
     useEffect(() => {
         const fetchFiles = async () => {
-            const filesList = await getAllFilesInFolder(folderPath);
-            setMaterial(filesList);
-            setLoading(false);
+            try {
+                const filesList = await getAllFilesInFolder(folderPath);
+                
+                // Sort files by most recent
+                const sortedFiles = filesList.sort((a, b) => {
+                    if (a.lastModified && b.lastModified) {
+                        return new Date(b.lastModified).getTime() - new Date(a.lastModified).getTime();
+                    }
+                    return 0;
+                });
+                
+                setMaterial(sortedFiles);
+            } catch (error) {
+                console.error("Error fetching files:", error);
+            } finally {
+                setLoading(false);
+            }
         };
+        
         fetchFiles();
     }, [folderPath]);
 
@@ -71,83 +61,125 @@ export default function Page() {
         router.push(`/document/${encodeURIComponent(file.name)}?${searchParams.toString()}`);
     };
 
-    const totalPages = Math.ceil(material.length / itemsPerPage);
+    // Filter files based on search query
+    const filteredMaterial = searchQuery 
+        ? material.filter(file => file.name.toLowerCase().includes(searchQuery.toLowerCase()))
+        : material;
+
+    const totalPages = Math.ceil(filteredMaterial.length / itemsPerPage);
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    const currentFiles = material.slice(startIndex, endIndex);
-
-    const handlePageChange = (page: number) => {
-        setCurrentPage(page);
-        const contentArea = document.getElementById('content-area');
-        if (contentArea) {
-            contentArea.scrollTo({ top: 0, behavior: 'smooth' });
+    const currentFiles = filteredMaterial.slice(startIndex, endIndex);
+    
+    const goToPage = (page: number) => {
+        if (page >= 1 && page <= totalPages) {
+            setCurrentPage(page);
         }
     };
 
     if (loading) {
-        return (
-            <div className="h-full flex items-center justify-center bg-yellow-400">
-                <div className="bg-gray-800/80 p-6 rounded-full shadow-xl">
-                    <Loader2 className="h-8 w-8 animate-spin text-emerald-500" />
-                </div>
-            </div>
-        );
+        return <LoadingSpinner />;
     }
 
     return (
-        <div className="flex flex-col h-full overflow-hidden">
-            <div 
-                id="content-area"
-                className="flex-1 overflow-y-auto px-4 py-8 bg-yellow-400"
-            >
-                <div className="relative max-w-4xl mx-auto">
-                    <div className="absolute inset-0 bg-grid-pattern opacity-10 pointer-events-none"></div>
-                    <div className="absolute inset-0 bg-gradient-to-t from-gray-900/90 to-transparent pointer-events-none"></div>
+        <div className="container mx-auto px-4 py-8">
+            <div className="bg-white rounded-lg shadow-md border border-gray-200">
+                <div className="border-b border-gray-200 bg-gray-50 p-4 flex flex-col md:flex-row justify-between items-center rounded-t-lg">
+                    <h1 className="text-2xl font-bold text-emerald-600 mb-4 md:mb-0">
+                        Grade 3 Weekly Quizzes
+                    </h1>
                     
-                    <Card className="shadow-2xl  backdrop-blur-sm border border-gray-700 rounded-xl relative">
-                        <CardHeader className="space-y-2 md:space-y-0 md:flex md:flex-row md:items-center md:justify-between p-4 md:p-6 border-b border-gray-700">
-                            <CardTitle className="text-xl md:text-2xl text-emerald-400 text-center md:text-left font-bold">
-                                All Study Materials
-                            </CardTitle>
-                            <div className="text-sm text-gray-400 text-center md:text-right bg-gray-700/50 px-3 py-1 rounded-full">
-                                {material.length} {material.length === 1 ? 'document' : 'documents'} available
-                            </div>
-                        </CardHeader>
-                        <CardContent className="p-4 md:p-6">
-                            <div className="grid gap-3 md:gap-4">
-                                {currentFiles.map((file) => (
-                                    <div
-                                        key={file.name}
-                                        className="group flex items-center p-3 md:p-4 rounded-lg border border-gray-700 
-                                                 hover:bg-gray-700/50 hover:border-emerald-600/50 transition-all duration-200 
-                                                 cursor-pointer shadow-sm hover:shadow-md bg-white backdrop-blur-sm"
-                                        onClick={() => handleDocumentClick(file)}
-                                    >
-                                        <FileText className="h-5 w-5 md:h-6 md:w-6 text-gray-500 group-hover:text-emerald-400 
-                                                           transition-colors mr-3 flex-shrink-0" />
-                                        <div className="flex-1 min-w-0">
-                                            <h3 className="text-3xl md:text-base font-semibold text-black group-hover:text-emerald-300 truncate">
-                                                {file.name}
-                                            </h3>
-                                        </div>
+                    {/* Search Input */}
+                    <div className="relative w-full md:w-64">
+                        <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <Search className="w-4 h-4 text-gray-400" />
+                        </div>
+                        <input
+                            type="text"
+                            placeholder="Search quizzes..."
+                            value={searchQuery}
+                            onChange={(e) => {
+                                setSearchQuery(e.target.value);
+                                setCurrentPage(1); // Reset to first page on search
+                            }}
+                            className="w-full pl-10 pr-10 py-2 border border-gray-300 rounded-md 
+                                      focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                        />
+                        {searchQuery && (
+                            <button 
+                                onClick={() => setSearchQuery('')}
+                                className="absolute inset-y-0 right-0 flex items-center pr-3"
+                            >
+                                <X className="w-4 h-4 text-gray-400 hover:text-gray-600" />
+                            </button>
+                        )}
+                    </div>
+                </div>
+                
+                <div className="p-4">
+                    {currentFiles.length > 0 ? (
+                        <div className="space-y-2">
+                            {currentFiles.map((file) => (
+                                <div
+                                    key={file.id}
+                                    onClick={() => handleDocumentClick(file)}
+                                    className="flex items-center p-3 rounded-md border border-gray-200 
+                                             hover:bg-gray-50 hover:border-emerald-500 transition-all cursor-pointer"
+                                >
+                                    <FileText className="text-gray-500 mr-3 h-5 w-5" />
+                                    <div>
+                                        <h3 className="font-medium text-gray-800">{file.name}</h3>
+                                        {file.lastModified && (
+                                            <p className="text-xs text-gray-500">
+                                                Last modified: {new Date(file.lastModified).toLocaleDateString()}
+                                            </p>
+                                        )}
                                     </div>
-                                ))}
-                            </div>
-                            
-                            {material.length === 0 && (
-                                <div className="text-center py-8 text-gray-400 bg-gray-800/50 rounded-lg border border-gray-700">
-                                    No documents available at the moment
                                 </div>
-                            )}
-                            {material.length > itemsPerPage && (
-                                <PaginationControls
-                                    currentPage={currentPage}
-                                    totalPages={totalPages}
-                                    onPageChange={handlePageChange}
-                                />
-                            )}
-                        </CardContent>
-                    </Card>
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="text-center p-8 bg-gray-50 rounded-md border border-gray-200">
+                            {searchQuery 
+                                ? `No quizzes found matching "${searchQuery}"` 
+                                : "No quizzes available at the moment"}
+                        </div>
+                    )}
+                    
+                    {/* Pagination */}
+                    {totalPages > 1 && (
+                        <div className="flex justify-center items-center mt-6 gap-2">
+                            <button
+                                onClick={() => goToPage(currentPage - 1)}
+                                disabled={currentPage === 1}
+                                className={`flex items-center px-3 py-1 rounded ${
+                                    currentPage === 1 
+                                        ? 'text-gray-400 cursor-not-allowed' 
+                                        : 'text-emerald-600 hover:bg-emerald-50'
+                                }`}
+                            >
+                                <ChevronLeft className="w-5 h-5" />
+                                <span>Previous</span>
+                            </button>
+                            
+                            <span className="text-gray-600">
+                                Page {currentPage} of {totalPages}
+                            </span>
+                            
+                            <button
+                                onClick={() => goToPage(currentPage + 1)}
+                                disabled={currentPage === totalPages}
+                                className={`flex items-center px-3 py-1 rounded ${
+                                    currentPage === totalPages 
+                                        ? 'text-gray-400 cursor-not-allowed' 
+                                        : 'text-emerald-600 hover:bg-emerald-50'
+                                }`}
+                            >
+                                <span>Next</span>
+                                <ChevronRight className="w-5 h-5" />
+                            </button>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

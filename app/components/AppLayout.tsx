@@ -7,8 +7,7 @@ import LeftBar from './LeftBar';
 import RightBar from './RightBar';
 import SearchBar from './SearchBar';
 import PaymentCheck from './PaymentCheck';
-import { Footer } from 'react-day-picker';
-
+import Footer from './Footer';
 // Preload components to prevent waterfall loading
 const NavBar = dynamic(() => import('./Navbar'), { ssr: false });
 
@@ -34,11 +33,11 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
     
     // Otherwise, render the full layout
     return (
-        <div className="min-h-screen flex flex-col bg-pink-100">
+        <div className="min-h-screen flex flex-col bg-gray-50">
             {/* Main Layout */}
-            <main className="flex flex-col flex-1 bg-pink-100 max-w-screen-xl mx-auto border-x-2 border-gray-400 w-full">
+            <main className="flex flex-col flex-1 max-w-screen-xl mx-auto w-full px-4 md:px-6 lg:px-8 border-x border-gray-200">
                 {/* Navigation */}
-                <nav className="w-full bg-white shadow-sm">
+                <nav className="w-full bg-white shadow-sm sticky top-0 z-10">
                     <Suspense fallback={<NavBarFallback />}>
                         <NavBar />
                     </Suspense>
@@ -46,45 +45,48 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
 
                 {/* Banner */}
                 <div className="w-full bg-orange-50 shadow-sm">
-                    <div className="h-16 mx-4 my-4 bg-gray-100 rounded shadow-inner" />
+                    <div className="h-16 mx-4 my-4 bg-white rounded shadow-inner border border-gray-200" />
                 </div>
 
                 {/* Content Grid */}
-                <div className="flex-1 p-4 max-w-screen-xl mx-auto w-full">
-                    <div className="flex gap-4 h-full">
+                <div className="flex-1 py-4 w-full">
+                    <div className="flex flex-col lg:flex-row gap-4">
                         {/* Left Sidebar */}
-                        <aside className="hidden md:block w-[26%] bg-red-200 rounded shadow-sm">
+                        <aside className="hidden lg:block w-full lg:w-[25%] bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
                             <div className="h-full">
                                <LeftBar/>
                             </div>
                         </aside>
 
                         {/* Main Content */}
-                        <main className="flex-1 w-[48%] rounded bg-gray-100 shadow-sm overflow-hidden flex flex-col">
-                            <div className="bg-[#00a651] text-white p-2 font-bold">KCSE REVISION EDUCATION MATERIALS</div>
-                            <div className='p-4'>
-                                <div className='bg-[#00a651] border-2 text-xl text-white'>
+                        <main className="flex-1 w-full lg:w-[50%] rounded-lg bg-white shadow-sm overflow-hidden flex flex-col border border-gray-200">
+                            <div className="bg-[#00a651] text-white p-3 font-bold border-b border-gray-200 sticky top-0 z-[5]">
+                                KCSE REVISION EDUCATION MATERIALS
+                            </div>
+                            <div className='p-4 border-b border-gray-200'>
+                                <div className='bg-[#00a651] border text-xl text-white p-2 rounded-t-md'>
                                     <h2>SEARCH WHAT YOU NEED HERE :-</h2>
                                 </div>
-                                <div className='bg-fuchsia-100'>
+                                <div className='bg-white border border-gray-200 border-t-0 p-3 rounded-b-md shadow-inner'>
                                     <SearchBar folderId=''/>
                                 </div>
                             </div>
-                            <div className="flex-1 overflow-y-auto px-6 py-4 overflow-x-hidden">
+                            <div className="flex-1 overflow-y-auto px-4 py-4 overflow-x-hidden">
                                 {children}
                             </div>
-
                         </main>
 
                         {/* Right Sidebar */}
-                        <aside className="hidden md:block w-[26%] bg-red-200 rounded shadow-sm">
+                        <aside className="hidden lg:block w-full lg:w-[25%] bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
                             <div className="h-full">
                                <RightBar/>
                             </div>
                         </aside>
-                        <Footer />
                     </div>
                 </div>
+                
+                {/* Footer */}
+                <Footer />
             </main>
         </div>
     );
