@@ -1,14 +1,13 @@
 'use client';
 
-import React, {  Suspense } from 'react';
-
+import React, { Suspense } from 'react';
 import dynamic from 'next/dynamic';
+import { usePathname } from 'next/navigation';
 import LeftBar from './LeftBar';
 import RightBar from './RightBar';
 import SearchBar from './SearchBar';
-
-
-
+import PaymentCheck from './PaymentCheck';
+import { Footer } from 'react-day-picker';
 
 // Preload components to prevent waterfall loading
 const NavBar = dynamic(() => import('./Navbar'), { ssr: false });
@@ -18,18 +17,26 @@ interface AppLayoutProps {
     children: React.ReactNode;
 }
 
-
-
 // Lightweight fallback components
 const NavBarFallback = () => <div className="h-12 bg-green-700" />;
 
 const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
-
-       
+    // Get the current pathname
+    const pathname = usePathname();
+    
+    // Check if current route is "/unpaid"
+    const isUnpaidRoute = pathname === '/unpaid';
+    
+    // If we're on the unpaid route, render children without the layout
+    if (isUnpaidRoute) {
+        return <>{children}</>;
+    }
+    
+    // Otherwise, render the full layout
     return (
         <div className="min-h-screen flex flex-col bg-pink-100">
             {/* Main Layout */}
-            <main className="flex flex-col flex-1  bg-pink-100 max-w-screen-xl mx-auto border-x-2 border-gray-400 w-full">
+            <main className="flex flex-col flex-1 bg-pink-100 max-w-screen-xl mx-auto border-x-2 border-gray-400 w-full">
                 {/* Navigation */}
                 <nav className="w-full bg-white shadow-sm">
                     <Suspense fallback={<NavBarFallback />}>
@@ -53,28 +60,29 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
                         </aside>
 
                         {/* Main Content */}
-                        <main className="flex-1  w-[48%] rounded bg-gray-100 shadow-sm overflow-hidden flex flex-col">
-                        <div className="bg-[#00a651] text-white p-2 font-bold">KCSE REVISION EDUCATION MATERIALS</div>
-                            <div className=' p-4   '>
-                                <div className='bg-[#00a651]  border-2 text-xl text-white'>
+                        <main className="flex-1 w-[48%] rounded bg-gray-100 shadow-sm overflow-hidden flex flex-col">
+                            <div className="bg-[#00a651] text-white p-2 font-bold">KCSE REVISION EDUCATION MATERIALS</div>
+                            <div className='p-4'>
+                                <div className='bg-[#00a651] border-2 text-xl text-white'>
                                     <h2>SEARCH WHAT YOU NEED HERE :-</h2>
                                 </div>
-                               <div className='bg-fuchsia-100'>
-                               <SearchBar folderId=''/>
-                               </div>
+                                <div className='bg-fuchsia-100'>
+                                    <SearchBar folderId=''/>
+                                </div>
                             </div>
-                            <div className="flex-1 overflow-y-auto px-6 py-4  overflow-x-hidden">
+                            <div className="flex-1 overflow-y-auto px-6 py-4 overflow-x-hidden">
                                 {children}
                             </div>
-                            
+
                         </main>
 
                         {/* Right Sidebar */}
                         <aside className="hidden md:block w-[26%] bg-red-200 rounded shadow-sm">
-                            <div className="h-full ">
+                            <div className="h-full">
                                <RightBar/>
                             </div>
                         </aside>
+                        <Footer />
                     </div>
                 </div>
             </main>

@@ -167,9 +167,7 @@ const paid = true;
          
           <AppLayout>{children}</AppLayout>
           <Analytics />
-          <div className="max-w-screen-xl mx-auto">
-          <Footer />
-          </div>
+          
           <SpeedInsights />
         </body>
       </html>
