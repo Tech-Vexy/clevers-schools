@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/auth"
 import { connectToDatabase } from "@/lib/mongodb"
 import { ObjectId } from "mongodb"
-import bcrypt from "bcrypt"
+import bcrypt from "bcryptjs"
 
 export async function PUT(request: NextRequest) {
   try {

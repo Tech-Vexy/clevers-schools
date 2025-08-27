@@ -1,5 +1,5 @@
 import { connectToDatabase } from "@/lib/mongodb"
-import bcrypt from "bcrypt"
+import bcrypt from "bcryptjs"
 import { ObjectId } from "mongodb"
 
 export async function createUser({ name, email, password }: { name: string; email: string; password: string }) {
